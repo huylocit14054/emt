@@ -993,3 +993,164 @@ NameError (uninitialized constant Types::QueryType::User):
   
 app/graphql/types/query_type.rb:16:in `users'
 app/controllers/graphql_controller.rb:10:in `execute'
+Started GET "/" for 127.0.0.1 at 2018-06-12 09:22:01 +0700
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /home/peter/.rvm/gems/ruby-2.5.0/gems/railties-5.1.6/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /home/peter/.rvm/gems/ruby-2.5.0/gems/railties-5.1.6/lib/rails/templates/rails/welcome/index.html.erb (3.5ms)
+Completed 200 OK in 14ms (Views: 7.1ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/graphiql" for 127.0.0.1 at 2018-06-12 09:22:03 +0700
+Processing by GraphiQL::Rails::EditorsController#show as HTML
+  Parameters: {"graphql_path"=>"/graphql"}
+  Rendering /home/peter/.rvm/gems/ruby-2.5.0/gems/graphiql-rails-1.4.4/app/views/graphiql/rails/editors/show.html.erb
+  Rendered /home/peter/.rvm/gems/ruby-2.5.0/gems/graphiql-rails-1.4.4/app/views/graphiql/rails/editors/show.html.erb (273.1ms)
+Completed 200 OK in 284ms (Views: 275.9ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 09:22:04 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"\n  query IntrospectionQuery {\n    __schema {\n      queryType { name }\n      mutationType { name }\n      subscriptionType { name }\n      types {\n        ...FullType\n      }\n      directives {\n        name\n        description\n        locations\n        args {\n          ...InputValue\n        }\n      }\n    }\n  }\n\n  fragment FullType on __Type {\n    kind\n    name\n    description\n    fields(includeDeprecated: true) {\n      name\n      description\n      args {\n        ...InputValue\n      }\n      type {\n        ...TypeRef\n      }\n      isDeprecated\n      deprecationReason\n    }\n    inputFields {\n      ...InputValue\n    }\n    interfaces {\n      ...TypeRef\n    }\n    enumValues(includeDeprecated: true) {\n      name\n      description\n      isDeprecated\n      deprecationReason\n    }\n    possibleTypes {\n      ...TypeRef\n    }\n  }\n\n  fragment InputValue on __InputValue {\n    name\n    description\n    type { ...TypeRef }\n    defaultValue\n  }\n\n  fragment TypeRef on __Type {\n    kind\n    name\n    ofType {\n      kind\n      name\n      ofType {\n        kind\n        name\n        ofType {\n          kind\n          name\n          ofType {\n            kind\n            name\n            ofType {\n              kind\n              name\n              ofType {\n                kind\n                name\n                ofType {\n                  kind\n                  name\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n", "graphql"=>{"query"=>"\n  query IntrospectionQuery {\n    __schema {\n      queryType { name }\n      mutationType { name }\n      subscriptionType { name }\n      types {\n        ...FullType\n      }\n      directives {\n        name\n        description\n        locations\n        args {\n          ...InputValue\n        }\n      }\n    }\n  }\n\n  fragment FullType on __Type {\n    kind\n    name\n    description\n    fields(includeDeprecated: true) {\n      name\n      description\n      args {\n        ...InputValue\n      }\n      type {\n        ...TypeRef\n      }\n      isDeprecated\n      deprecationReason\n    }\n    inputFields {\n      ...InputValue\n    }\n    interfaces {\n      ...TypeRef\n    }\n    enumValues(includeDeprecated: true) {\n      name\n      description\n      isDeprecated\n      deprecationReason\n    }\n    possibleTypes {\n      ...TypeRef\n    }\n  }\n\n  fragment InputValue on __InputValue {\n    name\n    description\n    type { ...TypeRef }\n    defaultValue\n  }\n\n  fragment TypeRef on __Type {\n    kind\n    name\n    ofType {\n      kind\n      name\n      ofType {\n        kind\n        name\n        ofType {\n          kind\n          name\n          ofType {\n            kind\n            name\n            ofType {\n              kind\n              name\n              ofType {\n                kind\n                name\n                ofType {\n                  kind\n                  name\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n"}}
+Completed 200 OK in 76ms (Views: 9.2ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 09:22:07 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"{\n  users(id: 1) {\n    id\n  }\n}", "variables"=>nil, "operationName"=>nil, "graphql"=>{"query"=>"{\n  users(id: 1) {\n    id\n  }\n}", "variables"=>nil, "operationName"=>nil}}
+Completed 200 OK in 3ms (Views: 0.4ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 09:23:02 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"{\n  user(id: 1) {\n    id\n  }\n}", "variables"=>nil, "operationName"=>nil, "graphql"=>{"query"=>"{\n  user(id: 1) {\n    id\n  }\n}", "variables"=>nil, "operationName"=>nil}}
+  [1m[36mUser Load (4.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+Completed 200 OK in 42ms (Views: 0.3ms | ActiveRecord: 11.5ms)
+
+
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 09:23:28 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"{\n  user(id: 1) {\n    id\n    createdAt\n  }\n}", "variables"=>nil, "operationName"=>nil, "graphql"=>{"query"=>"{\n  user(id: 1) {\n    id\n    createdAt\n  }\n}", "variables"=>nil, "operationName"=>nil}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+Completed 200 OK in 5ms (Views: 0.3ms | ActiveRecord: 0.3ms)
+
+
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.2ms)[0m  [1m[32mINSERT INTO "projects" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "Test"], ["description", "ABC"], ["created_at", "2018-06-12 02:29:38.251758"], ["updated_at", "2018-06-12 02:29:38.251758"]]
+  [1m[35m (3.4ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 09:31:14 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"{\n  user() {\n    id\n    createdAt\n  }\n}", "variables"=>nil, "operationName"=>nil, "graphql"=>{"query"=>"{\n  user() {\n    id\n    createdAt\n  }\n}", "variables"=>nil, "operationName"=>nil}}
+Completed 500 Internal Server Error in 6ms (ActiveRecord: 0.0ms)
+
+
+  
+SyntaxError (/home/peter/rails/emt/api-emt/app/graphql/types/query_type.rb:13: syntax error, unexpected ':', expecting keyword_end
+    argument: id, ID, required: false
+            ^
+/home/peter/rails/emt/api-emt/app/graphql/types/query_type.rb:13: syntax error, unexpected tLABEL, expecting '='
+    argument: id, ID, required: false
+                      ^~~~~~~~~
+/home/peter/rails/emt/api-emt/app/graphql/types/query_type.rb:18: syntax error, unexpected keyword_end, expecting end-of-input):
+  
+app/graphql/types/query_type.rb:13: syntax error, unexpected ':', expecting keyword_end
+app/graphql/types/query_type.rb:13: syntax error, unexpected tLABEL, expecting '='
+app/graphql/types/query_type.rb:18: syntax error, unexpected keyword_end, expecting end-of-input
+app/graphql/enhance_url_tagging_schema.rb:3:in `<class:EnhanceUrlTaggingSchema>'
+app/graphql/enhance_url_tagging_schema.rb:1:in `<top (required)>'
+app/controllers/graphql_controller.rb:10:in `execute'
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 09:31:47 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"{\n  user() {\n    id\n    createdAt\n  }\n}", "variables"=>nil, "operationName"=>nil, "graphql"=>{"query"=>"{\n  user() {\n    id\n    createdAt\n  }\n}", "variables"=>nil, "operationName"=>nil}}
+Completed 500 Internal Server Error in 32ms (ActiveRecord: 0.0ms)
+
+
+  
+ArgumentError (missing keyword: id):
+  
+app/graphql/types/query_type.rb:8:in `user'
+app/controllers/graphql_controller.rb:10:in `execute'
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 09:32:36 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"{\n  user(id:) {\n    id\n    createdAt\n  }\n}", "variables"=>nil, "operationName"=>nil, "graphql"=>{"query"=>"{\n  user(id:) {\n    id\n    createdAt\n  }\n}", "variables"=>nil, "operationName"=>nil}}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", nil], ["LIMIT", 1]]
+Completed 404 Not Found in 19ms (ActiveRecord: 4.4ms)
+
+
+  
+ActiveRecord::RecordNotFound (Couldn't find User with 'id'=):
+  
+app/graphql/types/query_type.rb:9:in `user'
+app/controllers/graphql_controller.rb:10:in `execute'
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 09:32:39 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"{\n  user(id: 1) {\n    id\n    createdAt\n  }\n}", "variables"=>nil, "operationName"=>nil, "graphql"=>{"query"=>"{\n  user(id: 1) {\n    id\n    createdAt\n  }\n}", "variables"=>nil, "operationName"=>nil}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+Completed 200 OK in 26ms (Views: 0.4ms | ActiveRecord: 0.4ms)
+
+
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 09:33:10 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"{\n  project(id: 1) {\n    id\n    name\n  }\n}", "variables"=>nil, "operationName"=>nil, "graphql"=>{"query"=>"{\n  project(id: 1) {\n    id\n    name\n  }\n}", "variables"=>nil, "operationName"=>nil}}
+  [1m[36mProject Load (1.1ms)[0m  [1m[34mSELECT  "projects".* FROM "projects" WHERE "projects"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+Completed 200 OK in 71ms (Views: 0.2ms | ActiveRecord: 16.6ms)
+
+
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mProject Load (0.5ms)[0m  [1m[34mSELECT  "projects".* FROM "projects" WHERE "projects"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35mSQL (2.2ms)[0m  [1m[32mINSERT INTO "dimensions" ("name", "category", "project_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "Dimension1"], ["category", "Cat1"], ["project_id", 1], ["created_at", "2018-06-12 03:04:05.630317"], ["updated_at", "2018-06-12 03:04:05.630317"]]
+  [1m[35m (7.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mDimension Load (0.9ms)[0m  [1m[34mSELECT  "dimensions".* FROM "dimensions" ORDER BY "dimensions"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mDimension Load (0.8ms)[0m  [1m[34mSELECT  "dimensions".* FROM "dimensions" ORDER BY "dimensions"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mDimension Load (1.1ms)[0m  [1m[34mSELECT  "dimensions".* FROM "dimensions" ORDER BY "dimensions"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mProject Load (0.9ms)[0m  [1m[34mSELECT  "projects".* FROM "projects" ORDER BY "projects"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mDimension Load (0.7ms)[0m  [1m[34mSELECT  "dimensions".* FROM "dimensions" WHERE "dimensions"."project_id" = $1 LIMIT $2[0m  [["project_id", 1], ["LIMIT", 11]]
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 10:07:38 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"{\n  project(id: 1) {\n    id\n    name\n    dimensions\n  }\n}", "variables"=>nil, "operationName"=>nil, "graphql"=>{"query"=>"{\n  project(id: 1) {\n    id\n    name\n    dimensions\n  }\n}", "variables"=>nil, "operationName"=>nil}}
+Completed 200 OK in 29ms (Views: 0.3ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 10:09:53 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"{\n  project(id: 1) {\n    id\n    name\n    \n  }\n}", "variables"=>nil, "operationName"=>nil, "graphql"=>{"query"=>"{\n  project(id: 1) {\n    id\n    name\n    \n  }\n}", "variables"=>nil, "operationName"=>nil}}
+  [1m[36mProject Load (0.8ms)[0m  [1m[34mSELECT  "projects".* FROM "projects" WHERE "projects"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+Completed 200 OK in 46ms (Views: 0.5ms | ActiveRecord: 8.7ms)
+
+
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 10:09:59 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"{\n  project(id: 1) {\n    id\n    name\n    dimensions\n  }\n}", "variables"=>nil, "operationName"=>nil, "graphql"=>{"query"=>"{\n  project(id: 1) {\n    id\n    name\n    dimensions\n  }\n}", "variables"=>nil, "operationName"=>nil}}
+Completed 200 OK in 3ms (Views: 0.3ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 10:10:15 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"{\n  project(id: 1) {\n    id\n    name\n    dimensions {\n      name\n    }\n  }\n}", "variables"=>nil, "operationName"=>nil, "graphql"=>{"query"=>"{\n  project(id: 1) {\n    id\n    name\n    dimensions {\n      name\n    }\n  }\n}", "variables"=>nil, "operationName"=>nil}}
+  [1m[36mProject Load (0.4ms)[0m  [1m[34mSELECT  "projects".* FROM "projects" WHERE "projects"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mDimension Load (0.5ms)[0m  [1m[34mSELECT "dimensions".* FROM "dimensions" WHERE "dimensions"."project_id" = $1[0m  [["project_id", 1]]
+Completed 200 OK in 56ms (Views: 0.2ms | ActiveRecord: 4.5ms)
+
+
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 10:10:25 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"{\n  project(id: 1) {\n    id\n    name\n    dimensions {\n      \n    }\n  }\n}", "variables"=>nil, "operationName"=>nil, "graphql"=>{"query"=>"{\n  project(id: 1) {\n    id\n    name\n    dimensions {\n      \n    }\n  }\n}", "variables"=>nil, "operationName"=>nil}}
+Completed 200 OK in 2ms (Views: 0.3ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 10:10:30 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"{\n  project(id: 1) {\n    id\n    name\n    dimensions {\n      name\n    }\n  }\n}", "variables"=>nil, "operationName"=>nil, "graphql"=>{"query"=>"{\n  project(id: 1) {\n    id\n    name\n    dimensions {\n      name\n    }\n  }\n}", "variables"=>nil, "operationName"=>nil}}
+  [1m[36mProject Load (0.8ms)[0m  [1m[34mSELECT  "projects".* FROM "projects" WHERE "projects"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mDimension Load (0.8ms)[0m  [1m[34mSELECT "dimensions".* FROM "dimensions" WHERE "dimensions"."project_id" = $1[0m  [["project_id", 1]]
+Completed 200 OK in 16ms (Views: 0.7ms | ActiveRecord: 1.6ms)
+
+
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 10:15:57 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"{\n  dimension(id: 1) {\n    id\n    name\n    project {\n      name\n    }\n  }\n}", "variables"=>nil, "operationName"=>nil, "graphql"=>{"query"=>"{\n  dimension(id: 1) {\n    id\n    name\n    project {\n      name\n    }\n  }\n}", "variables"=>nil, "operationName"=>nil}}
+  [1m[36mDimension Load (0.6ms)[0m  [1m[34mSELECT  "dimensions".* FROM "dimensions" WHERE "dimensions"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mProject Load (0.4ms)[0m  [1m[34mSELECT  "projects".* FROM "projects" WHERE "projects"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+Completed 200 OK in 98ms (Views: 0.4ms | ActiveRecord: 15.2ms)
+
+
