@@ -52,4 +52,11 @@ class Types::QueryType < Types::BaseObject
     ::OptionAuthorization.find(id)
   end
 
+  field :member_suggestion, [Types::User, null: true], null: false do
+    argument :query, String, required: true
+  end
+  def member_suggestion(query:)
+    suggestion = ::User.where('username LIKE ? OR email LIKE ?', "%#{query}%", "%#{query}%")
+  end
+
 end
