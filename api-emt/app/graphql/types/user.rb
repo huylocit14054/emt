@@ -6,4 +6,8 @@ class Types::User < Types::BaseObject
     field :created_at, Types::DateTime, null: false
     field :updated_at, Types::DateTime, null: false
 
+    #Relationship
+    field :projects, [Types::Project, null: false], null: false
+    field :project_relationships, [Types::ProjectMemeber, null: false], null: false
+
 end
