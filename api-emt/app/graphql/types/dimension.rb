@@ -10,7 +10,7 @@ class Types::Dimension < Types::BaseObject
 
     #Relationship
     field :project, Types::Project, null:false
-    field :authorizations, [Types::Authorization, null: false], null: false
-    field :options, [Types::Option, null: false], null: false
+    field :authorizations, [Types::Authorization], null: false
+    field :options, [Types::Option], null: false
 
 end

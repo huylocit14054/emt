@@ -2237,3 +2237,274 @@ Processing by GraphqlController#execute as */*
 Completed 200 OK in 98ms (Views: 0.4ms | ActiveRecord: 15.2ms)
 
 
+Started GET "/graphiql" for 127.0.0.1 at 2018-06-12 11:59:39 +0700
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by GraphiQL::Rails::EditorsController#show as HTML
+  Parameters: {"graphql_path"=>"/graphql"}
+  Rendering /home/huyloc/.rvm/gems/ruby-2.4.3/gems/graphiql-rails-1.4.4/app/views/graphiql/rails/editors/show.html.erb
+  Rendered /home/huyloc/.rvm/gems/ruby-2.4.3/gems/graphiql-rails-1.4.4/app/views/graphiql/rails/editors/show.html.erb (263.7ms)
+Completed 200 OK in 279ms (Views: 269.8ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 11:59:39 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"\n  query IntrospectionQuery {\n    __schema {\n      queryType { name }\n      mutationType { name }\n      subscriptionType { name }\n      types {\n        ...FullType\n      }\n      directives {\n        name\n        description\n        locations\n        args {\n          ...InputValue\n        }\n      }\n    }\n  }\n\n  fragment FullType on __Type {\n    kind\n    name\n    description\n    fields(includeDeprecated: true) {\n      name\n      description\n      args {\n        ...InputValue\n      }\n      type {\n        ...TypeRef\n      }\n      isDeprecated\n      deprecationReason\n    }\n    inputFields {\n      ...InputValue\n    }\n    interfaces {\n      ...TypeRef\n    }\n    enumValues(includeDeprecated: true) {\n      name\n      description\n      isDeprecated\n      deprecationReason\n    }\n    possibleTypes {\n      ...TypeRef\n    }\n  }\n\n  fragment InputValue on __InputValue {\n    name\n    description\n    type { ...TypeRef }\n    defaultValue\n  }\n\n  fragment TypeRef on __Type {\n    kind\n    name\n    ofType {\n      kind\n      name\n      ofType {\n        kind\n        name\n        ofType {\n          kind\n          name\n          ofType {\n            kind\n            name\n            ofType {\n              kind\n              name\n              ofType {\n                kind\n                name\n                ofType {\n                  kind\n                  name\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n", "graphql"=>{"query"=>"\n  query IntrospectionQuery {\n    __schema {\n      queryType { name }\n      mutationType { name }\n      subscriptionType { name }\n      types {\n        ...FullType\n      }\n      directives {\n        name\n        description\n        locations\n        args {\n          ...InputValue\n        }\n      }\n    }\n  }\n\n  fragment FullType on __Type {\n    kind\n    name\n    description\n    fields(includeDeprecated: true) {\n      name\n      description\n      args {\n        ...InputValue\n      }\n      type {\n        ...TypeRef\n      }\n      isDeprecated\n      deprecationReason\n    }\n    inputFields {\n      ...InputValue\n    }\n    interfaces {\n      ...TypeRef\n    }\n    enumValues(includeDeprecated: true) {\n      name\n      description\n      isDeprecated\n      deprecationReason\n    }\n    possibleTypes {\n      ...TypeRef\n    }\n  }\n\n  fragment InputValue on __InputValue {\n    name\n    description\n    type { ...TypeRef }\n    defaultValue\n  }\n\n  fragment TypeRef on __Type {\n    kind\n    name\n    ofType {\n      kind\n      name\n      ofType {\n        kind\n        name\n        ofType {\n          kind\n          name\n          ofType {\n            kind\n            name\n            ofType {\n              kind\n              name\n              ofType {\n                kind\n                name\n                ofType {\n                  kind\n                  name\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n"}}
+Completed 500 Internal Server Error in 31ms (ActiveRecord: 0.0ms)
+
+
+  
+NameError (uninitialized constant Types::ProjectMemeber):
+  
+app/graphql/types/user.rb:12:in `<class:User>'
+app/graphql/types/user.rb:1:in `<top (required)>'
+app/graphql/mutations/login.rb:9:in `<class:Login>'
+app/graphql/mutations/login.rb:1:in `<top (required)>'
+app/graphql/types/mutation_type.rb:8:in `<class:MutationType>'
+app/graphql/types/mutation_type.rb:1:in `<top (required)>'
+app/graphql/enhance_url_tagging_schema.rb:2:in `<class:EnhanceUrlTaggingSchema>'
+app/graphql/enhance_url_tagging_schema.rb:1:in `<top (required)>'
+app/controllers/graphql_controller.rb:9:in `execute'
+Started GET "/graphiql" for 127.0.0.1 at 2018-06-12 12:01:07 +0700
+  [1m[35m (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by GraphiQL::Rails::EditorsController#show as HTML
+  Parameters: {"graphql_path"=>"/graphql"}
+  Rendering /home/huyloc/.rvm/gems/ruby-2.4.3/gems/graphiql-rails-1.4.4/app/views/graphiql/rails/editors/show.html.erb
+  Rendered /home/huyloc/.rvm/gems/ruby-2.4.3/gems/graphiql-rails-1.4.4/app/views/graphiql/rails/editors/show.html.erb (359.9ms)
+Completed 200 OK in 378ms (Views: 367.4ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 12:01:08 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"\n  query IntrospectionQuery {\n    __schema {\n      queryType { name }\n      mutationType { name }\n      subscriptionType { name }\n      types {\n        ...FullType\n      }\n      directives {\n        name\n        description\n        locations\n        args {\n          ...InputValue\n        }\n      }\n    }\n  }\n\n  fragment FullType on __Type {\n    kind\n    name\n    description\n    fields(includeDeprecated: true) {\n      name\n      description\n      args {\n        ...InputValue\n      }\n      type {\n        ...TypeRef\n      }\n      isDeprecated\n      deprecationReason\n    }\n    inputFields {\n      ...InputValue\n    }\n    interfaces {\n      ...TypeRef\n    }\n    enumValues(includeDeprecated: true) {\n      name\n      description\n      isDeprecated\n      deprecationReason\n    }\n    possibleTypes {\n      ...TypeRef\n    }\n  }\n\n  fragment InputValue on __InputValue {\n    name\n    description\n    type { ...TypeRef }\n    defaultValue\n  }\n\n  fragment TypeRef on __Type {\n    kind\n    name\n    ofType {\n      kind\n      name\n      ofType {\n        kind\n        name\n        ofType {\n          kind\n          name\n          ofType {\n            kind\n            name\n            ofType {\n              kind\n              name\n              ofType {\n                kind\n                name\n                ofType {\n                  kind\n                  name\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n", "graphql"=>{"query"=>"\n  query IntrospectionQuery {\n    __schema {\n      queryType { name }\n      mutationType { name }\n      subscriptionType { name }\n      types {\n        ...FullType\n      }\n      directives {\n        name\n        description\n        locations\n        args {\n          ...InputValue\n        }\n      }\n    }\n  }\n\n  fragment FullType on __Type {\n    kind\n    name\n    description\n    fields(includeDeprecated: true) {\n      name\n      description\n      args {\n        ...InputValue\n      }\n      type {\n        ...TypeRef\n      }\n      isDeprecated\n      deprecationReason\n    }\n    inputFields {\n      ...InputValue\n    }\n    interfaces {\n      ...TypeRef\n    }\n    enumValues(includeDeprecated: true) {\n      name\n      description\n      isDeprecated\n      deprecationReason\n    }\n    possibleTypes {\n      ...TypeRef\n    }\n  }\n\n  fragment InputValue on __InputValue {\n    name\n    description\n    type { ...TypeRef }\n    defaultValue\n  }\n\n  fragment TypeRef on __Type {\n    kind\n    name\n    ofType {\n      kind\n      name\n      ofType {\n        kind\n        name\n        ofType {\n          kind\n          name\n          ofType {\n            kind\n            name\n            ofType {\n              kind\n              name\n              ofType {\n                kind\n                name\n                ofType {\n                  kind\n                  name\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n"}}
+Completed 500 Internal Server Error in 38ms (ActiveRecord: 0.0ms)
+
+
+  
+ArgumentError (Failed to build return type for User.projects from [Types::Project, {:null=>false}]: Use an array of [T] or [T, null: true] for list types; other arrays are not supported):
+  
+app/controllers/graphql_controller.rb:9:in `execute'
+Started GET "/graphiql" for 127.0.0.1 at 2018-06-12 12:03:15 +0700
+Processing by GraphiQL::Rails::EditorsController#show as HTML
+  Parameters: {"graphql_path"=>"/graphql"}
+  Rendering /home/huyloc/.rvm/gems/ruby-2.4.3/gems/graphiql-rails-1.4.4/app/views/graphiql/rails/editors/show.html.erb
+  Rendered /home/huyloc/.rvm/gems/ruby-2.4.3/gems/graphiql-rails-1.4.4/app/views/graphiql/rails/editors/show.html.erb (8.7ms)
+Completed 200 OK in 14ms (Views: 11.3ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 12:03:16 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"\n  query IntrospectionQuery {\n    __schema {\n      queryType { name }\n      mutationType { name }\n      subscriptionType { name }\n      types {\n        ...FullType\n      }\n      directives {\n        name\n        description\n        locations\n        args {\n          ...InputValue\n        }\n      }\n    }\n  }\n\n  fragment FullType on __Type {\n    kind\n    name\n    description\n    fields(includeDeprecated: true) {\n      name\n      description\n      args {\n        ...InputValue\n      }\n      type {\n        ...TypeRef\n      }\n      isDeprecated\n      deprecationReason\n    }\n    inputFields {\n      ...InputValue\n    }\n    interfaces {\n      ...TypeRef\n    }\n    enumValues(includeDeprecated: true) {\n      name\n      description\n      isDeprecated\n      deprecationReason\n    }\n    possibleTypes {\n      ...TypeRef\n    }\n  }\n\n  fragment InputValue on __InputValue {\n    name\n    description\n    type { ...TypeRef }\n    defaultValue\n  }\n\n  fragment TypeRef on __Type {\n    kind\n    name\n    ofType {\n      kind\n      name\n      ofType {\n        kind\n        name\n        ofType {\n          kind\n          name\n          ofType {\n            kind\n            name\n            ofType {\n              kind\n              name\n              ofType {\n                kind\n                name\n                ofType {\n                  kind\n                  name\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n", "graphql"=>{"query"=>"\n  query IntrospectionQuery {\n    __schema {\n      queryType { name }\n      mutationType { name }\n      subscriptionType { name }\n      types {\n        ...FullType\n      }\n      directives {\n        name\n        description\n        locations\n        args {\n          ...InputValue\n        }\n      }\n    }\n  }\n\n  fragment FullType on __Type {\n    kind\n    name\n    description\n    fields(includeDeprecated: true) {\n      name\n      description\n      args {\n        ...InputValue\n      }\n      type {\n        ...TypeRef\n      }\n      isDeprecated\n      deprecationReason\n    }\n    inputFields {\n      ...InputValue\n    }\n    interfaces {\n      ...TypeRef\n    }\n    enumValues(includeDeprecated: true) {\n      name\n      description\n      isDeprecated\n      deprecationReason\n    }\n    possibleTypes {\n      ...TypeRef\n    }\n  }\n\n  fragment InputValue on __InputValue {\n    name\n    description\n    type { ...TypeRef }\n    defaultValue\n  }\n\n  fragment TypeRef on __Type {\n    kind\n    name\n    ofType {\n      kind\n      name\n      ofType {\n        kind\n        name\n        ofType {\n          kind\n          name\n          ofType {\n            kind\n            name\n            ofType {\n              kind\n              name\n              ofType {\n                kind\n                name\n                ofType {\n                  kind\n                  name\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n"}}
+Completed 500 Internal Server Error in 46ms (ActiveRecord: 0.0ms)
+
+
+  
+ArgumentError (Failed to build return type for User.projectRelationships from [Types::ProjectMember, {:null=>false}]: Use an array of [T] or [T, null: true] for list types; other arrays are not supported):
+  
+app/controllers/graphql_controller.rb:9:in `execute'
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 12:03:17 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"mutation{\n  createUser(input: {attributes: \"{\\\"username\\\":\\\"quangnddahdddasdat214\\\",\\\"email\\\":\\\"hahasssss33dadd34@gmail.com\\\",\\\"password\\\":\\\"quangnhat\\\"}\"}){\n  \tcreatedUser {\n      username\n    }\n  }\n}", "variables"=>nil, "graphql"=>{"query"=>"mutation{\n  createUser(input: {attributes: \"{\\\"username\\\":\\\"quangnddahdddasdat214\\\",\\\"email\\\":\\\"hahasssss33dadd34@gmail.com\\\",\\\"password\\\":\\\"quangnhat\\\"}\"}){\n  \tcreatedUser {\n      username\n    }\n  }\n}", "variables"=>nil}}
+Completed 500 Internal Server Error in 8ms (ActiveRecord: 0.0ms)
+
+
+  
+ArgumentError (Failed to build return type for User.projectRelationships from [Types::ProjectMember, {:null=>false}]: Use an array of [T] or [T, null: true] for list types; other arrays are not supported):
+  
+app/controllers/graphql_controller.rb:9:in `execute'
+Started GET "/graphiql" for 127.0.0.1 at 2018-06-12 12:06:46 +0700
+Processing by GraphiQL::Rails::EditorsController#show as HTML
+  Parameters: {"graphql_path"=>"/graphql"}
+  Rendering /home/huyloc/.rvm/gems/ruby-2.4.3/gems/graphiql-rails-1.4.4/app/views/graphiql/rails/editors/show.html.erb
+  Rendered /home/huyloc/.rvm/gems/ruby-2.4.3/gems/graphiql-rails-1.4.4/app/views/graphiql/rails/editors/show.html.erb (15.2ms)
+Completed 200 OK in 19ms (Views: 17.7ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 12:06:46 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"\n  query IntrospectionQuery {\n    __schema {\n      queryType { name }\n      mutationType { name }\n      subscriptionType { name }\n      types {\n        ...FullType\n      }\n      directives {\n        name\n        description\n        locations\n        args {\n          ...InputValue\n        }\n      }\n    }\n  }\n\n  fragment FullType on __Type {\n    kind\n    name\n    description\n    fields(includeDeprecated: true) {\n      name\n      description\n      args {\n        ...InputValue\n      }\n      type {\n        ...TypeRef\n      }\n      isDeprecated\n      deprecationReason\n    }\n    inputFields {\n      ...InputValue\n    }\n    interfaces {\n      ...TypeRef\n    }\n    enumValues(includeDeprecated: true) {\n      name\n      description\n      isDeprecated\n      deprecationReason\n    }\n    possibleTypes {\n      ...TypeRef\n    }\n  }\n\n  fragment InputValue on __InputValue {\n    name\n    description\n    type { ...TypeRef }\n    defaultValue\n  }\n\n  fragment TypeRef on __Type {\n    kind\n    name\n    ofType {\n      kind\n      name\n      ofType {\n        kind\n        name\n        ofType {\n          kind\n          name\n          ofType {\n            kind\n            name\n            ofType {\n              kind\n              name\n              ofType {\n                kind\n                name\n                ofType {\n                  kind\n                  name\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n", "graphql"=>{"query"=>"\n  query IntrospectionQuery {\n    __schema {\n      queryType { name }\n      mutationType { name }\n      subscriptionType { name }\n      types {\n        ...FullType\n      }\n      directives {\n        name\n        description\n        locations\n        args {\n          ...InputValue\n        }\n      }\n    }\n  }\n\n  fragment FullType on __Type {\n    kind\n    name\n    description\n    fields(includeDeprecated: true) {\n      name\n      description\n      args {\n        ...InputValue\n      }\n      type {\n        ...TypeRef\n      }\n      isDeprecated\n      deprecationReason\n    }\n    inputFields {\n      ...InputValue\n    }\n    interfaces {\n      ...TypeRef\n    }\n    enumValues(includeDeprecated: true) {\n      name\n      description\n      isDeprecated\n      deprecationReason\n    }\n    possibleTypes {\n      ...TypeRef\n    }\n  }\n\n  fragment InputValue on __InputValue {\n    name\n    description\n    type { ...TypeRef }\n    defaultValue\n  }\n\n  fragment TypeRef on __Type {\n    kind\n    name\n    ofType {\n      kind\n      name\n      ofType {\n        kind\n        name\n        ofType {\n          kind\n          name\n          ofType {\n            kind\n            name\n            ofType {\n              kind\n              name\n              ofType {\n                kind\n                name\n                ofType {\n                  kind\n                  name\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n"}}
+Completed 500 Internal Server Error in 20ms (ActiveRecord: 0.0ms)
+
+
+  
+NoMethodError (undefined method `Project!' for Types:Module):
+  
+app/graphql/types/user.rb:11:in `<class:User>'
+app/graphql/types/user.rb:1:in `<top (required)>'
+app/graphql/mutations/login.rb:9:in `<class:Login>'
+app/graphql/mutations/login.rb:1:in `<top (required)>'
+app/graphql/types/mutation_type.rb:8:in `<class:MutationType>'
+app/graphql/types/mutation_type.rb:1:in `<top (required)>'
+app/graphql/enhance_url_tagging_schema.rb:2:in `<class:EnhanceUrlTaggingSchema>'
+app/graphql/enhance_url_tagging_schema.rb:1:in `<top (required)>'
+app/controllers/graphql_controller.rb:9:in `execute'
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 12:06:47 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"mutation{\n  createUser(input: {attributes: \"{\\\"username\\\":\\\"quangnddahdddasdat214\\\",\\\"email\\\":\\\"hahasssss33dadd34@gmail.com\\\",\\\"password\\\":\\\"quangnhat\\\"}\"}){\n  \tcreatedUser {\n      username\n    }\n  }\n}", "variables"=>nil, "graphql"=>{"query"=>"mutation{\n  createUser(input: {attributes: \"{\\\"username\\\":\\\"quangnddahdddasdat214\\\",\\\"email\\\":\\\"hahasssss33dadd34@gmail.com\\\",\\\"password\\\":\\\"quangnhat\\\"}\"}){\n  \tcreatedUser {\n      username\n    }\n  }\n}", "variables"=>nil}}
+Completed 500 Internal Server Error in 7ms (ActiveRecord: 0.0ms)
+
+
+  
+LoadError (Unable to autoload constant Types::BaseObject, expected /home/huyloc/code/rubyonrails/emt/api-emt/app/graphql/types/base_object.rb to define it):
+  
+app/graphql/types/mutation_type.rb:1:in `<top (required)>'
+app/graphql/enhance_url_tagging_schema.rb:2:in `<class:EnhanceUrlTaggingSchema>'
+app/graphql/enhance_url_tagging_schema.rb:1:in `<top (required)>'
+app/controllers/graphql_controller.rb:9:in `execute'
+Started GET "/graphiql" for 127.0.0.1 at 2018-06-12 12:07:48 +0700
+Processing by GraphiQL::Rails::EditorsController#show as HTML
+  Parameters: {"graphql_path"=>"/graphql"}
+  Rendering /home/huyloc/.rvm/gems/ruby-2.4.3/gems/graphiql-rails-1.4.4/app/views/graphiql/rails/editors/show.html.erb
+  Rendered /home/huyloc/.rvm/gems/ruby-2.4.3/gems/graphiql-rails-1.4.4/app/views/graphiql/rails/editors/show.html.erb (17.0ms)
+Completed 200 OK in 23ms (Views: 19.9ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 12:07:48 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"\n  query IntrospectionQuery {\n    __schema {\n      queryType { name }\n      mutationType { name }\n      subscriptionType { name }\n      types {\n        ...FullType\n      }\n      directives {\n        name\n        description\n        locations\n        args {\n          ...InputValue\n        }\n      }\n    }\n  }\n\n  fragment FullType on __Type {\n    kind\n    name\n    description\n    fields(includeDeprecated: true) {\n      name\n      description\n      args {\n        ...InputValue\n      }\n      type {\n        ...TypeRef\n      }\n      isDeprecated\n      deprecationReason\n    }\n    inputFields {\n      ...InputValue\n    }\n    interfaces {\n      ...TypeRef\n    }\n    enumValues(includeDeprecated: true) {\n      name\n      description\n      isDeprecated\n      deprecationReason\n    }\n    possibleTypes {\n      ...TypeRef\n    }\n  }\n\n  fragment InputValue on __InputValue {\n    name\n    description\n    type { ...TypeRef }\n    defaultValue\n  }\n\n  fragment TypeRef on __Type {\n    kind\n    name\n    ofType {\n      kind\n      name\n      ofType {\n        kind\n        name\n        ofType {\n          kind\n          name\n          ofType {\n            kind\n            name\n            ofType {\n              kind\n              name\n              ofType {\n                kind\n                name\n                ofType {\n                  kind\n                  name\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n", "graphql"=>{"query"=>"\n  query IntrospectionQuery {\n    __schema {\n      queryType { name }\n      mutationType { name }\n      subscriptionType { name }\n      types {\n        ...FullType\n      }\n      directives {\n        name\n        description\n        locations\n        args {\n          ...InputValue\n        }\n      }\n    }\n  }\n\n  fragment FullType on __Type {\n    kind\n    name\n    description\n    fields(includeDeprecated: true) {\n      name\n      description\n      args {\n        ...InputValue\n      }\n      type {\n        ...TypeRef\n      }\n      isDeprecated\n      deprecationReason\n    }\n    inputFields {\n      ...InputValue\n    }\n    interfaces {\n      ...TypeRef\n    }\n    enumValues(includeDeprecated: true) {\n      name\n      description\n      isDeprecated\n      deprecationReason\n    }\n    possibleTypes {\n      ...TypeRef\n    }\n  }\n\n  fragment InputValue on __InputValue {\n    name\n    description\n    type { ...TypeRef }\n    defaultValue\n  }\n\n  fragment TypeRef on __Type {\n    kind\n    name\n    ofType {\n      kind\n      name\n      ofType {\n        kind\n        name\n        ofType {\n          kind\n          name\n          ofType {\n            kind\n            name\n            ofType {\n              kind\n              name\n              ofType {\n                kind\n                name\n                ofType {\n                  kind\n                  name\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n"}}
+Completed 500 Internal Server Error in 44ms (ActiveRecord: 0.0ms)
+
+
+  
+ArgumentError (Failed to build return type for DimensionType.authorizations from [Types::Authorization, {:null=>false}]: Use an array of [T] or [T, null: true] for list types; other arrays are not supported):
+  
+app/controllers/graphql_controller.rb:9:in `execute'
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 12:07:49 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"mutation{\n  createUser(input: {attributes: \"{\\\"username\\\":\\\"quangnddahdddasdat214\\\",\\\"email\\\":\\\"hahasssss33dadd34@gmail.com\\\",\\\"password\\\":\\\"quangnhat\\\"}\"}){\n  \tcreatedUser {\n      username\n    }\n  }\n}", "variables"=>nil, "graphql"=>{"query"=>"mutation{\n  createUser(input: {attributes: \"{\\\"username\\\":\\\"quangnddahdddasdat214\\\",\\\"email\\\":\\\"hahasssss33dadd34@gmail.com\\\",\\\"password\\\":\\\"quangnhat\\\"}\"}){\n  \tcreatedUser {\n      username\n    }\n  }\n}", "variables"=>nil}}
+Completed 500 Internal Server Error in 8ms (ActiveRecord: 0.0ms)
+
+
+  
+ArgumentError (Failed to build return type for DimensionType.authorizations from [Types::Authorization, {:null=>false}]: Use an array of [T] or [T, null: true] for list types; other arrays are not supported):
+  
+app/controllers/graphql_controller.rb:9:in `execute'
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 12:10:12 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"mutation{\n  createUser(input: {attributes: \"{\\\"username\\\":\\\"quangnddahdddasdat214\\\",\\\"email\\\":\\\"hahasssss33dadd34@gmail.com\\\",\\\"password\\\":\\\"quangnhat\\\"}\"}){\n  \tcreatedUser {\n      username\n    }\n  }\n}", "variables"=>nil, "graphql"=>{"query"=>"mutation{\n  createUser(input: {attributes: \"{\\\"username\\\":\\\"quangnddahdddasdat214\\\",\\\"email\\\":\\\"hahasssss33dadd34@gmail.com\\\",\\\"password\\\":\\\"quangnhat\\\"}\"}){\n  \tcreatedUser {\n      username\n    }\n  }\n}", "variables"=>nil}}
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE LOWER("users"."username") = LOWER($1) LIMIT $2[0m  [["username", "quangnddahdddasdat214"], ["LIMIT", 1]]
+  [1m[36mUser Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER($1) LIMIT $2[0m  [["email", "hahasssss33dadd34@gmail.com"], ["LIMIT", 1]]
+  [1m[35m (0.8ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mUser Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE LOWER("users"."username") = LOWER($1) LIMIT $2[0m  [["username", "quangnddahdddasdat214"], ["LIMIT", 1]]
+  [1m[36mUser Exists (0.3ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER($1) LIMIT $2[0m  [["email", "hahasssss33dadd34@gmail.com"], ["LIMIT", 1]]
+Completed 200 OK in 148ms (Views: 0.3ms | ActiveRecord: 6.8ms)
+
+
+Started GET "/graphiql" for 127.0.0.1 at 2018-06-12 12:10:16 +0700
+Processing by GraphiQL::Rails::EditorsController#show as HTML
+  Parameters: {"graphql_path"=>"/graphql"}
+  Rendering /home/huyloc/.rvm/gems/ruby-2.4.3/gems/graphiql-rails-1.4.4/app/views/graphiql/rails/editors/show.html.erb
+  Rendered /home/huyloc/.rvm/gems/ruby-2.4.3/gems/graphiql-rails-1.4.4/app/views/graphiql/rails/editors/show.html.erb (9.6ms)
+Completed 200 OK in 18ms (Views: 14.1ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 12:10:16 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"\n  query IntrospectionQuery {\n    __schema {\n      queryType { name }\n      mutationType { name }\n      subscriptionType { name }\n      types {\n        ...FullType\n      }\n      directives {\n        name\n        description\n        locations\n        args {\n          ...InputValue\n        }\n      }\n    }\n  }\n\n  fragment FullType on __Type {\n    kind\n    name\n    description\n    fields(includeDeprecated: true) {\n      name\n      description\n      args {\n        ...InputValue\n      }\n      type {\n        ...TypeRef\n      }\n      isDeprecated\n      deprecationReason\n    }\n    inputFields {\n      ...InputValue\n    }\n    interfaces {\n      ...TypeRef\n    }\n    enumValues(includeDeprecated: true) {\n      name\n      description\n      isDeprecated\n      deprecationReason\n    }\n    possibleTypes {\n      ...TypeRef\n    }\n  }\n\n  fragment InputValue on __InputValue {\n    name\n    description\n    type { ...TypeRef }\n    defaultValue\n  }\n\n  fragment TypeRef on __Type {\n    kind\n    name\n    ofType {\n      kind\n      name\n      ofType {\n        kind\n        name\n        ofType {\n          kind\n          name\n          ofType {\n            kind\n            name\n            ofType {\n              kind\n              name\n              ofType {\n                kind\n                name\n                ofType {\n                  kind\n                  name\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n", "graphql"=>{"query"=>"\n  query IntrospectionQuery {\n    __schema {\n      queryType { name }\n      mutationType { name }\n      subscriptionType { name }\n      types {\n        ...FullType\n      }\n      directives {\n        name\n        description\n        locations\n        args {\n          ...InputValue\n        }\n      }\n    }\n  }\n\n  fragment FullType on __Type {\n    kind\n    name\n    description\n    fields(includeDeprecated: true) {\n      name\n      description\n      args {\n        ...InputValue\n      }\n      type {\n        ...TypeRef\n      }\n      isDeprecated\n      deprecationReason\n    }\n    inputFields {\n      ...InputValue\n    }\n    interfaces {\n      ...TypeRef\n    }\n    enumValues(includeDeprecated: true) {\n      name\n      description\n      isDeprecated\n      deprecationReason\n    }\n    possibleTypes {\n      ...TypeRef\n    }\n  }\n\n  fragment InputValue on __InputValue {\n    name\n    description\n    type { ...TypeRef }\n    defaultValue\n  }\n\n  fragment TypeRef on __Type {\n    kind\n    name\n    ofType {\n      kind\n      name\n      ofType {\n        kind\n        name\n        ofType {\n          kind\n          name\n          ofType {\n            kind\n            name\n            ofType {\n              kind\n              name\n              ofType {\n                kind\n                name\n                ofType {\n                  kind\n                  name\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n"}}
+Completed 200 OK in 160ms (Views: 24.6ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 12:10:17 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"mutation{\n  createUser(input: {attributes: \"{\\\"username\\\":\\\"quangnddahdddasdat214\\\",\\\"email\\\":\\\"hahasssss33dadd34@gmail.com\\\",\\\"password\\\":\\\"quangnhat\\\"}\"}){\n  \tcreatedUser {\n      username\n    }\n  }\n}", "variables"=>nil, "graphql"=>{"query"=>"mutation{\n  createUser(input: {attributes: \"{\\\"username\\\":\\\"quangnddahdddasdat214\\\",\\\"email\\\":\\\"hahasssss33dadd34@gmail.com\\\",\\\"password\\\":\\\"quangnhat\\\"}\"}){\n  \tcreatedUser {\n      username\n    }\n  }\n}", "variables"=>nil}}
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE LOWER("users"."username") = LOWER($1) LIMIT $2[0m  [["username", "quangnddahdddasdat214"], ["LIMIT", 1]]
+  [1m[36mUser Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER($1) LIMIT $2[0m  [["email", "hahasssss33dadd34@gmail.com"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mUser Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE LOWER("users"."username") = LOWER($1) LIMIT $2[0m  [["username", "quangnddahdddasdat214"], ["LIMIT", 1]]
+  [1m[36mUser Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER($1) LIMIT $2[0m  [["email", "hahasssss33dadd34@gmail.com"], ["LIMIT", 1]]
+Completed 200 OK in 90ms (Views: 0.2ms | ActiveRecord: 1.2ms)
+
+
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 12:12:34 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"{\n  user(id:1)\n  {\n    id\n  }\n}", "variables"=>nil, "operationName"=>nil, "graphql"=>{"query"=>"{\n  user(id:1)\n  {\n    id\n  }\n}", "variables"=>nil, "operationName"=>nil}}
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+Completed 200 OK in 19ms (Views: 0.4ms | ActiveRecord: 1.9ms)
+
+
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 12:14:21 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"{\n  user(id:1)\n  {\n    id\n    projectRelationships{\n      id\n      \n    }\n  }\n}", "variables"=>nil, "operationName"=>nil, "graphql"=>{"query"=>"{\n  user(id:1)\n  {\n    id\n    projectRelationships{\n      id\n      \n    }\n  }\n}", "variables"=>nil, "operationName"=>nil}}
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mProjectMember Load (2.2ms)[0m  [1m[34mSELECT "project_members".* FROM "project_members" WHERE "project_members"."user_id" = $1[0m  [["user_id", 1]]
+Completed 200 OK in 59ms (Views: 0.2ms | ActiveRecord: 5.6ms)
+
+
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 12:16:25 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"{\n  user(id:1)\n  {\n    id\n    projectRelationships{\n      id\n      authorizations{\n        id\n        dimension{\n          name\n          id\n        }\n      }\n    }\n  }\n}", "variables"=>nil, "operationName"=>nil, "graphql"=>{"query"=>"{\n  user(id:1)\n  {\n    id\n    projectRelationships{\n      id\n      authorizations{\n        id\n        dimension{\n          name\n          id\n        }\n      }\n    }\n  }\n}", "variables"=>nil, "operationName"=>nil}}
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mProjectMember Load (1.5ms)[0m  [1m[34mSELECT "project_members".* FROM "project_members" WHERE "project_members"."user_id" = $1[0m  [["user_id", 1]]
+  [1m[36mAuthorization Load (4.1ms)[0m  [1m[34mSELECT "authorizations".* FROM "authorizations" WHERE "authorizations"."project_member_id" = $1[0m  [["project_member_id", 1]]
+  [1m[36mDimension Load (1.7ms)[0m  [1m[34mSELECT  "dimensions".* FROM "dimensions" WHERE "dimensions"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mDimension Load (0.4ms)[0m  [1m[34mSELECT  "dimensions".* FROM "dimensions" WHERE "dimensions"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+Completed 200 OK in 75ms (Views: 0.4ms | ActiveRecord: 14.7ms)
+
+
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 12:17:10 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"{\n  user(id:1)\n  {\n    id\n    projectRelationships{\n      id\n      authorizations{\n        id\n        dimension{\n          name\n          id\n        }\n      }\n      project{\n        id\n        dimensions{\n          name\n          id\n        }\n      }\n    }\n  }\n}", "variables"=>nil, "operationName"=>nil, "graphql"=>{"query"=>"{\n  user(id:1)\n  {\n    id\n    projectRelationships{\n      id\n      authorizations{\n        id\n        dimension{\n          name\n          id\n        }\n      }\n      project{\n        id\n        dimensions{\n          name\n          id\n        }\n      }\n    }\n  }\n}", "variables"=>nil, "operationName"=>nil}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mProjectMember Load (0.3ms)[0m  [1m[34mSELECT "project_members".* FROM "project_members" WHERE "project_members"."user_id" = $1[0m  [["user_id", 1]]
+  [1m[36mAuthorization Load (0.4ms)[0m  [1m[34mSELECT "authorizations".* FROM "authorizations" WHERE "authorizations"."project_member_id" = $1[0m  [["project_member_id", 1]]
+  [1m[36mDimension Load (0.4ms)[0m  [1m[34mSELECT  "dimensions".* FROM "dimensions" WHERE "dimensions"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mDimension Load (1.1ms)[0m  [1m[34mSELECT  "dimensions".* FROM "dimensions" WHERE "dimensions"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mProject Load (1.0ms)[0m  [1m[34mSELECT  "projects".* FROM "projects" WHERE "projects"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mDimension Load (0.4ms)[0m  [1m[34mSELECT "dimensions".* FROM "dimensions" WHERE "dimensions"."project_id" = $1[0m  [["project_id", 1]]
+Completed 200 OK in 37ms (Views: 0.3ms | ActiveRecord: 6.2ms)
+
+
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 12:18:42 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"{\n  user(id:1)\n  {\n    id\n    projectRelationships{\n      id\n      authorizations{\n        id\n        dimension{\n          name\n          id\n        }\n        optionAuthorizations{\n          option{\n            name\n            id\n          }\n        }\n      }\n      project{\n        id\n        dimensions{\n          name\n          id\n        }\n      }\n    }\n  }\n}", "variables"=>nil, "operationName"=>nil, "graphql"=>{"query"=>"{\n  user(id:1)\n  {\n    id\n    projectRelationships{\n      id\n      authorizations{\n        id\n        dimension{\n          name\n          id\n        }\n        optionAuthorizations{\n          option{\n            name\n            id\n          }\n        }\n      }\n      project{\n        id\n        dimensions{\n          name\n          id\n        }\n      }\n    }\n  }\n}", "variables"=>nil, "operationName"=>nil}}
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mProjectMember Load (0.8ms)[0m  [1m[34mSELECT "project_members".* FROM "project_members" WHERE "project_members"."user_id" = $1[0m  [["user_id", 1]]
+  [1m[36mAuthorization Load (0.4ms)[0m  [1m[34mSELECT "authorizations".* FROM "authorizations" WHERE "authorizations"."project_member_id" = $1[0m  [["project_member_id", 1]]
+  [1m[36mDimension Load (0.3ms)[0m  [1m[34mSELECT  "dimensions".* FROM "dimensions" WHERE "dimensions"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mOptionAuthorization Load (3.6ms)[0m  [1m[34mSELECT "option_authorizations".* FROM "option_authorizations" WHERE "option_authorizations"."authorization_id" = $1[0m  [["authorization_id", 1]]
+  [1m[36mOption Load (2.0ms)[0m  [1m[34mSELECT  "options".* FROM "options" WHERE "options"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mDimension Load (0.3ms)[0m  [1m[34mSELECT  "dimensions".* FROM "dimensions" WHERE "dimensions"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mOptionAuthorization Load (0.3ms)[0m  [1m[34mSELECT "option_authorizations".* FROM "option_authorizations" WHERE "option_authorizations"."authorization_id" = $1[0m  [["authorization_id", 3]]
+  [1m[36mProject Load (0.3ms)[0m  [1m[34mSELECT  "projects".* FROM "projects" WHERE "projects"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mDimension Load (0.2ms)[0m  [1m[34mSELECT "dimensions".* FROM "dimensions" WHERE "dimensions"."project_id" = $1[0m  [["project_id", 1]]
+Completed 200 OK in 85ms (Views: 1.2ms | ActiveRecord: 16.1ms)
+
+
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 12:19:23 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"{\n  user(id:1)\n  {\n    id\n    projectRelationships{\n      id\n      authorizations{\n        id\n        dimension{\n          name\n          id\n        }\n        optionAuthorizations{\n          option{\n            name\n            id\n          }\n        }\n      }\n      project{\n        id\n        dimensions{\n          name\n          id\n          options{\n            name\n          }\n        }\n      }\n    }\n  }\n}", "variables"=>nil, "operationName"=>nil, "graphql"=>{"query"=>"{\n  user(id:1)\n  {\n    id\n    projectRelationships{\n      id\n      authorizations{\n        id\n        dimension{\n          name\n          id\n        }\n        optionAuthorizations{\n          option{\n            name\n            id\n          }\n        }\n      }\n      project{\n        id\n        dimensions{\n          name\n          id\n          options{\n            name\n          }\n        }\n      }\n    }\n  }\n}", "variables"=>nil, "operationName"=>nil}}
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mProjectMember Load (0.5ms)[0m  [1m[34mSELECT "project_members".* FROM "project_members" WHERE "project_members"."user_id" = $1[0m  [["user_id", 1]]
+  [1m[36mAuthorization Load (0.6ms)[0m  [1m[34mSELECT "authorizations".* FROM "authorizations" WHERE "authorizations"."project_member_id" = $1[0m  [["project_member_id", 1]]
+  [1m[36mDimension Load (0.3ms)[0m  [1m[34mSELECT  "dimensions".* FROM "dimensions" WHERE "dimensions"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mOptionAuthorization Load (0.4ms)[0m  [1m[34mSELECT "option_authorizations".* FROM "option_authorizations" WHERE "option_authorizations"."authorization_id" = $1[0m  [["authorization_id", 1]]
+  [1m[36mOption Load (0.3ms)[0m  [1m[34mSELECT  "options".* FROM "options" WHERE "options"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mDimension Load (0.3ms)[0m  [1m[34mSELECT  "dimensions".* FROM "dimensions" WHERE "dimensions"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mOptionAuthorization Load (0.5ms)[0m  [1m[34mSELECT "option_authorizations".* FROM "option_authorizations" WHERE "option_authorizations"."authorization_id" = $1[0m  [["authorization_id", 3]]
+  [1m[36mProject Load (0.3ms)[0m  [1m[34mSELECT  "projects".* FROM "projects" WHERE "projects"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mDimension Load (0.7ms)[0m  [1m[34mSELECT "dimensions".* FROM "dimensions" WHERE "dimensions"."project_id" = $1[0m  [["project_id", 1]]
+  [1m[36mOption Load (0.3ms)[0m  [1m[34mSELECT "options".* FROM "options" WHERE "options"."dimension_id" = $1[0m  [["dimension_id", 1]]
+  [1m[36mOption Load (0.3ms)[0m  [1m[34mSELECT "options".* FROM "options" WHERE "options"."dimension_id" = $1[0m  [["dimension_id", 3]]
+Completed 200 OK in 44ms (Views: 0.4ms | ActiveRecord: 4.9ms)
+
+
+Started POST "/graphql" for 127.0.0.1 at 2018-06-12 12:20:13 +0700
+Processing by GraphqlController#execute as */*
+  Parameters: {"query"=>"{\n  user(id:1)\n  {\n    id\n    projectRelationships{\n      id\n      authorizations{\n        id\n        dimension{\n          name\n          id\n        }\n        optionAuthorizations{\n          option{\n            name\n            id\n          }\n        }\n      }\n      project{\n        members{\n          id\n          username\n        }\n        id\n        dimensions{\n          name\n          id\n          options{\n            name\n          }\n        }\n      }\n    }\n  }\n}", "variables"=>nil, "operationName"=>nil, "graphql"=>{"query"=>"{\n  user(id:1)\n  {\n    id\n    projectRelationships{\n      id\n      authorizations{\n        id\n        dimension{\n          name\n          id\n        }\n        optionAuthorizations{\n          option{\n            name\n            id\n          }\n        }\n      }\n      project{\n        members{\n          id\n          username\n        }\n        id\n        dimensions{\n          name\n          id\n          options{\n            name\n          }\n        }\n      }\n    }\n  }\n}", "variables"=>nil, "operationName"=>nil}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mProjectMember Load (0.6ms)[0m  [1m[34mSELECT "project_members".* FROM "project_members" WHERE "project_members"."user_id" = $1[0m  [["user_id", 1]]
+  [1m[36mAuthorization Load (0.4ms)[0m  [1m[34mSELECT "authorizations".* FROM "authorizations" WHERE "authorizations"."project_member_id" = $1[0m  [["project_member_id", 1]]
+  [1m[36mDimension Load (0.2ms)[0m  [1m[34mSELECT  "dimensions".* FROM "dimensions" WHERE "dimensions"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mOptionAuthorization Load (0.3ms)[0m  [1m[34mSELECT "option_authorizations".* FROM "option_authorizations" WHERE "option_authorizations"."authorization_id" = $1[0m  [["authorization_id", 1]]
+  [1m[36mOption Load (0.2ms)[0m  [1m[34mSELECT  "options".* FROM "options" WHERE "options"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mDimension Load (0.2ms)[0m  [1m[34mSELECT  "dimensions".* FROM "dimensions" WHERE "dimensions"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mOptionAuthorization Load (0.4ms)[0m  [1m[34mSELECT "option_authorizations".* FROM "option_authorizations" WHERE "option_authorizations"."authorization_id" = $1[0m  [["authorization_id", 3]]
+  [1m[36mProject Load (0.3ms)[0m  [1m[34mSELECT  "projects".* FROM "projects" WHERE "projects"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" INNER JOIN "project_members" ON "users"."id" = "project_members"."user_id" WHERE "project_members"."project_id" = $1[0m  [["project_id", 1]]
+  [1m[36mDimension Load (1.4ms)[0m  [1m[34mSELECT "dimensions".* FROM "dimensions" WHERE "dimensions"."project_id" = $1[0m  [["project_id", 1]]
+  [1m[36mOption Load (0.4ms)[0m  [1m[34mSELECT "options".* FROM "options" WHERE "options"."dimension_id" = $1[0m  [["dimension_id", 1]]
+  [1m[36mOption Load (0.3ms)[0m  [1m[34mSELECT "options".* FROM "options" WHERE "options"."dimension_id" = $1[0m  [["dimension_id", 3]]
+Completed 200 OK in 56ms (Views: 0.5ms | ActiveRecord: 5.7ms)
+
+

@@ -9,7 +9,7 @@ class Types::Project < Types::BaseObject
     field :updated_at, Types::DateTime, null: false
 
     #Relationships
-    field :dimensions, [Types::Dimension, null: false], null: true
-    field :members, [Types::User, null: false], null: true
-    field :member_relationships, [Types::ProjectMember, null: false], null: true
+    field :dimensions, [Types::Dimension], null: true
+    field :members, [Types::User], null: true
+    field :member_relationships, [Types::ProjectMember], null: true
 end

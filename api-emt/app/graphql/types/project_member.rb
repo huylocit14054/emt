@@ -9,6 +9,6 @@ class Types::ProjectMember < Types::BaseObject
     #Relationships
     field :project, Types::Project, null: false
     field :user, Types::User, null: false
-    field :authorizations, [Types::Authorization, null: false], null: false
-    field :dimensions, [Types::Dimension, null: false], null: false
+    field :authorizations, [Types::Authorization], null: false
+    field :dimensions, [Types::Dimension], null: false
 end
