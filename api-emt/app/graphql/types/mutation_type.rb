@@ -13,6 +13,8 @@ class Types::MutationType < Types::BaseObject
   field :add_member_to_project, mutation: Mutations::AddMemberToProject
   field :update_member_role_in_project, mutation: Mutations::UpdateMemberRoleInProject
   field :create_dimension, mutation: Mutations::CreateDimension
+  field :update_dimension, mutation: Mutations::UpdateDimension
   field :create_option, mutation: Mutations::CreateOption
+  field :assign_dimensions_for_members, mutation: Mutations::AssignDimensionsForMembers
 
 end

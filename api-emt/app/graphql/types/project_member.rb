@@ -1,6 +1,5 @@
 class Types::ProjectMember < Types::BaseObject
     description "Project Member Type"
-    graphql_name "ProjectMemberType"
 
     field :id, ID, null: false
     field :role , String , null: false

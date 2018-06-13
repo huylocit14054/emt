@@ -1,6 +1,5 @@
 class Types::OptionAuthorization < Types::BaseObject
     description "Option Authorization Type"
-    graphql_name "OptionAuthorizationType"
 
     field :id, ID, null: false
     field :created_at, Types::DateTime, null: false

@@ -1,6 +1,5 @@
 class Types::Dimension < Types::BaseObject
     description "Dimension Type"
-    graphql_name "DimensionType"
 
     field :id, ID, null: false
     field :name, String, null: false

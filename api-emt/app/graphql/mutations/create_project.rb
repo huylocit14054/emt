@@ -6,6 +6,9 @@ class Mutations::CreateProject < Mutations::BaseMutation
     
     def resolve(attributes:)
       project = Project.create(attributes)
+
+      # Automatically assign RA as PA in new created project
+      ProjectMember.create(project: project, user: context[:current_user], role: 'project_admin')
       if !project.valid?
         GraphQL::ExecutionError.new(project.errors.full_messages.join(", "))
       else

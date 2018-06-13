@@ -1,6 +1,5 @@
 class Types::Option < Types::BaseObject
     description "Option Type"
-    graphql_name "OptionType"
 
     field :id, ID, null: false
     field :name, String, null: false

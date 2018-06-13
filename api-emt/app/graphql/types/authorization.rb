@@ -1,6 +1,5 @@
 class Types::Authorization < Types::BaseObject
     description "Authorization Type"
-    graphql_name "AuthorizationType"
 
     field :id, ID, null: false
     field :created_at, Types::DateTime, null: false
