@@ -20,11 +20,13 @@ class Mutations::AssignDimensionsForMembers < Mutations::BaseMutation
             auth = member.authorizations.create(dimension_id: dimension_id)
           rescue
             next
+          ensure
+            if c.length > 1 
+              auth ||= member.authorizations.find_by(dimension_id: dimension_id)
+              auth.option_authorizations.create(option_id: c[1])
+            end
           end
-          if c.length > 1 
-            auth ||= member.authorizations.find_by(dimension_id: dimension_id)
-            auth.option_authorizations.create(option_id: c[1])
-          end
+         
         end
       end
       
