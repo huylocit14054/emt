@@ -1,0 +1,31 @@
+
+{
+  "plugins": [
+    [
+      "module-resolver", {
+        "root": ["."],
+        "alias": {
+          "styles": "./styles"
+        },
+        "cwd": "babelrc"
+    }],
+    [
+      "wrap-in-js",
+      {
+        "extensions": ["css$", "less$"]
+      }
+    ],
+    "transform-decorators-legacy",
+    [
+      "import",
+      {
+        "libraryName": "antd",
+        "style": "less"
+      }
+    ]
+  ],
+  "presets": [
+    "next/babel"
+  ],
+  "compact": true
+}
