@@ -4,8 +4,7 @@ class GraphqlController < ApplicationController
     query = params[:query]
     operation_name = params[:operationName]
     context = {
-      # Query context goes here, for example:
-      # current_user: current_user,
+      current_user: current_user,
     }
     result = EnhanceUrlTaggingSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
@@ -28,6 +27,17 @@ class GraphqlController < ApplicationController
       {}
     else
       raise ArgumentError, "Unexpected parameter: #{ambiguous_param}"
+    end
+  end
+
+  def current_user
+    authorization = request.headers['Authorization']
+    puts "authorize: #{authorization}"
+    if !authorization.blank?
+        token = authorization.sub! 'Bearer ', ''
+        AuthToken.verify(token)
+    else
+      nil
     end
   end
 end

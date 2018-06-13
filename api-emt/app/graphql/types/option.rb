@@ -9,6 +9,6 @@ class Types::Option < Types::BaseObject
 
     #Relationships
     field :dimension, Types::Dimension, null: false
-    field :option_authorizations, [Types::OptionAuthorization, null: false], null: false
+    field :option_authorizations, [Types::OptionAuthorization], null: false
 
 end
