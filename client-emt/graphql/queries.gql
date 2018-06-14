@@ -1,0 +1,16 @@
+query getCurrentUser {
+  currentUser {
+    id
+    username
+    role
+  }
+}
+
+query getAllUsers {
+  users {
+    id
+    username
+    email
+    createdAt
+  }
+}

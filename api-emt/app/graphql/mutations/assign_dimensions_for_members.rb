@@ -23,7 +23,11 @@ class Mutations::AssignDimensionsForMembers < Mutations::BaseMutation
           ensure
             if c.length > 1 
               auth ||= member.authorizations.find_by(dimension_id: dimension_id)
-              auth.option_authorizations.create(option_id: c[1])
+              begin
+                auth.option_authorizations.create(option_id: c[1])
+              rescue
+                next
+              end
             end
           end
          

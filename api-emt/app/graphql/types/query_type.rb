@@ -3,11 +3,14 @@ class Types::QueryType < Types::BaseObject
   # They will be entry points queries on your schema.
 
 
-  field :user, Types::User, null: true, description: "User" do 
-    argument :id, ID, required: false
+  field :current_user, Types::User, null: true, description: "Current User"
+  def current_user
+    context[:current_user]
   end
-  def user(id:)
-    ::User.find(id)
+
+  field :users, [Types::User], null: false
+  def users
+    ::User.where.not(id: context[:current_user].id).order(created_at: :desc)
   end
 
   field :project_member, Types::ProjectMember, null: false, description: "Project Member" do

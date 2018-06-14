@@ -5,6 +5,7 @@
 end
 
 # Seed 50 users
+User.create(username: "quangnhat", email: "quangnhat@gmail.com", role: "root_admin", password: "quangnhat")
 50.times do
     User.create(username: Faker::Internet.user_name(6..255), email: Faker::Internet.email(6..255), password: "123456")
 end

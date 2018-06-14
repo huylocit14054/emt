@@ -1,68 +1,23 @@
-import { Layout, Menu, Icon, Dropdown, message } from "antd";
-import Link from "next/link";
-const { Sider, Content } = Layout;
-
-import TopHeader from "../components/topHeader";
-import stylesheet from "styles/projects.less";
+import redirect from "../lib/redirect";
+import checkLoggedIn from "../lib/checkLoggedIn";
 
 export default class Projects extends React.Component {
-  state = {
-    collapsed: false
-  };
-  onCollapse = collapsed => {
-    console.log(collapsed);
-    this.setState({ collapsed });
-  };
+  static async getInitialProps(context) {
+    const { currentUser } = await checkLoggedIn(context.apolloClient);
+
+    if (!currentUser) {
+      // Already signed in? No need to continue.
+      // Throw them back to the main page
+      redirect(context, "/login");
+    }
+    return {};
+  }
 
   render() {
     return (
-      <Layout id="components-layout-demo-custom-trigger">
-        <style dangerouslySetInnerHTML={{ __html: stylesheet }} />
-        <Sider
-          style={{ backgroundColor: "white" }}
-          trigger={null}
-          collapsible
-          collapsed={this.state.collapsed}
-          onCollapse={this.onCollapse}
-        >
-          <Link prefetch href="/">
-            <a>
-              <img
-                src="http://sv1.upsieutoc.com/2018/06/14/company_logo.jpg"
-                className="logo"
-                alt="Hospital Review Logo"
-              />
-            </a>
-          </Link>
-          <Menu mode="inline" defaultSelectedKeys={["1"]}>
-            <Menu.Item key="1">
-              <Icon type="user" />
-              <span>nav 1</span>
-            </Menu.Item>
-            <Menu.Item key="2">
-              <Icon type="video-camera" />
-              <span>nav 2</span>
-            </Menu.Item>
-            <Menu.Item key="3">
-              <Icon type="upload" />
-              <span>nav 3</span>
-            </Menu.Item>
-          </Menu>
-        </Sider>
-        <Layout>
-          <TopHeader />
-          <Content
-            style={{
-              margin: "24px 16px",
-              padding: 24,
-              background: "#fff",
-              height: "100vh"
-            }}
-          >
-            Content
-          </Content>
-        </Layout>
-      </Layout>
+      <React.Fragment>
+        <div>content</div>
+      </React.Fragment>
     );
   }
 }

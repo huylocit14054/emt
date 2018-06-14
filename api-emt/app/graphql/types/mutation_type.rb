@@ -5,7 +5,7 @@ class Types::MutationType < Types::BaseObject
   def test_field
     "Hello World"
   end
-  field :login, mutation: Mutations::Login
+  field :loginUser, mutation: Mutations::Login
   field :create_user, mutation: Mutations::CreateUser
   field :update_user, mutation: Mutations::UpdateUser
   field :create_project, mutation: Mutations::CreateProject
