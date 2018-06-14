@@ -36,7 +36,8 @@ export default class NavigationLayout extends React.Component {
                   <Menu
                     mode="inline"
                     theme="dark"
-                    defaultSelectedKeys={[currentPage]}
+                    selectedKeys={[currentPage]}
+                    
                   >
                     <Menu.Item key="projects" style={{ marginTop: 0 }}>
                       <Link prefetch href="/">

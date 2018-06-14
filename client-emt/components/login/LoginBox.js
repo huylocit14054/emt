@@ -1,11 +1,11 @@
-import { Form, Icon, Input, Button, Checkbox, message } from "antd";
+import { Form, Icon, Input, Button, Checkbox, message, Spin } from "antd";
 import { Mutation, withApollo } from "react-apollo";
 import redirect from "../../lib/redirect";
 import cookie from "cookie";
 import Link from "next/link";
 import { loginUser as LOGIN_USER_QUERY } from "../../graphql/mutations.gql";
 const FormItem = Form.Item;
-
+const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 message.config({
   top: 100,
   duration: 2,
@@ -16,8 +16,35 @@ class NormalLoginForm extends React.Component {
     const { client } = this.props;
     const { getFieldDecorator } = this.props.form;
     return (
+      <Mutation
+      mutation={LOGIN_USER_QUERY}
+      onCompleted={data => {
+        console.log(data);
+        // Store the token in cookie
+        document.cookie = cookie.serialize(
+          "token",
+          data.loginUser.token,
+          {
+            maxAge: 30 * 24 * 60 * 60 // 30 days
+          }
+        );
+        // Force a reload of all the current queries now that the user is
+        // logged in
+        client.cache.reset().then(() => {
+          redirect({}, "/");
+        });
+      }}
+      onError={error => {
+        // If you want to send error to external service?
+        error.graphQLErrors.map(({ message }, i) => {
+          message.error(message);
+        });
+      }}
+    >
+      {(loginUser, { data, loading, error }) => (
       <div className="form-layout">
         <div className="form-border">
+        <Spin indicator={antIcon} spinning={loading} tip="Signing in...">
           <Link prefetch href="/">
             <a>
               <img
@@ -26,32 +53,7 @@ class NormalLoginForm extends React.Component {
               />
             </a>
           </Link>
-          <Mutation
-            mutation={LOGIN_USER_QUERY}
-            onCompleted={data => {
-              console.log(data);
-              // Store the token in cookie
-              document.cookie = cookie.serialize(
-                "token",
-                data.loginUser.token,
-                {
-                  maxAge: 30 * 24 * 60 * 60 // 30 days
-                }
-              );
-              // Force a reload of all the current queries now that the user is
-              // logged in
-              client.cache.reset().then(() => {
-                redirect({}, "/");
-              });
-            }}
-            onError={error => {
-              // If you want to send error to external service?
-              error.graphQLErrors.map(({ message }, i) => {
-                message.error(message);
-              });
-            }}
-          >
-            {(loginUser, { data, error }) => (
+         
               <Form
                 onSubmit={e => {
                   e.preventDefault();
@@ -127,10 +129,11 @@ class NormalLoginForm extends React.Component {
                   </Link>
                 </FormItem>
               </Form>
-            )}
-          </Mutation>
+          </Spin>
         </div>
       </div>
+    )}
+    </Mutation>
     );
   }
 }

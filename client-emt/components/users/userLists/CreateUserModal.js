@@ -56,7 +56,6 @@ class CreateUserModal extends React.Component {
         </Button>
         <br />
         <br />
-        <br />
         <Mutation
           mutation={CREATE_USER_MUTATION}
           onCompleted={data => {
@@ -72,8 +71,6 @@ class CreateUserModal extends React.Component {
               message.error(message, 3);
             });
 
-            const form = this.formRef.props.form;
-            form.resetFields();
           }}
         >
           {(createUser, { loading, data, error }) => (

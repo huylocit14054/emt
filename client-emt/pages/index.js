@@ -1,6 +1,7 @@
 import redirect from "../lib/redirect";
 import checkLoggedIn from "../lib/checkLoggedIn";
-
+import ProjectsList from "../components/projects/projectsList"
+import stylesheet from "styles/projects.less";
 export default class Projects extends React.Component {
   static async getInitialProps(context) {
     const { currentUser } = await checkLoggedIn(context.apolloClient);
@@ -16,7 +17,8 @@ export default class Projects extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <div>content</div>
+        <style dangerouslySetInnerHTML={{ __html: stylesheet }} />
+        <ProjectsList />
       </React.Fragment>
     );
   }

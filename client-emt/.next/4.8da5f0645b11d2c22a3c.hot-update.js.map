@@ -1,0 +1,1 @@
+{"version":3,"file":"4.8da5f0645b11d2c22a3c.hot-update.js","sources":["webpack:///styles/projects.less"],"sourcesContent":["module.exports = \".projects-list span.ant-avatar {\\n  margin: 0px 3px;\\n}\\n\"\n\n\n// WEBPACK FOOTER //\n// styles/projects.less"],"mappings":";;;;;AAAA;;;;A","sourceRoot":""}
