@@ -61,3 +61,6 @@ gem 'json_web_token'
 
 #Fake data
 gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
+gem 'rack-cors', require: 'rack/cors'
+# beautiful logger in server side
+gem 'graphql-rails_logger'
