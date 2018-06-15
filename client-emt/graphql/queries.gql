@@ -6,11 +6,32 @@ query getCurrentUser {
   }
 }
 
+query getCurrentUserOnClient {
+  currentUser @client {
+    id
+    username
+    role
+  }
+}
+
 query getAllUsers {
   users {
     id
     username
     email
     createdAt
+  }
+}
+
+query getProjectOfCurrentUser {
+  projectsAsMemberOfCurrentUser {
+    id
+    name
+    description
+  }
+  projectsAsAdminOfCurrentUser {
+    id
+    name
+    description
   }
 }

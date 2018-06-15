@@ -2,7 +2,7 @@ import { Layout, Menu, Icon, Dropdown, message } from "antd";
 import { Query } from "react-apollo";
 import Link from "next/link";
 const { Sider, Content } = Layout;
-import { getCurrentUser as GET_CURRENT_USER_QUERY } from "../graphql/queries.gql";
+import { getCurrentUserOnClient as GET_CURRENT_USER_QUERY } from "../graphql/queries.gql";
 import TopHeader from "./topHeader";
 
 export default class NavigationLayout extends React.Component {
@@ -31,14 +31,9 @@ export default class NavigationLayout extends React.Component {
                   collapsible
                   collapsed={this.state.collapsed}
                   onCollapse={this.onCollapse}
-                  style={{ paddingTop: 0 }}
+                  style={{ paddingTop: 0, height: "110vh" }}
                 >
-                  <Menu
-                    mode="inline"
-                    theme="dark"
-                    selectedKeys={[currentPage]}
-                    
-                  >
+                  <Menu mode="inline" theme="dark" selectedKeys={[currentPage]}>
                     <Menu.Item key="projects" style={{ marginTop: 0 }}>
                       <Link prefetch href="/">
                         <a>
@@ -67,7 +62,7 @@ export default class NavigationLayout extends React.Component {
               margin: "24px 16px",
               padding: 24,
               background: "#fff",
-              height: "100vh"
+              height: "100%"
             }}
           >
             {this.props.children}

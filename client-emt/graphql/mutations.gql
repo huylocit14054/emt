@@ -14,3 +14,13 @@ mutation createUser($input: CreateUserInput!) {
     }
   }
 }
+
+mutation createProject($input: CreateProjectInput!) {
+  createProject(input: $input) {
+    createdProject {
+      id
+      name
+      description
+    }
+  }
+}

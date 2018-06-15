@@ -36,6 +36,7 @@
     "react-apollo": "^2.1.5",
     "react-dom": "^16.0.0",
     "react-timeago": "^4.1.9",
-    "sass-loader": "^6.0.6"
+    "sass-loader": "^6.0.6",
+    "truncate": "^2.0.1"
   }
 }

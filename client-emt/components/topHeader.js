@@ -4,7 +4,7 @@ import Link from "next/link";
 import cookie from "cookie";
 import redirect from "../lib/redirect";
 import stylesheet from "styles/topHeader.less";
-import { getCurrentUser as GET_CURRENT_USER_QUERY } from "../graphql/queries.gql";
+import { getCurrentUserOnClient as GET_CURRENT_USER_QUERY } from "../graphql/queries.gql";
 const { Header } = Layout;
 
 class TopHeader extends React.Component {
@@ -13,7 +13,6 @@ class TopHeader extends React.Component {
       maxAge: -1 // Expire the cookie immediately
     });
     window.location.replace("/login");
-
   };
 
   render() {
