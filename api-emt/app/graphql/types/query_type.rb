@@ -84,12 +84,12 @@ class Types::QueryType < Types::BaseObject
   end
   
   #return member list of a project 
-  field :project_members, [Types::User], null: false do
+  field :project_members, [Types::ProjectMember], null: false do
     argument :project_id, ID, required: true
   end
   def project_members(project_id:)
     project = ::Project.find(project_id)
-    members = project.members
+    members = project.member_relationships.order(created_at: :desc)
   end
 
   #return dimension list of a project 

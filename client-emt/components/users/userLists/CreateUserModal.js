@@ -70,7 +70,6 @@ class CreateUserModal extends React.Component {
             error.graphQLErrors.map(({ message }, i) => {
               message.error(message, 3);
             });
-
           }}
         >
           {(createUser, { loading, data, error }) => (

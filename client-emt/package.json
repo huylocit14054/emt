@@ -2,9 +2,10 @@
   "name": "client-case-study",
   "version": "1.0.0",
   "scripts": {
-    "dev": "next dev",
+    "dev": "node server.js -p $PORT",
     "build": "next build",
-    "start": "next start"
+    "heroku-postbuild": "next build",
+    "start": "node server.js -p $PORT"
   },
   "author": "nenjamin2405",
   "license": "ISC",
@@ -26,6 +27,7 @@
     "less-loader": "^4.1.0",
     "next": "6.0.3",
     "next-plugin-graphql": "^0.0.1",
+    "next-routes": "^1.4.2",
     "node-sass": "^4.4.0",
     "nprogress": "^0.2.0",
     "postcss-easy-import": "^3.0.0",

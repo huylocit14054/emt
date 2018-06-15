@@ -1,5 +1,6 @@
 import { Button, message, Icon, List, Card } from "antd";
 import { Mutation } from "react-apollo";
+import Router from "next/router";
 import { createProject as CREATE_PROJECT_MUTATION } from "../../../graphql/mutations.gql";
 import { getProjectOfCurrentUser as GET_PROJECTS_OF_CURRENT_USER_QUERY } from "../../../graphql/queries.gql";
 import CreateProjectForm from "./createProjectModal/CreateProjectForm";
@@ -48,7 +49,10 @@ class CreateProjectModal extends React.Component {
             query: GET_PROJECTS_OF_CURRENT_USER_QUERY,
             data
           });
-          console.log(createdProject);
+          Router.push(
+            `/project/${createdProject.id}/members`,
+            `/projectMembers?id=${createdProject.id}`
+          );
         }
       });
     });
@@ -80,8 +84,7 @@ class CreateProjectModal extends React.Component {
             </List.Item>
           )}
         />
-        <br />
-        <br />
+
         <Mutation
           mutation={CREATE_PROJECT_MUTATION}
           onCompleted={data => {

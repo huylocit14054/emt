@@ -7,12 +7,19 @@ import ProgressBar from "../components/progressBar";
 import NavigationLayout from "../components/navigationLayout";
 
 class MyApp extends App {
+  static async getInitialProps({ Component, router, ctx }) {
+    let pageProps = {};
+
+    if (Component.getInitialProps) {
+      pageProps = await Component.getInitialProps(ctx);
+    }
+
+    return { pageProps };
+  }
   render() {
     const { Component, pageProps, apolloClient } = this.props;
     const { pathname } = this.props.router;
-    let currentPage = pathname;
-    currentPage =
-      currentPage === "/" ? "projects" : currentPage.replace("/", "");
+
     return (
       <Container>
         <ApolloProvider client={apolloClient}>
@@ -21,7 +28,7 @@ class MyApp extends App {
               {pathname === "/login" ? (
                 <Component {...pageProps} />
               ) : (
-                <NavigationLayout currentPage={currentPage}>
+                <NavigationLayout>
                   <Component {...pageProps} />
                 </NavigationLayout>
               )}

@@ -24,3 +24,9 @@ mutation createProject($input: CreateProjectInput!) {
     }
   }
 }
+
+mutation updateMemberRoleInProject($input: UpdateMemberRoleInProjectInput!) {
+  updateMemberRoleInProject(input: $input) {
+    updated
+  }
+}

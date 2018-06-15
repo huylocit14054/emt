@@ -6,14 +6,6 @@ query getCurrentUser {
   }
 }
 
-query getCurrentUserOnClient {
-  currentUser @client {
-    id
-    username
-    role
-  }
-}
-
 query getAllUsers {
   users {
     id
@@ -31,6 +23,26 @@ query getProjectOfCurrentUser {
   }
   projectsAsAdminOfCurrentUser {
     id
+    name
+    description
+  }
+}
+
+query getMembersByProjectId($projectId: ID!) {
+  projectMembers(projectId: $projectId) {
+    id
+    role
+    user {
+      id
+      email
+      username
+      role
+    }
+  }
+}
+
+query getProjectById($id: ID!) {
+  project(id: $id) {
     name
     description
   }
