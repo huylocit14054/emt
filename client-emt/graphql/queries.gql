@@ -6,6 +6,23 @@ query getCurrentUser {
   }
 }
 
+query getCurrentUserProfile {
+  profile: currentUser {
+    id
+    username
+    email
+    role
+  }
+}
+
+query getCurrentUserOnClient {
+  currentUser @client {
+    id
+    username
+    role
+  }
+}
+
 query getAllUsers {
   users {
     id

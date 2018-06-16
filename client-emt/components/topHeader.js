@@ -1,27 +1,30 @@
-import { Layout, Menu, Icon, Dropdown, Avatar } from "antd";
-import { withApollo, Query } from "react-apollo";
-import Link from "next/link";
-import cookie from "cookie";
-import redirect from "../lib/redirect";
-import stylesheet from "styles/topHeader.less";
-import { getCurrentUser as GET_CURRENT_USER_QUERY } from "../graphql/queries.gql";
+import { Layout, Menu, Icon, Dropdown, Avatar } from 'antd';
+import { withApollo, Query } from 'react-apollo';
+import Link from 'next/link';
+import cookie from 'cookie';
+import redirect from '../lib/redirect';
+import stylesheet from 'styles/topHeader.less';
+import { getCurrentUserOnClient as GET_CURRENT_USER_QUERY } from '../graphql/queries.gql';
+
 const { Header } = Layout;
 
 class TopHeader extends React.Component {
   signout = () => {
-    document.cookie = cookie.serialize("token", "", {
-      maxAge: -1 // Expire the cookie immediately
+    document.cookie = cookie.serialize('token', '', {
+      maxAge: -1, // Expire the cookie immediately
     });
-    window.location.replace("/login");
+    window.location.replace('/login');
   };
 
   render() {
     const menu = (
       <Menu className="menu-dropdown">
         <Menu.Item key="profile">
-          <a>
-            <Icon type="profile" /> Profile
-          </a>
+          <Link prefetch as="/me/profile" href="/profile">
+            <a>
+              <Icon type="profile" /> Profile
+            </a>
+          </Link>
         </Menu.Item>
         <Menu.Item key="logout">
           <a onClick={this.signout}>
@@ -34,14 +37,14 @@ class TopHeader extends React.Component {
     return (
       <Query query={GET_CURRENT_USER_QUERY}>
         {({ loading, error, data }) => {
-          if (loading) return "Loading...";
+          if (loading) return 'Loading...';
           if (error) return `Error! ${error.message}`;
           const currentUserSync = data.currentUser;
           return (
             <Header
               style={{
-                backgroundColor: "white",
-                padding: 0
+                backgroundColor: 'white',
+                padding: 0,
               }}
               className="topHeader"
             >

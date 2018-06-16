@@ -15,6 +15,22 @@ mutation createUser($input: CreateUserInput!) {
   }
 }
 
+mutation updateUserInfo($input: UpdateUserInput!) {
+  updateUser(input: $input) {
+    updatedUser {
+      id
+      username
+      email
+    }
+  }
+}
+
+mutation updatePassword($input: UpdatePasswordInput!) {
+  updatePassword(input: $input) {
+    passwordIsUpdated
+  }
+}
+
 mutation createProject($input: CreateProjectInput!) {
   createProject(input: $input) {
     createdProject {

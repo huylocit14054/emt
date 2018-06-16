@@ -1,6 +1,6 @@
-import ProjectLayout from "../components/project/ProjectLayout";
-import redirect from "../lib/redirect";
-import checkLoggedIn from "../lib/checkLoggedIn";
+import ProjectLayout from '../components/project/ProjectLayout';
+import redirect from '../lib/redirect';
+import checkLoggedIn from '../lib/checkLoggedIn';
 
 export default class ProjectDimensions extends React.Component {
   static async getInitialProps(context) {
@@ -9,7 +9,7 @@ export default class ProjectDimensions extends React.Component {
     if (!currentUser) {
       // Already signed in? No need to continue.
       // Throw them back to the main page
-      redirect(context, "/");
+      redirect(context, '/');
     }
     return { currentUser };
   }

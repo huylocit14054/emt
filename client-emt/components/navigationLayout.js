@@ -1,14 +1,15 @@
-import { Layout, Menu, Icon, Dropdown, message } from "antd";
-import { withRouter } from "next/router";
-import { Query } from "react-apollo";
-import Link from "next/link";
+import { Layout, Menu, Icon, Dropdown, message } from 'antd';
+import { withRouter } from 'next/router';
+import { Query } from 'react-apollo';
+import Link from 'next/link';
+import { getCurrentUserOnClient as GET_CURRENT_USER_QUERY } from '../graphql/queries.gql';
+import TopHeader from './topHeader';
+
 const { Sider, Content } = Layout;
-import { getCurrentUser as GET_CURRENT_USER_QUERY } from "../graphql/queries.gql";
-import TopHeader from "./topHeader";
 
 class NavigationLayout extends React.Component {
   state = {
-    collapsed: false
+    collapsed: false,
   };
   onCollapse = collapsed => {
     console.log(collapsed);
@@ -18,21 +19,20 @@ class NavigationLayout extends React.Component {
   render() {
     let currentPage = this.props.router.pathname;
     currentPage =
-      currentPage.includes("project") || currentPage === "/"
-        ? "projects"
-        : currentPage.replace("/", "");
+      currentPage.includes('project') || currentPage === '/'
+        ? 'projects'
+        : currentPage.replace('/', '');
     return (
       <Layout id="navigation-layout">
         <Query query={GET_CURRENT_USER_QUERY}>
           {({ loading, error, data }) => {
-            if (loading) return "Loading...";
+            if (loading) return 'Loading...';
             if (error) return `Error! ${error.message}`;
             const currentUserSync = data.currentUser;
             return (
               <Sider
-                collapsed={true}
-                onCollapse={this.onCollapse}
-                style={{ paddingTop: 0, height: "100vh", position: "fixed" }}
+                collapsed={false}
+                style={{ paddingTop: 0, height: '100vh', position: 'fixed' }}
               >
                 <Menu mode="inline" theme="dark" selectedKeys={[currentPage]}>
                   <Menu.Item key="projects" style={{ marginTop: 0 }}>
@@ -43,7 +43,7 @@ class NavigationLayout extends React.Component {
                       </a>
                     </Link>
                   </Menu.Item>
-                  {currentUserSync.role === "root_admin" && (
+                  {currentUserSync.role === 'root_admin' && (
                     <Menu.Item key="users">
                       <Link prefetch href="/users">
                         <a>
@@ -63,10 +63,10 @@ class NavigationLayout extends React.Component {
 
           <Content
             style={{
-              margin: "15px 16px 16px 100px",
+              margin: '15px 16px 16px 100px',
               padding: 24,
-              background: "#fff",
-              height: "100%"
+              background: '#fff',
+              height: '100vh',
             }}
           >
             {this.props.children}

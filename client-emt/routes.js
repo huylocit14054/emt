@@ -1,5 +1,6 @@
-const routes = (module.exports = require("next-routes")());
+const routes = (module.exports = require('next-routes')());
 
 routes
-  .add("/project/:id/members", "/projectMembers")
-  .add("/project/:id/dimensions", "/projectDimensions");
+  .add('/project/:id/members', '/projectMembers')
+  .add('/me/profile', '/profile')
+  .add('/project/:id/dimensions', '/projectDimensions');

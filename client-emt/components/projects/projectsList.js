@@ -1,33 +1,29 @@
-import { List, Card, Avatar, Divider, Icon, Button } from "antd";
-import { Query } from "react-apollo";
-import Link from "next/link";
-import { getProjectOfCurrentUser as GET_PROJECTS_OF_CURRENT_USER } from "../../graphql/queries.gql";
-import ListItem from "./projectsList/ListItem";
-import CreateProjectModal from "./projectsList/CreateProjectModal";
+import { List, Card, Avatar, Divider, Icon, Button } from 'antd';
+import { Query } from 'react-apollo';
+import Link from 'next/link';
+import { getProjectOfCurrentUser as GET_PROJECTS_OF_CURRENT_USER } from '../../graphql/queries.gql';
+import ListItem from './projectsList/ListItem';
+import CreateProjectModal from './projectsList/CreateProjectModal';
 
-const truncate = require("truncate");
+const truncate = require('truncate');
 
 class ProjectsList extends React.Component {
   render() {
     const { currentUser } = this.props;
     return (
       <div className="projects-list">
-        {currentUser.role === "root_admin" && <CreateProjectModal />}
+        {currentUser.role === 'root_admin' && <CreateProjectModal />}
         <Query query={GET_PROJECTS_OF_CURRENT_USER}>
           {({ loading, error, data }) => {
-            if (loading) return "Loading...";
+            if (loading) return 'Loading...';
             if (error) return `Error! ${error.message}`;
-            const {
-              projectsAsAdminOfCurrentUser,
-              projectsAsMemberOfCurrentUser
-            } = data;
+            const { projectsAsAdminOfCurrentUser, projectsAsMemberOfCurrentUser } = data;
             return (
               <div>
                 {projectsAsAdminOfCurrentUser.length > 0 && (
                   <React.Fragment>
                     <Divider orientation="left">
-                      <Icon type="solution" style={{ marginRight: 8 }} />As
-                      Admin
+                      <Icon type="solution" style={{ marginRight: 8 }} />As Admin
                     </Divider>
 
                     <List
@@ -38,7 +34,7 @@ class ProjectsList extends React.Component {
                         md: 4,
                         lg: 4,
                         xl: 6,
-                        xxl: 3
+                        xxl: 3,
                       }}
                       dataSource={projectsAsAdminOfCurrentUser}
                       renderItem={project => (
@@ -61,16 +57,13 @@ class ProjectsList extends React.Component {
                                   <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
                                   <Avatar
                                     style={{
-                                      color: "#f56a00",
-                                      backgroundColor: "#fde3cf"
+                                      color: '#f56a00',
+                                      backgroundColor: '#fde3cf',
                                     }}
                                   >
                                     U
                                   </Avatar>
-                                  <Avatar
-                                    style={{ backgroundColor: "#87d068" }}
-                                    icon="user"
-                                  />
+                                  <Avatar style={{ backgroundColor: '#87d068' }} icon="user" />
                                 </div>
                               </Card>
                             </a>
@@ -93,7 +86,7 @@ class ProjectsList extends React.Component {
                             md: 4,
                             lg: 4,
                             xl: 6,
-                            xxl: 3
+                            xxl: 3,
                           }}
                           dataSource={projectsAsMemberOfCurrentUser}
                           renderItem={project => (
@@ -116,16 +109,13 @@ class ProjectsList extends React.Component {
                                       <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
                                       <Avatar
                                         style={{
-                                          color: "#f56a00",
-                                          backgroundColor: "#fde3cf"
+                                          color: '#f56a00',
+                                          backgroundColor: '#fde3cf',
                                         }}
                                       >
                                         U
                                       </Avatar>
-                                      <Avatar
-                                        style={{ backgroundColor: "#87d068" }}
-                                        icon="user"
-                                      />
+                                      <Avatar style={{ backgroundColor: '#87d068' }} icon="user" />
                                     </div>
                                   </Card>
                                 </a>

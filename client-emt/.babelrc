@@ -27,5 +27,6 @@
   "presets": [
     "next/babel"
   ],
-  "compact": true
+  "compact": true,
+  "retainLines": true
 }

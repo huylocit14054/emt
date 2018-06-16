@@ -59,8 +59,14 @@ gem 'graphql-activerecord'
 gem 'graphiql-rails', '1.4.4', group: :development
 gem 'json_web_token'
 
-#Fake data
+# Fake data
 gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
 gem 'rack-cors', require: 'rack/cors'
 # beautiful logger in server side
 gem 'graphql-rails_logger'
+
+# gem supports order by value
+gem 'order_as_specified'
+
+# for files uploading
+gem 'cloudinary'
