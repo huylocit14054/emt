@@ -67,6 +67,8 @@ const UpdatePasswordForm = Form.create({})(class extends React.Component {
         >
           {(updateRecord, { loading, data, error }) => (
             <Spin indicator={antIcon} spinning={loading} tip="Updating Password...">
+              <br />
+              <br />
               <Form onSubmit={e => this.handleUpdate(e, updateRecord)}>
                 <FormItem {...formItemLayout} label="Old Password">
                   {getFieldDecorator('oldPassword', {

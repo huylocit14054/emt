@@ -60,7 +60,9 @@ query getMembersByProjectId($projectId: ID!) {
 
 query getProjectById($id: ID!) {
   project(id: $id) {
+    id
     name
     description
+    isManagedByCurrentUser
   }
 }

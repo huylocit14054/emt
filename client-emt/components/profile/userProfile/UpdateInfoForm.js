@@ -67,6 +67,7 @@ const UpdateUserForm = Form.create({})(class extends React.Component {
           {(updateUserInfo, { loading, data, error }) => (
             <Spin indicator={antIcon} spinning={loading} tip="Updating Profile...">
               <br />
+              <br />
               <Query
                 query={GET_CURRENT_USER_PROFILE_QUERY}
                 onCompleted={data => {}}
