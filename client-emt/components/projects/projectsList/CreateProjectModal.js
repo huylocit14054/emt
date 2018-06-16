@@ -1,18 +1,18 @@
-import { Button, message, Icon, List, Card } from "antd";
-import { Mutation } from "react-apollo";
-import Router from "next/router";
-import { createProject as CREATE_PROJECT_MUTATION } from "../../../graphql/mutations.gql";
-import { getProjectOfCurrentUser as GET_PROJECTS_OF_CURRENT_USER_QUERY } from "../../../graphql/queries.gql";
-import CreateProjectForm from "./createProjectModal/CreateProjectForm";
+import { Button, message, Icon, List, Card } from 'antd';
+import { Mutation } from 'react-apollo';
+import Router from 'next/router';
+import { createProject as CREATE_PROJECT_MUTATION } from '../../../graphql/mutations.gql';
+import { getProjectOfCurrentUser as GET_PROJECTS_OF_CURRENT_USER_QUERY } from '../../../graphql/queries.gql';
+import CreateProjectForm from './createProjectModal/CreateProjectForm';
 
 const addNewProject = [
   {
-    title: "Add new project"
-  }
+    title: 'Add new project',
+  },
 ];
 class CreateProjectModal extends React.Component {
   state = {
-    visible: false
+    visible: false,
   };
   showModal = () => {
     this.setState({ visible: true });
@@ -29,31 +29,31 @@ class CreateProjectModal extends React.Component {
       createProject({
         variables: {
           input: {
-            attributes: JSON.stringify(values)
-          }
+            attributes: JSON.stringify(values),
+          },
         },
         update: (
           store,
           {
             data: {
-              createProject: { createdProject }
-            }
-          }
+              createProject: { createdProject },
+            },
+          },
         ) => {
           const data = store.readQuery({
-            query: GET_PROJECTS_OF_CURRENT_USER_QUERY
+            query: GET_PROJECTS_OF_CURRENT_USER_QUERY,
           });
 
           data.projectsAsAdminOfCurrentUser.splice(0, 0, createdProject);
           store.writeQuery({
             query: GET_PROJECTS_OF_CURRENT_USER_QUERY,
-            data
+            data,
           });
           Router.push(
+            `/projectMembers?id=${createdProject.id}`,
             `/project/${createdProject.id}/members`,
-            `/projectMembers?id=${createdProject.id}`
           );
-        }
+        },
       });
     });
   };
@@ -71,7 +71,7 @@ class CreateProjectModal extends React.Component {
             md: 4,
             lg: 4,
             xl: 6,
-            xxl: 3
+            xxl: 3,
           }}
           dataSource={addNewProject}
           renderItem={item => (
@@ -91,7 +91,7 @@ class CreateProjectModal extends React.Component {
             console.log(data);
             const form = this.formRef.props.form;
             // this.setState({ visible: false });
-            message.success("Project Created");
+            message.success('Project Created');
             form.resetFields();
           }}
           onError={error => {

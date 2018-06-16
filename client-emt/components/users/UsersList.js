@@ -1,16 +1,28 @@
 import { Table, Icon, Divider } from 'antd';
 import { Query } from 'react-apollo';
 import TimeAgo from 'react-timeago';
+import { Image } from 'cloudinary-react';
+import { CLOUD_NAME } from '../../constants';
 import { getAllUsers as GET_ALL_USERS_QUERY } from '../../graphql/queries.gql';
 import CreateUserModal from './userLists/CreateUserModal';
-
-import React, { Component } from 'react';
 
 const columns = [
   {
     title: 'Username',
     dataIndex: 'username',
-    render: text => <a href="javascript:;">{text}</a>,
+    render: (text, user) => (
+      <a href="javascript:;">
+        {' '}
+        <Image
+          cloudName={CLOUD_NAME}
+          publicId={user.avatar}
+          width="40"
+          crop="scale"
+          style={{ borderRadius: '50%', marginRight: 20 }}
+        />
+        {user.username}
+      </a>
+    ),
   },
   {
     title: 'Email',
@@ -23,7 +35,7 @@ const columns = [
   },
 ];
 
-export default class UsersList extends Component {
+export default class UsersList extends React.Component {
   render() {
     return (
       <React.Fragment>
@@ -33,7 +45,13 @@ export default class UsersList extends Component {
             if (loading) return 'Loading...';
             if (error) return `Error! ${error.message}`;
             return (
-              <Table columns={columns} loading={loading} dataSource={data.users} rowKey="id" />
+              <Table
+                columns={columns}
+                pagination={{ pageSize: 8 }}
+                loading={loading}
+                dataSource={data.users}
+                rowKey="id"
+              />
             );
           }}
         </Query>

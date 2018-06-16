@@ -2,6 +2,8 @@ import { withRouter } from 'next/router';
 import { Table, Icon, Divider, Radio, message, Tag } from 'antd';
 import { Query, Mutation, ApolloConsumer } from 'react-apollo';
 import gql from 'graphql-tag';
+import { Image } from 'cloudinary-react';
+import { CLOUD_NAME } from '../../../constants';
 import {
   getCurrentUserOnClient as GET_CURRENT_USER_QUERY,
   getMembersByProjectId as GET_MEMBERS_BY_PROJECTS_ID,
@@ -54,11 +56,29 @@ class MembersTab extends React.Component {
                 return (
                   <React.Fragment>
                     <If condition={isManagedByCurrentUser} then={<AddMemberForm />} else={null} />
-                    <Table loading={loading} dataSource={data.projectMembers} rowKey="id">
+                    <br />
+                    <Table
+                      pagination={{ pageSize: 7 }}
+                      loading={loading}
+                      dataSource={data.projectMembers}
+                      rowKey="id"
+                    >
                       <Column
                         title="Username"
                         key="username"
-                        render={member => <a href="javascript:;">{member.user.username}</a>}
+                        render={member => (
+                          <a href="javascript:;">
+                            {' '}
+                            <Image
+                              cloudName={CLOUD_NAME}
+                              publicId={member.user.avatar}
+                              width="40"
+                              crop="scale"
+                              style={{ borderRadius: '50%', marginRight: 20 }}
+                            />
+                            {member.user.username}
+                          </a>
+                        )}
                       />
                       <Column
                         title="Email"

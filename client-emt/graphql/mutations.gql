@@ -11,6 +11,7 @@ mutation createUser($input: CreateUserInput!) {
       username
       email
       createdAt
+      avatar
     }
   }
 }
@@ -22,6 +23,12 @@ mutation updateUserInfo($input: UpdateUserInput!) {
       username
       email
     }
+  }
+}
+
+mutation updateAvatar($input: UpdateAvatarInput!) {
+  updateAvatar(input: $input) {
+    avatarUrl
   }
 }
 

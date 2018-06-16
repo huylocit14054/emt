@@ -3,6 +3,7 @@ query getCurrentUser {
     id
     username
     role
+    avatar
   }
 }
 
@@ -12,6 +13,7 @@ query getCurrentUserProfile {
     username
     email
     role
+    avatar
   }
 }
 
@@ -20,11 +22,13 @@ query getCurrentUserOnClient {
     id
     username
     role
+    avatar
   }
 }
 
 query getAllUsers {
   users {
+    avatar
     id
     username
     email
@@ -54,6 +58,7 @@ query getMembersByProjectId($projectId: ID!) {
       email
       username
       role
+      avatar
     }
   }
 }

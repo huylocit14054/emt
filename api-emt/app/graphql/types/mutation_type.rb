@@ -1,7 +1,7 @@
 class Types::MutationType < Types::BaseObject
   # TODO: remove me
   field :test_field, String, null: false,
-                         description: "An example field added by the generator"
+                             description: "An example field added by the generator"
 
   def test_field
     "Hello World"
@@ -18,5 +18,6 @@ class Types::MutationType < Types::BaseObject
   field :update_dimension, mutation: Mutations::UpdateDimension
   field :create_option, mutation: Mutations::CreateOption
   field :update_password, mutation: Mutations::UpdatePassword
+  field :update_avatar, mutation: Mutations::UpdateAvatar
   field :assign_dimensions_for_members, mutation: Mutations::AssignDimensionsForMembers
 end
