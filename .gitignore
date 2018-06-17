@@ -98,10 +98,6 @@ node_modules
 # Debug log from npm
 npm-debug.log
 
-# Environment Variables
-.env
-.env.*
-
 # Local config
 local.rb
 .ignore
