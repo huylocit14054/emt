@@ -2,7 +2,7 @@ module.exports =
 
         __NEXT_REGISTER_PAGE('/', function() {
           var comp = 
-      webpackJsonp([5],{
+      webpackJsonp([4],{
 
 /***/ "./components/projects/projectsList.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -38529,7 +38529,7 @@ Object(__WEBPACK_IMPORTED_MODULE_2__lib_redirect__["a" /* default */])(context,"
 
 /***/ }),
 
-/***/ 4:
+/***/ 3:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__("./pages/index.js");
@@ -38537,7 +38537,7 @@ module.exports = __webpack_require__("./pages/index.js");
 
 /***/ })
 
-},[4])
+},[3])
           return { page: comp.default }
         })
       ;

@@ -74,7 +74,9 @@ class ChangeAvatarModal extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <a onClick={this.showModal}>Change Avatar</a>
+        <a onClick={this.showModal} className="change-avatar-link">
+          Change Avatar
+        </a>
         <Modal
           title="Change Picture"
           visible={this.state.visible}
@@ -98,6 +100,7 @@ class ChangeAvatarModal extends React.Component {
                   >
                     <style dangerouslySetInnerHTML={{ __html: stylesheet }} />
                     <Spin
+                      tip="Uploading..."
                       spinning={this.state.loading}
                       style={{ right: '0%' }}
                       indicator={<Icon type="loading" style={{ fontSize: 24 }} spin />}

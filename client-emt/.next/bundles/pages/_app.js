@@ -51,32 +51,31 @@ currentPage.includes('project')||currentPage==='/'?
 currentPage.replace('/','');
 return(
 __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_antd_lib_layout___default.a,{id:"navigation-layout",__source:{fileName:_jsxFileName,lineNumber:26}},
-__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_react_apollo__["ApolloConsumer"],{__source:{fileName:_jsxFileName,lineNumber:27}},
-function(client){
-var data=client.readQuery({
-query:__WEBPACK_IMPORTED_MODULE_7__graphql_queries_gql__["getCurrentUser"]});
-
+__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_react_apollo__["Query"],{query:__WEBPACK_IMPORTED_MODULE_7__graphql_queries_gql__["getCurrentUser"],__source:{fileName:_jsxFileName,lineNumber:27}},
+function(_ref2){var loading=_ref2.loading,error=_ref2.error,data=_ref2.data;
+if(loading)return'Loading...';
+if(error)return"Error! ".concat(error.message);
 var currentUserSync=data.currentUser;
 return(
 __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(Sider,{
 collapsed:false,
-style:{paddingTop:0,height:'100vh',position:'fixed'},__source:{fileName:_jsxFileName,lineNumber:34}},
+style:{paddingTop:0,height:'100vh',position:'fixed'},__source:{fileName:_jsxFileName,lineNumber:33}},
 
-__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_antd_lib_menu___default.a,{mode:"inline",theme:"dark",selectedKeys:[currentPage],__source:{fileName:_jsxFileName,lineNumber:38}},
-__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_antd_lib_menu___default.a.Item,{key:"projects",style:{marginTop:0},__source:{fileName:_jsxFileName,lineNumber:39}},
-__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_next_link___default.a,{prefetch:true,href:"/",__source:{fileName:_jsxFileName,lineNumber:40}},
-__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement("a",{__source:{fileName:_jsxFileName,lineNumber:41}},
-__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_antd_lib_icon___default.a,{type:"folder-open",__source:{fileName:_jsxFileName,lineNumber:42}}),
-__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement("span",{__source:{fileName:_jsxFileName,lineNumber:43}},"Projects")))),
+__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_antd_lib_menu___default.a,{mode:"inline",theme:"dark",selectedKeys:[currentPage],__source:{fileName:_jsxFileName,lineNumber:37}},
+__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_antd_lib_menu___default.a.Item,{key:"projects",style:{marginTop:0},__source:{fileName:_jsxFileName,lineNumber:38}},
+__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_next_link___default.a,{prefetch:true,href:"/",__source:{fileName:_jsxFileName,lineNumber:39}},
+__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement("a",{__source:{fileName:_jsxFileName,lineNumber:40}},
+__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_antd_lib_icon___default.a,{type:"folder-open",__source:{fileName:_jsxFileName,lineNumber:41}}),
+__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement("span",{__source:{fileName:_jsxFileName,lineNumber:42}},"Projects")))),
 
 
 
 currentUserSync.role==='root_admin'&&
-__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_antd_lib_menu___default.a.Item,{key:"users",__source:{fileName:_jsxFileName,lineNumber:48}},
-__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_next_link___default.a,{prefetch:true,href:"/users",__source:{fileName:_jsxFileName,lineNumber:49}},
-__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement("a",{__source:{fileName:_jsxFileName,lineNumber:50}},
-__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_antd_lib_icon___default.a,{type:"team",__source:{fileName:_jsxFileName,lineNumber:51}}),
-__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement("span",{__source:{fileName:_jsxFileName,lineNumber:52}},"Users")))))));
+__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_antd_lib_menu___default.a.Item,{key:"users",__source:{fileName:_jsxFileName,lineNumber:47}},
+__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_next_link___default.a,{prefetch:true,href:"/users",__source:{fileName:_jsxFileName,lineNumber:48}},
+__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement("a",{__source:{fileName:_jsxFileName,lineNumber:49}},
+__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_antd_lib_icon___default.a,{type:"team",__source:{fileName:_jsxFileName,lineNumber:50}}),
+__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement("span",{__source:{fileName:_jsxFileName,lineNumber:51}},"Users")))))));
 
 
 
@@ -86,15 +85,15 @@ __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement("span",{__source:{fi
 
 }),
 
-__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_antd_lib_layout___default.a,{style:{marginLeft:this.state.collapsed?0:120},__source:{fileName:_jsxFileName,lineNumber:62}},
-__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__topHeader__["a" /* default */],{__source:{fileName:_jsxFileName,lineNumber:63}}),
+__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_antd_lib_layout___default.a,{style:{marginLeft:this.state.collapsed?0:120},__source:{fileName:_jsxFileName,lineNumber:61}},
+__WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__topHeader__["a" /* default */],{__source:{fileName:_jsxFileName,lineNumber:62}}),
 
 __WEBPACK_IMPORTED_MODULE_3_react___default.a.createElement(Content,{
 style:{
 margin:'15px 16px 16px 100px',
 padding:24,
 background:'#fff',
-minHeight:'100vh'},__source:{fileName:_jsxFileName,lineNumber:65}},
+minHeight:'100vh'},__source:{fileName:_jsxFileName,lineNumber:64}},
 
 
 this.props.children))));
@@ -199,15 +198,14 @@ window.location.replace('/login');
 
 {var _this2=this;
 return(
-__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_react_apollo__["ApolloConsumer"],{__source:{fileName:_jsxFileName,lineNumber:24}},
-function(client){
-var data=client.readQuery({
-query:__WEBPACK_IMPORTED_MODULE_14__graphql_queries_gql__["getCurrentUser"]});
-
+__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_react_apollo__["Query"],{query:__WEBPACK_IMPORTED_MODULE_14__graphql_queries_gql__["getCurrentUser"],__source:{fileName:_jsxFileName,lineNumber:24}},
+function(_ref2){var loading=_ref2.loading,error=_ref2.error,data=_ref2.data;
+if(loading)return'Loading...';
+if(error)return"Error! ".concat(error.message);
 var currentUserSync=data.currentUser;
 var menu=
-__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_antd_lib_menu___default.a,{className:"menu-dropdown",__source:{fileName:_jsxFileName,lineNumber:31}},
-__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_antd_lib_menu___default.a.Item,{key:"user",__source:{fileName:_jsxFileName,lineNumber:32}},
+__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_antd_lib_menu___default.a,{className:"menu-dropdown",__source:{fileName:_jsxFileName,lineNumber:30}},
+__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_antd_lib_menu___default.a.Item,{key:"user",__source:{fileName:_jsxFileName,lineNumber:31}},
 __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_antd_lib_list___default.a.Item.Meta,{
 avatar:
 __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_cloudinary_react__["Image"],{
@@ -215,24 +213,24 @@ cloudName:__WEBPACK_IMPORTED_MODULE_13__constants__["CLOUD_NAME"],
 publicId:currentUserSync.avatar,
 width:"40",
 crop:"scale",
-style:{borderRadius:'50%'},__source:{fileName:_jsxFileName,lineNumber:35}}),
+style:{borderRadius:'50%'},__source:{fileName:_jsxFileName,lineNumber:34}}),
 
 
-title:__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement("a",{__source:{fileName:_jsxFileName,lineNumber:43}},currentUserSync.username),
-description:__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_12__topHeader_ChangeAvatarModal__["a" /* default */],{currentUserId:currentUserSync.id,__source:{fileName:_jsxFileName,lineNumber:44}}),__source:{fileName:_jsxFileName,lineNumber:33}})),
+title:__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement("a",{__source:{fileName:_jsxFileName,lineNumber:42}},currentUserSync.username),
+description:__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_12__topHeader_ChangeAvatarModal__["a" /* default */],{currentUserId:currentUserSync.id,__source:{fileName:_jsxFileName,lineNumber:43}}),__source:{fileName:_jsxFileName,lineNumber:32}})),
 
 
-__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_antd_lib_menu___default.a.Divider,{__source:{fileName:_jsxFileName,lineNumber:47}}),
-__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_antd_lib_menu___default.a.Item,{key:"profile",__source:{fileName:_jsxFileName,lineNumber:48}},
-__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_next_link___default.a,{prefetch:true,as:"/me/profile",href:"/profile",__source:{fileName:_jsxFileName,lineNumber:49}},
-__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement("a",{__source:{fileName:_jsxFileName,lineNumber:50}},
-__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_antd_lib_icon___default.a,{type:"profile",__source:{fileName:_jsxFileName,lineNumber:51}})," Profile"))),
+__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_antd_lib_menu___default.a.Divider,{__source:{fileName:_jsxFileName,lineNumber:46}}),
+__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_antd_lib_menu___default.a.Item,{key:"profile",__source:{fileName:_jsxFileName,lineNumber:47}},
+__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_next_link___default.a,{prefetch:true,as:"/me/profile",href:"/profile",__source:{fileName:_jsxFileName,lineNumber:48}},
+__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement("a",{__source:{fileName:_jsxFileName,lineNumber:49}},
+__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_antd_lib_icon___default.a,{type:"profile",__source:{fileName:_jsxFileName,lineNumber:50}})," Profile"))),
 
 
 
-__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_antd_lib_menu___default.a.Item,{key:"logout",__source:{fileName:_jsxFileName,lineNumber:55}},
-__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement("a",{onClick:_this2.signout,__source:{fileName:_jsxFileName,lineNumber:56}},
-__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_antd_lib_icon___default.a,{type:"logout",__source:{fileName:_jsxFileName,lineNumber:57}})," Sign out")));
+__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_antd_lib_menu___default.a.Item,{key:"logout",__source:{fileName:_jsxFileName,lineNumber:54}},
+__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement("a",{onClick:_this2.signout,__source:{fileName:_jsxFileName,lineNumber:55}},
+__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_antd_lib_icon___default.a,{type:"logout",__source:{fileName:_jsxFileName,lineNumber:56}})," Sign out")));
 
 
 
@@ -244,26 +242,26 @@ style:{
 backgroundColor:'white',
 padding:0},
 
-className:"topHeader",__source:{fileName:_jsxFileName,lineNumber:64}},
+className:"topHeader",__source:{fileName:_jsxFileName,lineNumber:63}},
 
-__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement("style",{dangerouslySetInnerHTML:{__html:__WEBPACK_IMPORTED_MODULE_11__styles_topHeader_less___default.a},__source:{fileName:_jsxFileName,lineNumber:71}}),
-__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_antd_lib_dropdown___default.a,{overlay:menu,__source:{fileName:_jsxFileName,lineNumber:72}},
-__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement("div",{className:"ant-dropdown-link user-dropdown",href:"#",__source:{fileName:_jsxFileName,lineNumber:73}},
+__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement("style",{dangerouslySetInnerHTML:{__html:__WEBPACK_IMPORTED_MODULE_11__styles_topHeader_less___default.a},__source:{fileName:_jsxFileName,lineNumber:70}}),
+__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_antd_lib_dropdown___default.a,{overlay:menu,__source:{fileName:_jsxFileName,lineNumber:71}},
+__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement("div",{className:"ant-dropdown-link user-dropdown",href:"#",__source:{fileName:_jsxFileName,lineNumber:72}},
 __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_cloudinary_react__["Image"],{
 cloudName:__WEBPACK_IMPORTED_MODULE_13__constants__["CLOUD_NAME"],
 publicId:currentUserSync.avatar,
 width:"40",
 crop:"scale",
-style:{borderRadius:'50%'},__source:{fileName:_jsxFileName,lineNumber:74}}))),
+style:{borderRadius:'50%'},__source:{fileName:_jsxFileName,lineNumber:73}}))),
 
 
 
-__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement("div",{__source:{fileName:_jsxFileName,lineNumber:83}},
-__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_next_link___default.a,{prefetch:true,href:"/",__source:{fileName:_jsxFileName,lineNumber:84}},
-__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement("a",{__source:{fileName:_jsxFileName,lineNumber:85}},
+__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement("div",{__source:{fileName:_jsxFileName,lineNumber:82}},
+__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_next_link___default.a,{prefetch:true,href:"/",__source:{fileName:_jsxFileName,lineNumber:83}},
+__WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement("a",{__source:{fileName:_jsxFileName,lineNumber:84}},
 __WEBPACK_IMPORTED_MODULE_5_react___default.a.createElement("img",{
 src:"http://sv1.upsieutoc.com/2018/06/14/company_logo.jpg",
-className:"company-logo",__source:{fileName:_jsxFileName,lineNumber:86}}))))));
+className:"company-logo",__source:{fileName:_jsxFileName,lineNumber:85}}))))));
 
 
 
@@ -387,40 +385,43 @@ visible:false});
 {var _this2=this;
 return(
 __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_react___default.a.Fragment,{__source:{fileName:_jsxFileName,lineNumber:76}},
-__WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement("a",{onClick:this.showModal,__source:{fileName:_jsxFileName,lineNumber:77}},"Change Avatar"),
+__WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement("a",{onClick:this.showModal,className:"change-avatar-link",__source:{fileName:_jsxFileName,lineNumber:77}},"Change Avatar"),
+
+
 __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0_antd_lib_modal___default.a,{
 title:"Change Picture",
 visible:this.state.visible,
 footer:null,
-onCancel:this.handleCancel,__source:{fileName:_jsxFileName,lineNumber:78}},
+onCancel:this.handleCancel,__source:{fileName:_jsxFileName,lineNumber:80}},
 
-__WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_apollo__["ApolloConsumer"],{__source:{fileName:_jsxFileName,lineNumber:84}},
+__WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_apollo__["ApolloConsumer"],{__source:{fileName:_jsxFileName,lineNumber:86}},
 function(client){
 var data=client.readQuery({
 query:__WEBPACK_IMPORTED_MODULE_10__graphql_queries_gql__["getCurrentUser"]});var
 
 currentUser=data.currentUser;
 return(
-__WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement("div",{className:"upload-avatar-layout",__source:{fileName:_jsxFileName,lineNumber:91}},
+__WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement("div",{className:"upload-avatar-layout",__source:{fileName:_jsxFileName,lineNumber:93}},
 __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_antd_lib_upload___default.a,{
 name:"avatar",
 listType:"picture-card",
 className:"avatar-uploader",
 showUploadList:false,
-beforeUpload:_this2.beforeUpload,__source:{fileName:_jsxFileName,lineNumber:92}},
+beforeUpload:_this2.beforeUpload,__source:{fileName:_jsxFileName,lineNumber:94}},
 
-__WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement("style",{dangerouslySetInnerHTML:{__html:__WEBPACK_IMPORTED_MODULE_12__styles_updateAvatar_less___default.a},__source:{fileName:_jsxFileName,lineNumber:99}}),
+__WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement("style",{dangerouslySetInnerHTML:{__html:__WEBPACK_IMPORTED_MODULE_12__styles_updateAvatar_less___default.a},__source:{fileName:_jsxFileName,lineNumber:101}}),
 __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_antd_lib_spin___default.a,{
+tip:"Uploading...",
 spinning:_this2.state.loading,
 style:{right:'0%'},
-indicator:__WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_antd_lib_icon___default.a,{type:"loading",style:{fontSize:24},spin:true,__source:{fileName:_jsxFileName,lineNumber:103}}),__source:{fileName:_jsxFileName,lineNumber:100}},
+indicator:__WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_antd_lib_icon___default.a,{type:"loading",style:{fontSize:24},spin:true,__source:{fileName:_jsxFileName,lineNumber:106}}),__source:{fileName:_jsxFileName,lineNumber:102}},
 
 __WEBPACK_IMPORTED_MODULE_6_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_cloudinary_react__["Image"],{
 cloudName:__WEBPACK_IMPORTED_MODULE_11__constants__["CLOUD_NAME"],
 publicId:currentUser.avatar,
 width:"300",
 crop:"scale",
-style:{margin:'auto'},__source:{fileName:_jsxFileName,lineNumber:105}})))));
+style:{margin:'auto'},__source:{fileName:_jsxFileName,lineNumber:108}})))));
 
 
 
@@ -51569,7 +51570,7 @@ Object(__WEBPACK_IMPORTED_MODULE_4__lib_withApollo__["a" /* default */])(MyApp);
 /***/ "./styles/topHeader.less":
 /***/ (function(module, exports) {
 
-;(function(){"use strict";module.exports=".topHeader .company-logo {\n  margin-left: 50%;\n  float: left;\n  width: 140px;\n  /* you can use % */\n  height: auto;\n}\n.topHeader .user-dropdown {\n  float: right;\n  margin-right: 1%;\n  cursor: pointer;\n  -webkit-transition: background-color 0.5s;\n  transition: background-color 0.5s;\n  padding: 0 15px;\n}\n.topHeader .user-dropdown:hover {\n  background-color: #b5f5ec;\n}\n.menu-dropdown .ant-dropdown-menu-item {\n  padding: 10px 30px;\n}\n.menu-dropdown i {\n  padding-right: 10px;\n}\n";})();
+;(function(){"use strict";module.exports=".topHeader .company-logo {\n  margin-left: 50%;\n  float: left;\n  width: 140px;\n  /* you can use % */\n  height: auto;\n}\n.topHeader .user-dropdown {\n  float: right;\n  margin-right: 1%;\n  cursor: pointer;\n  -webkit-transition: background-color 0.5s;\n  transition: background-color 0.5s;\n  padding: 0 15px;\n}\n.topHeader .user-dropdown:hover {\n  background-color: #b5f5ec;\n}\n.menu-dropdown .ant-dropdown-menu-item {\n  padding: 10px 30px;\n}\n.menu-dropdown i {\n  padding-right: 10px;\n}\n.menu-dropdown .change-avatar-link:hover {\n  border-bottom: 1px solid;\n}\n";})();
 
 /***/ }),
 

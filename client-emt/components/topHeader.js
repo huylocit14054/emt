@@ -1,5 +1,5 @@
 import { Layout, Menu, Icon, Dropdown, Avatar, List } from 'antd';
-import { withApollo, ApolloConsumer } from 'react-apollo';
+import { withApollo, Query } from 'react-apollo';
 import Link from 'next/link';
 import { Image } from 'cloudinary-react';
 import cookie from 'cookie';
@@ -21,11 +21,10 @@ class TopHeader extends React.Component {
 
   render() {
     return (
-      <ApolloConsumer>
-        {client => {
-          const data = client.readQuery({
-            query: GET_CURRENT_USER_QUERY,
-          });
+      <Query query={GET_CURRENT_USER_QUERY}>
+        {({ loading, error, data }) => {
+          if (loading) return 'Loading...';
+          if (error) return `Error! ${error.message}`;
           const currentUserSync = data.currentUser;
           const menu = (
             <Menu className="menu-dropdown">
@@ -93,7 +92,7 @@ class TopHeader extends React.Component {
             </Header>
           );
         }}
-      </ApolloConsumer>
+      </Query>
     );
   }
 }
