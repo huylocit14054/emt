@@ -49,7 +49,7 @@ class ProjectsList extends React.Component {
                                 <h4>
                                   <b>{project.name}</b>
                                 </h4>
-                                <p>{truncate(project.description, 70)}</p>
+                                <p>{truncate(project.description, 30)}</p>
                                 <div>
                                   <Avatar icon="user" />
                                   <Avatar>U</Avatar>

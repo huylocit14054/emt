@@ -1,8 +1,8 @@
 import { Layout, Menu, Icon, Dropdown, message } from 'antd';
 import { withRouter } from 'next/router';
-import { Query } from 'react-apollo';
+import { ApolloConsumer } from 'react-apollo';
 import Link from 'next/link';
-import { getCurrentUserOnClient as GET_CURRENT_USER_QUERY } from '../graphql/queries.gql';
+import { getCurrentUser as GET_CURRENT_USER_QUERY } from '../graphql/queries.gql';
 import TopHeader from './topHeader';
 
 const { Sider, Content } = Layout;
@@ -24,10 +24,11 @@ class NavigationLayout extends React.Component {
         : currentPage.replace('/', '');
     return (
       <Layout id="navigation-layout">
-        <Query query={GET_CURRENT_USER_QUERY}>
-          {({ loading, error, data }) => {
-            if (loading) return 'Loading...';
-            if (error) return `Error! ${error.message}`;
+        <ApolloConsumer>
+          {client => {
+            const data = client.readQuery({
+              query: GET_CURRENT_USER_QUERY,
+            });
             const currentUserSync = data.currentUser;
             return (
               <Sider
@@ -57,7 +58,7 @@ class NavigationLayout extends React.Component {
               </Sider>
             );
           }}
-        </Query>
+        </ApolloConsumer>
         <Layout style={{ marginLeft: this.state.collapsed ? 0 : 120 }}>
           <TopHeader />
 
@@ -66,7 +67,7 @@ class NavigationLayout extends React.Component {
               margin: '15px 16px 16px 100px',
               padding: 24,
               background: '#fff',
-              height: '100vh',
+              minHeight: '100vh',
             }}
           >
             {this.props.children}

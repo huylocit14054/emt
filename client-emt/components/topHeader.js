@@ -1,5 +1,5 @@
 import { Layout, Menu, Icon, Dropdown, Avatar, List } from 'antd';
-import { withApollo, Query } from 'react-apollo';
+import { withApollo, ApolloConsumer } from 'react-apollo';
 import Link from 'next/link';
 import { Image } from 'cloudinary-react';
 import cookie from 'cookie';
@@ -7,7 +7,7 @@ import redirect from '../lib/redirect';
 import stylesheet from 'styles/topHeader.less';
 import ChangeAvatarModal from './topHeader/ChangeAvatarModal';
 import { CLOUD_NAME } from '../constants';
-import { getCurrentUserOnClient as GET_CURRENT_USER_QUERY } from '../graphql/queries.gql';
+import { getCurrentUser as GET_CURRENT_USER_QUERY } from '../graphql/queries.gql';
 
 const { Header } = Layout;
 
@@ -21,10 +21,11 @@ class TopHeader extends React.Component {
 
   render() {
     return (
-      <Query query={GET_CURRENT_USER_QUERY}>
-        {({ loading, error, data }) => {
-          if (loading) return 'Loading...';
-          if (error) return `Error! ${error.message}`;
+      <ApolloConsumer>
+        {client => {
+          const data = client.readQuery({
+            query: GET_CURRENT_USER_QUERY,
+          });
           const currentUserSync = data.currentUser;
           const menu = (
             <Menu className="menu-dropdown">
@@ -92,7 +93,7 @@ class TopHeader extends React.Component {
             </Header>
           );
         }}
-      </Query>
+      </ApolloConsumer>
     );
   }
 }

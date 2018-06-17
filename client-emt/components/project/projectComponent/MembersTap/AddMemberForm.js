@@ -4,13 +4,14 @@ const FormItem = Form.Item;
 const { Option } = Select;
 
 const AddMemberForm = Form.create()(class extends React.Component {
-  render() {
-    const { getFieldDecorator } = this.props.form;
+    onAdd = () => {};
+    render() {
+      const { getFieldDecorator } = this.props.form;
 
-    return (
-      <Form layout="inline">
-        <FormItem>
-          {getFieldDecorator('username', {
+      return (
+        <Form layout="inline" onSubmit={this.onAdd}>
+          <FormItem>
+            {getFieldDecorator('username', {
               rules: [
                 {
                   required: true,
@@ -18,23 +19,23 @@ const AddMemberForm = Form.create()(class extends React.Component {
                 },
               ],
             })(<Input style={{ width: '300px' }} placeholder="username or email" />)}
-        </FormItem>
-        <FormItem>
-          {getFieldDecorator('role', {
+          </FormItem>
+          <FormItem>
+            {getFieldDecorator('role', {
               initialValue: 'member',
             })(<Select placeholder="Please select member's role">
               <Option key="member">member</Option>
               <Option key="admin">admin</Option>
                </Select>)}
-        </FormItem>
-        <FormItem>
-          <Button type="primary" htmlType="submit">
+          </FormItem>
+          <FormItem>
+            <Button type="primary" htmlType="submit">
               Add
-          </Button>
-        </FormItem>
-      </Form>
-    );
-  }
+            </Button>
+          </FormItem>
+        </Form>
+      );
+    }
 });
 
 export default AddMemberForm;
