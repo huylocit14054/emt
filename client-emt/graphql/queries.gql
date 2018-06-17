@@ -7,6 +7,15 @@ query getCurrentUser {
   }
 }
 
+query usersSuggestion($query: String!) {
+  usersSuggestion(query: $query) {
+    id
+    username
+    email
+    avatar
+  }
+}
+
 query getCurrentUserProfile {
   profile: currentUser {
     id

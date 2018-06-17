@@ -1,41 +1,156 @@
-import { Form, Input, Select, Button } from 'antd';
+import { Form, Input, Select, Button, Spin, Icon, message } from 'antd';
+import { withApollo, Mutation } from 'react-apollo';
+import Highlighter from 'react-highlight-words';
+import { Image } from 'cloudinary-react';
+import { CLOUD_NAME } from '../../../../constants';
+import {
+  usersSuggestion as USERS_SUGGESTION_QUERY,
+  getMembersByProjectId as GET_MEMBERS_BY_PROJECTS_ID_QUERY,
+} from '../../../../graphql/queries.gql';
+import { addMemberToProject as ADD_MEMBER_TO_PROJECT_MUTATION } from '../../../../graphql/mutations.gql';
 
 const FormItem = Form.Item;
 const { Option } = Select;
 
+const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 const AddMemberForm = Form.create()(class extends React.Component {
-    onAdd = () => {};
+    state = {
+      usersSuggestion: [],
+      value: '',
+      fetching: false,
+    };
+    fetchUserSuggestion = async value => {
+      this.setState({ fetching: true });
+      this.setState({ value });
+      const { data } = await this.props.client.query({
+        query: USERS_SUGGESTION_QUERY,
+        variables: {
+          query: value,
+        },
+      });
+      const { usersSuggestion } = data;
+
+      this.setState({ usersSuggestion, fetching: false });
+    };
+
+    onAdd = async (e, addMemberToProject) => {
+      e.preventDefault();
+      this.props.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('Received values of form: ', values);
+          addMemberToProject({
+            variables: {
+              input: {
+                projectId: parseInt(this.props.projectId),
+                ...values,
+              },
+            },
+            refetchQueries: [
+              {
+                query: GET_MEMBERS_BY_PROJECTS_ID_QUERY,
+                variables: {
+                  projectId: this.props.projectId,
+                },
+              },
+            ],
+          });
+        }
+      });
+    };
     render() {
+      const { fetching, usersSuggestion, value } = this.state;
       const { getFieldDecorator } = this.props.form;
+      const { projectId } = this.props;
 
       return (
-        <Form layout="inline" onSubmit={this.onAdd}>
-          <FormItem>
-            {getFieldDecorator('username', {
-              rules: [
-                {
-                  required: true,
-                  message: 'Please input the username/member of user!',
-                },
-              ],
-            })(<Input style={{ width: '300px' }} placeholder="username or email" />)}
-          </FormItem>
-          <FormItem>
-            {getFieldDecorator('role', {
-              initialValue: 'member',
-            })(<Select placeholder="Please select member's role">
-              <Option key="member">member</Option>
-              <Option key="admin">admin</Option>
-               </Select>)}
-          </FormItem>
-          <FormItem>
-            <Button type="primary" htmlType="submit">
-              Add
-            </Button>
-          </FormItem>
-        </Form>
+        <Mutation
+          mutation={ADD_MEMBER_TO_PROJECT_MUTATION}
+          onCompleted={data => {
+            const { form } = this.props;
+
+            message.success('Member Added');
+            form.resetFields();
+          }}
+          onError={error => {
+
+            this.props.form.resetFields();
+
+            error.graphQLErrors.map(({ message }, i) => {
+              message.error(message, 3);
+            });
+          }}
+        >
+          {(addMemberToProject, { loading }) => (
+            <Form layout="inline" onSubmit={e => this.onAdd(e, addMemberToProject)}>
+              <FormItem>
+                {getFieldDecorator('username', {
+                  rules: [
+                    {
+                      required: true,
+                      message: 'Please input the username/email of user!',
+                    },
+                  ],
+                  initialValue: '',
+                })(<Select
+                  mode="combobox"
+                  placeholder="Username or email address"
+                  notFoundContent={
+                      fetching ? <Icon type="loading" style={{ fontSize: 24 }} spin /> : null
+                    }
+                  filterOption={false}
+                  defaultActiveFirstOption={false}
+                  showArrow={false}
+                
+                  onChange={this.fetchUserSuggestion}
+                  style={{ width: '350px' }}
+                >
+                  {usersSuggestion.map(user => (
+                    <Option key={user.username}>
+                      <Image
+                        cloudName={CLOUD_NAME}
+                        publicId={user.avatar}
+                        width="25"
+                        crop="scale"
+                        style={{ borderRadius: '50%', marginRight: 10 }}
+                      />
+                      <Highlighter
+                        highlightClassName="highlight-keyword-username"
+                        searchWords={[this.state.value]}
+                        autoEscape
+                        textToHighlight={user.username}
+                      />{' '}
+                        |
+                      <Highlighter
+                        className="small-email-text"
+                        highlightClassName="highlight-keyword-email"
+                        searchWords={[this.state.value]}
+                        autoEscape
+                        textToHighlight={user.email}
+                        style={{ marginLeft: 40 }}
+                      />
+                    </Option>
+                    ))}
+                   </Select>)}
+              </FormItem>
+
+              <FormItem>
+                {getFieldDecorator('role', {
+                  initialValue: 'member',
+                })(<Select placeholder="Please select member's role">
+                  <Option key="member">member</Option>
+                  <Option key="project_admin">admin</Option>
+                   </Select>)}
+              </FormItem>
+              <FormItem>
+                <Button type="primary" htmlType="submit" loading={loading}>
+                  Add
+                </Button>
+              </FormItem>
+            </Form>
+          )}
+        </Mutation>
       );
     }
 });
 
-export default AddMemberForm;
+export default withApollo(AddMemberForm);

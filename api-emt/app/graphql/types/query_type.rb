@@ -76,11 +76,11 @@ class Types::QueryType < Types::BaseObject
   end
 
   # suggestions on typing in adding members into project
-  field :user_suggestion, [Types::User, null: true], null: false do
+  field :users_suggestion, [Types::User, null: true], null: false do
     argument :query, String, required: true
   end
 
-  def user_suggestion(query:)
+  def users_suggestion(query:)
     suggestion = ::User.where("username LIKE ? OR email LIKE ?", "%#{query}%", "%#{query}%")
   end
 

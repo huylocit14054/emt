@@ -28,6 +28,7 @@
     "isomorphic-unfetch": "^2.0.0",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
+    "lodash": "^4.17.10",
     "next": "6.0.3",
     "next-plugin-graphql": "^0.0.1",
     "next-routes": "^1.4.2",
@@ -40,6 +41,7 @@
     "react": "^16.0.0",
     "react-apollo": "^2.1.5",
     "react-dom": "^16.0.0",
+    "react-highlight-words": "^0.11.0",
     "react-timeago": "^4.1.9",
     "sass-loader": "^6.0.6",
     "truncate": "^2.0.1"

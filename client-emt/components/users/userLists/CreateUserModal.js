@@ -1,12 +1,12 @@
-import { Button, message, Icon } from "antd";
-import { Mutation } from "react-apollo";
-import { createUser as CREATE_USER_MUTATION } from "../../../graphql/mutations.gql";
-import { getAllUsers as GET_ALL_USERS_QUERY } from "../../../graphql/queries.gql";
-import CreateUserForm from "./createUserModal/CreateUserForm";
+import { Button, message, Icon } from 'antd';
+import { Mutation } from 'react-apollo';
+import { createUser as CREATE_USER_MUTATION } from '../../../graphql/mutations.gql';
+import { getAllUsers as GET_ALL_USERS_QUERY } from '../../../graphql/queries.gql';
+import CreateUserForm from './createUserModal/CreateUserForm';
 
 class CreateUserModal extends React.Component {
   state = {
-    visible: false
+    visible: false,
   };
   showModal = () => {
     this.setState({ visible: true });
@@ -23,25 +23,25 @@ class CreateUserModal extends React.Component {
       createUser({
         variables: {
           input: {
-            attributes: JSON.stringify(values)
-          }
+            attributes: JSON.stringify(values),
+          },
         },
         update: (
           store,
           {
             data: {
-              createUser: { createdUser }
-            }
-          }
+              createUser: { createdUser },
+            },
+          },
         ) => {
           const data = store.readQuery({ query: GET_ALL_USERS_QUERY });
 
           data.users.splice(0, 0, createdUser);
           store.writeQuery({
             query: GET_ALL_USERS_QUERY,
-            data
+            data,
           });
-        }
+        },
       });
     });
   };
@@ -60,9 +60,9 @@ class CreateUserModal extends React.Component {
           mutation={CREATE_USER_MUTATION}
           onCompleted={data => {
             console.log(data);
-            const form = this.formRef.props.form;
+            const { form } = this.formRef.props;
             // this.setState({ visible: false });
-            message.success("User Created");
+            message.success('User Created');
             form.resetFields();
           }}
           onError={error => {

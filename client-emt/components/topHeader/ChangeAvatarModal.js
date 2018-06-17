@@ -1,6 +1,5 @@
 import { Modal, Button, Upload, Icon, message, Spin } from 'antd';
 import { withApollo, ApolloConsumer } from 'react-apollo';
-import gql from 'graphql-tag';
 import { Image } from 'cloudinary-react';
 import { updateAvatar as UPDATE_AVATAR_MUTATION } from '../../graphql/mutations.gql';
 import { getCurrentUser as GET_CURRENT_USER_QUERY } from '../../graphql/queries.gql';
@@ -41,17 +40,13 @@ class ChangeAvatarModal extends React.Component {
       .then(data => {
         const { avatarUrl } = data.data.updateAvatar;
 
-        this.props.client.writeFragment({
-          id: `User:${this.props.currentUserId}`,
-          fragment: gql`
-            fragment myUser on User {
-              avatar
-            }
-          `,
-          data: {
-            avatar: avatarUrl,
-            __typename: 'User',
-          },
+        const { currentUser } = this.props.client.readQuery({
+          query: GET_CURRENT_USER_QUERY,
+        });
+        currentUser.avatar = avatarUrl;
+        this.props.client.writeQuery({
+          query: GET_CURRENT_USER_QUERY,
+          data: { currentUser },
         });
 
         this.setState({

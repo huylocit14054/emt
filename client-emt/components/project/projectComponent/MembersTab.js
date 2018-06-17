@@ -32,11 +32,9 @@ function onChange(updateMemberRoleInProject, e, memberId) {
 
 class MembersTab extends React.Component {
   render() {
+    const projectId = this.props.router.query.id;
     return (
-      <Query
-        query={GET_MEMBERS_BY_PROJECTS_ID}
-        variables={{ projectId: this.props.router.query.id }}
-      >
+      <Query query={GET_MEMBERS_BY_PROJECTS_ID} variables={{ projectId }}>
         {({ loading, error, data }) => {
           if (loading) return 'Loading...';
           if (error) return `Error! ${error.message}`;
@@ -44,7 +42,7 @@ class MembersTab extends React.Component {
             <ApolloConsumer>
               {client => {
                 const project = client.readFragment({
-                  id: `Project:${this.props.router.query.id}`,
+                  id: `Project:${projectId}`,
                   fragment: gql`
                     fragment currentProject on Project {
                       isManagedByCurrentUser
@@ -55,7 +53,11 @@ class MembersTab extends React.Component {
 
                 return (
                   <React.Fragment>
-                    <If condition={isManagedByCurrentUser} then={<AddMemberForm />} else={null} />
+                    <If
+                      condition={isManagedByCurrentUser}
+                      then={<AddMemberForm projectId={projectId} />}
+                      else={null}
+                    />
                     <br />
                     <Table
                       pagination={{ pageSize: 7 }}
