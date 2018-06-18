@@ -31,6 +31,16 @@ mutation updateAvatar($input: UpdateAvatarInput!) {
     avatarUrl
   }
 }
+
+mutation updateProject($input: UpdateProjectInput!) {
+  updateProject(input: $input) {
+    updatedProject {
+      id
+      name
+      description
+    }
+  }
+}
 mutation addMemberToProject($input: AddMemberToProjectInput!) {
   addMemberToProject(input: $input) {
     addedMember {

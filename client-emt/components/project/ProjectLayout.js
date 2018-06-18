@@ -1,14 +1,24 @@
 import { withRouter } from 'next/router';
 import { Tabs, Input } from 'antd';
 import { Query } from 'react-apollo';
+import Link from 'next/link';
+import Router from 'next/router';
+import _ from 'lodash';
 import MembersTab from './projectComponent/MembersTab';
 import { getProjectById as GET_PROJECT_BY_ID } from '../../graphql/queries.gql';
+import UpdateProjectModal from './projectComponent/UpdateProjectModal';
 
 const { TabPane } = Tabs;
 class ProjectLayout extends React.Component {
   state = {
     editProjectName: false,
     editProjectDescription: false,
+  };
+
+  callback = key => {
+    const projectId = this.props.router.query.id;
+    const site = _.capitalize(key);
+    Router.push(`/project${site}?id=${projectId}`, `/project/${projectId}/${key}`);
   };
 
   toggleEditName = () => {
@@ -26,37 +36,19 @@ class ProjectLayout extends React.Component {
             const { project } = data;
             return (
               <div style={{ marginBottom: '1%' }}>
-                <div>
-                  <Input
-                    type="text"
-                    value={project.name}
-                    style={{
-                      display: editProjectName ? 'block' : 'none',
-                      width: 300,
-                      fontSize: 24,
-                      fontWeight: 'bold',
-                      marginBottom: 4,
-                    }}
-                  />
-                  <div
-                    style={{
-                      display: editProjectName ? 'none' : 'block',
-                      fontSize: 24,
-                      fontWeight: 'bold',
-                    }}
-                    onClick={this.toggleEditName}
-                  >
-                    {project.name}
-                  </div>
-                </div>
-
+                <h2>
+                  {project.name}
+                  {project.isManagedByCurrentUser && (
+                    <UpdateProjectModal projectId={this.props.router.query.id} />
+                  )}
+                </h2>
                 <p>{project.description}</p>
               </div>
             );
           }}
         </Query>
 
-        <Tabs activeKey={activeKey}>
+        <Tabs activeKey={activeKey} onChange={this.callback}>
           <TabPane tab="Members" key="members">
             <MembersTab />
           </TabPane>
