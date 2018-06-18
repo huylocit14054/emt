@@ -5,6 +5,7 @@ import { withRouter } from 'next/router';
 import { getDimensionsByProjectId as GET_DIMENSIONS_BY_PROJECT_ID_QUERY } from '../../../graphql/queries.gql';
 import CreateDimensionModal from './dimensionsTab/CreateDimensionModal';
 import UpdateDimensionModal from './dimensionsTab/UpdateDimensionModal';
+import CreateOptionsModal from './dimensionsTab/CreateOptionsModal';
 
 const { Column } = Table;
 class DimensionsTab extends React.Component {
@@ -40,6 +41,9 @@ class DimensionsTab extends React.Component {
                   render={dimension => (
                     <span>
                       <UpdateDimensionModal dimension={dimension} />
+                      {dimension.category === 'selection' && (
+                        <CreateOptionsModal dimensionId={dimension.id} />
+                      )}
                     </span>
                   )}
                 />
