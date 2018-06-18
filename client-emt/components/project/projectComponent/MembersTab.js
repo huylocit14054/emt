@@ -13,7 +13,7 @@ const humanizeString = require('humanize-string');
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
-const { Column, ColumnGroup } = Table;
+const { Column } = Table;
 
 function onChange(updateMemberRoleInProject, e, memberId) {
   updateMemberRoleInProject({

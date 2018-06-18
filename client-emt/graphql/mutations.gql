@@ -32,6 +32,34 @@ mutation updateAvatar($input: UpdateAvatarInput!) {
   }
 }
 
+mutation createDimension($input: CreateDimensionInput!) {
+  createDimension(input: $input) {
+    createdDimension {
+      id
+      name
+      category
+      createdAt
+    }
+  }
+}
+
+mutation updateDimension($input: UpdateDimensionInput!) {
+  updateDimension(input: $input) {
+    updatedDimension {
+      id
+      name
+    }
+  }
+}
+
+mutation createOptions($input: CreateOptionsInput!) {
+  createOptions(input: $input) {
+    createdOptions {
+      id
+      name
+    }
+  }
+}
 mutation updateProject($input: UpdateProjectInput!) {
   updateProject(input: $input) {
     updatedProject {

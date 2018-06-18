@@ -1,9 +1,9 @@
-import { Form, Input, Modal, Rate } from 'antd';
+import { Form, Input, Modal, Rate, Select } from 'antd';
 
 const { TextArea } = Input;
 const FormItem = Form.Item;
-
-const CreateProjectForm = Form.create()(class extends React.Component {
+const { Option } = Select;
+const CreateDimensionForm = Form.create()(class extends React.Component {
   render() {
     const {
       visible, onCancel, onCreate, form, confirmLoading,
@@ -26,20 +26,24 @@ const CreateProjectForm = Form.create()(class extends React.Component {
                 rules: [
                   {
                     required: true,
-                    message: 'Please input the name of project!',
+                    message: 'Please input the name of dimension!',
                   },
                 ],
               })(<Input />)}
           </FormItem>
-          <FormItem label="description">
-            {getFieldDecorator('description', {
+          <FormItem label="category">
+            {getFieldDecorator('category', {
                 rules: [
                   {
                     required: true,
-                    message: 'Please input the description of project!',
+                    message: "Please select dimension's category",
                   },
                 ],
-              })(<TextArea rows={4} />)}
+                initialValue: 'selection',
+              })(<Select>
+                <Option key="selection">selection</Option>
+                <Option key="input">input</Option>
+              </Select>)}
           </FormItem>
         </Form>
       </Modal>
@@ -47,4 +51,4 @@ const CreateProjectForm = Form.create()(class extends React.Component {
   }
 });
 
-export default CreateProjectForm;
+export default CreateDimensionForm;

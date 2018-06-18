@@ -59,6 +59,14 @@ class Types::QueryType < Types::BaseObject
     ::Option.find(id)
   end
 
+  field :dimension_options, [Types::Option], null: false do 
+    argument :dimension_id, ID, required: false
+  end
+
+  def dimension_options(dimension_id:)
+    ::Dimension.find(dimension_id).options
+  end
+
   field :authorization, Types::Authorization, null: false, description: "Authorization" do
     argument :id, ID, required: false
   end

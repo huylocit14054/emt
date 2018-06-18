@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Router from 'next/router';
 import _ from 'lodash';
 import MembersTab from './projectComponent/MembersTab';
+import DimensionsTab from './projectComponent/DimensionsTab';
 import { getProjectById as GET_PROJECT_BY_ID } from '../../graphql/queries.gql';
 import UpdateProjectModal from './projectComponent/UpdateProjectModal';
 
@@ -53,7 +54,7 @@ class ProjectLayout extends React.Component {
             <MembersTab />
           </TabPane>
           <TabPane tab="Dimensions" key="dimensions">
-            Content of Tab Pane 2
+            <DimensionsTab />
           </TabPane>
           <TabPane tab="Assignments" key="assignments">
             Content of Tab Pane 3

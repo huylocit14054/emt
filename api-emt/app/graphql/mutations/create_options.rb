@@ -1,4 +1,4 @@
-class Mutations::CreateOption < Mutations::BaseMutation
+class Mutations::CreateOptions < Mutations::BaseMutation
 
     argument :names, [String] , required: true
     argument :dimension_id, ID, required: true

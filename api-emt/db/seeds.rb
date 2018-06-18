@@ -25,7 +25,7 @@ end
 
 # Seed selection dimension
 4.times do
-    dimension = Dimension.create(name: "UTM_" + Faker::Hacker.unique.abbreviation, category: "selection", project_id: rand(1..3))
+    dimension = Dimension.create(name: "UTM_" + Faker::Hacker.unique.abbreviation, category: "selection", project_id: rand(1..10))
     10.times do
         Option.create(name: Faker::LeagueOfLegends.unique.champion, dimension: dimension)
     end
@@ -33,7 +33,7 @@ end
 
 # Seed input dimension
 2.times do
-    Dimension.create(name: "UTM_" + Faker::Hacker.unique.abbreviation, category: "input", project_id: rand(1..3))
+    Dimension.create(name: "UTM_" + Faker::Hacker.unique.abbreviation, category: "input", project_id: rand(1..10))
 end
 
 # Seed authorization
