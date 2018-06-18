@@ -1,0 +1,45 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres:10.4
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - '5432:5432'
+    volumes:
+      - emt-db:/var/lib/postgresql/data
+
+  api:
+    image: emt-api
+    build:
+      context: ./api-emt
+    environment:
+      - DATABASE_URL=postgres://postgres:password@db
+    ports:
+      - '3004:3000'
+    volumes:
+      - ./api-emt:/api-emt
+    depends_on:
+      - db
+    # Uncommend these lines for debugging (docker attach <emt_api_1 or CONTAINER_ID>)
+    # tty: true
+    # stdin_open: true
+
+  ui:
+    image: emt-client
+    build:
+      context: ./client-emt
+    environment:
+      - PORT=80
+      - API_URL=http://api:3000
+    volumes:
+      - ./client-emt:/client-emt
+    ports:
+      - '3000:80'
+    depends_on:
+      - api
+
+volumes:
+  emt-db:
