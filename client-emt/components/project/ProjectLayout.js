@@ -1,12 +1,21 @@
 import { withRouter } from 'next/router';
-import { Tabs } from 'antd';
+import { Tabs, Input } from 'antd';
 import { Query } from 'react-apollo';
 import MembersTab from './projectComponent/MembersTab';
 import { getProjectById as GET_PROJECT_BY_ID } from '../../graphql/queries.gql';
 
 const { TabPane } = Tabs;
 class ProjectLayout extends React.Component {
+  state = {
+    editProjectName: false,
+    editProjectDescription: false,
+  };
+
+  toggleEditName = () => {
+    this.setState(prevState => ({ editProjectName: !prevState.editProjectName }));
+  };
   render() {
+    const { editProjectDescription, editProjectName } = this.state;
     const { activeKey } = this.props;
     return (
       <React.Fragment>
@@ -17,7 +26,30 @@ class ProjectLayout extends React.Component {
             const { project } = data;
             return (
               <div style={{ marginBottom: '1%' }}>
-                <h2>{project.name}</h2>
+                <div>
+                  <Input
+                    type="text"
+                    value={project.name}
+                    style={{
+                      display: editProjectName ? 'block' : 'none',
+                      width: 300,
+                      fontSize: 24,
+                      fontWeight: 'bold',
+                      marginBottom: 4,
+                    }}
+                  />
+                  <div
+                    style={{
+                      display: editProjectName ? 'none' : 'block',
+                      fontSize: 24,
+                      fontWeight: 'bold',
+                    }}
+                    onClick={this.toggleEditName}
+                  >
+                    {project.name}
+                  </div>
+                </div>
+
                 <p>{project.description}</p>
               </div>
             );
