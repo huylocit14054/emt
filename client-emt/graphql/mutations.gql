@@ -1,0 +1,70 @@
+mutation loginUser($input: LoginInput!) {
+  loginUser(input: $input) {
+    token
+  }
+}
+
+mutation createUser($input: CreateUserInput!) {
+  createUser(input: $input) {
+    createdUser {
+      id
+      username
+      email
+      createdAt
+      avatar
+    }
+  }
+}
+
+mutation updateUserInfo($input: UpdateUserInput!) {
+  updateUser(input: $input) {
+    updatedUser {
+      id
+      username
+      email
+    }
+  }
+}
+
+mutation updateAvatar($input: UpdateAvatarInput!) {
+  updateAvatar(input: $input) {
+    avatarUrl
+  }
+}
+mutation addMemberToProject($input: AddMemberToProjectInput!) {
+  addMemberToProject(input: $input) {
+    addedMember {
+      id
+      role
+      user {
+        id
+        email
+        username
+        role
+        avatar
+      }
+    }
+  }
+}
+
+mutation updatePassword($input: UpdatePasswordInput!) {
+  updatePassword(input: $input) {
+    passwordIsUpdated
+  }
+}
+
+mutation createProject($input: CreateProjectInput!) {
+  createProject(input: $input) {
+    createdProject {
+      id
+      name
+      description
+    }
+  }
+}
+
+mutation updateMemberRoleInProject($input: UpdateMemberRoleInProjectInput!) {
+  updateMemberRoleInProject(input: $input) {
+    updated
+  }
+}

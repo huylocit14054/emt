@@ -1,22 +1,27 @@
-#components-layout-demo-custom-trigger .trigger {
-    font-size: 18px;
-    line-height: 64px;
-    padding: 0 24px;
+.projects-list {
+  padding-top: 0.5%;
+  .add-project-btn {
+    padding: 5%;
+    div.ant-card-body {
+      text-align: center;
+    }
+  }
+  span.ant-avatar {
+    margin: 0px 3px;
+  }
+
+  span.ant-divider-inner-text {
+    background-color: #00b5d0;
+    font-size: 14pt;
+    font-weight: 900;
+    color: #fff;
+  }
+
+  div.ant-card {
     cursor: pointer;
-    transition: color .3s;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+    &:hover {
+      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1) !important;
+    }
   }
-  
-  #components-layout-demo-custom-trigger .trigger:hover {
-    color: #1890ff;
-  }
-  
-  .logo {
-    width: 140px; /* you can use % */
-    height: auto;
-    padding-top: 4%;
-    margin-bottom: 23px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
+}

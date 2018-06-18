@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180611045757) do
+ActiveRecord::Schema.define(version: 20180616152017) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 20180611045757) do
     t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.bigint "project_id"
+    t.string "role"
     t.index ["project_id"], name: "index_project_members_on_project_id"
     t.index ["user_id", "project_id"], name: "project member index", unique: true
     t.index ["user_id"], name: "index_project_members_on_user_id"
@@ -76,9 +77,12 @@ ActiveRecord::Schema.define(version: 20180611045757) do
   create_table "users", force: :cascade do |t|
     t.string "username"
     t.string "password_digest"
-    t.string "role"
+    t.string "role", default: "user"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "email"
+    t.string "avatar", default: "default-avatar_wbcfln.png"
+    t.index ["email"], name: "index_users_on_email"
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
