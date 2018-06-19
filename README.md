@@ -43,6 +43,7 @@ $ docker-compose run api rails c
 
 ```
 $ docker-compose exec api bash
+$ docker-compose exec db psql -h db -U postgres
 ```
 
 #### View logs
