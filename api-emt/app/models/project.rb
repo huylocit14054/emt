@@ -5,7 +5,7 @@ class Project < ApplicationRecord
 
     validates :name, length: {minimum: 3}, allow_blank: true, uniqueness: true
 
-    # generate records for assignment table 
+    # generate records for assignment view table 
     # return an array
     def self.generate_dimensions_assigment_table(project_id:)
         # get the project
@@ -50,4 +50,35 @@ class Project < ApplicationRecord
         end 
         JSON.parse(records)
     end
+
+    # generate selection tree json for assign dimension
+    def self.generate_dimensions_selection_tree(project_id:)
+        # get the project
+        @project = Project.find(project_id)
+        # get project's dimension 
+        @dimensions = @project.dimensions
+        @selection_tree = Jbuilder.encode do |json|
+            # create array with the dimension
+            json.array! @dimensions do |dimension|
+                json.label dimension.name
+                json.value dimension.id.to_s
+                json.key dimension.id.to_s
+                # get option of each dimension
+                @options = dimension.options 
+                # if the dimension is input the options will return [] and dose not have children key
+                unless @options.empty?
+                    #loop through all option and create key
+                    json.children @options do |option|
+                        #create value for value and key using dimension id + its option id
+                        @value = "#{dimension.id}-#{option.id}"
+                        json.label option.name
+                        json.value @value
+                        json.key @value 
+                    end  
+                end   
+            end 
+        end
+        JSON.parse(@selection_tree) 
+    end 
+
 end

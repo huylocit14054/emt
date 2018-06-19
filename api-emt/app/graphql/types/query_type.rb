@@ -93,12 +93,12 @@ class Types::QueryType < Types::BaseObject
   end
 
   # suggestions on typing in dimensions assignment
-  field :member_suggestion, [Types::User, null: true], null: false do
+  field :members_suggestion, [Types::User, null: true], null: false do
     argument :project_id, ID, required: true
     argument :query, String, required: true
   end
 
-  def member_suggestion(project_id:, query:)
+  def members_suggestion(project_id:, query:)
     project = ::Project.find(project_id)
     suggestions = project.members.where("username LIKE ? OR email LIKE ?", "%#{query}%", "%#{query}%")
   end
@@ -120,7 +120,15 @@ class Types::QueryType < Types::BaseObject
 
   def project_dimensions(project_id:)
     project = ::Project.find(project_id)
-    members = project.dimensions
+    dimensions = project.dimensions.order(created_at: :desc)
+  end
+
+  field :project_dimensions_tree, Types::Json, null: false do
+    argument :project_id, ID, required: true
+  end
+
+  def project_dimensions_tree(project_id:)
+    ::Project.generate_dimensions_selection_tree(project_id: project_id)
   end
 
   #return table of dimensions assignment

@@ -85,6 +85,13 @@ mutation addMemberToProject($input: AddMemberToProjectInput!) {
   }
 }
 
+mutation assignDimensionsForMembers($input: AssignDimensionsForMembersInput!) {
+  assignDimensionsForMembers(input: $input){
+    assigned
+  }
+
+}
+
 mutation updatePassword($input: UpdatePasswordInput!) {
   updatePassword(input: $input) {
     passwordIsUpdated

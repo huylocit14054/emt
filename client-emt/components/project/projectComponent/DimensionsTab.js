@@ -41,7 +41,7 @@ class DimensionsTab extends React.Component {
     const projectId = this.props.router.query.id;
     return (
       <React.Fragment>
-        <br />
+        
         <CreateDimensionModal projectId={projectId} />
 
         <Query query={GET_DIMENSIONS_BY_PROJECT_ID_QUERY} variables={{ projectId }}>

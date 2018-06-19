@@ -8,6 +8,7 @@ import MembersTab from './projectComponent/MembersTab';
 import DimensionsTab from './projectComponent/DimensionsTab';
 import { getProjectById as GET_PROJECT_BY_ID } from '../../graphql/queries.gql';
 import UpdateProjectModal from './projectComponent/UpdateProjectModal';
+import AssignmentsTab from './projectComponent/AssignmentsTab';
 
 const { TabPane } = Tabs;
 class ProjectLayout extends React.Component {
@@ -48,7 +49,7 @@ class ProjectLayout extends React.Component {
             <DimensionsTab />
           </TabPane>
           <TabPane tab="Assignments" key="assignments">
-            Content of Tab Pane 3
+            <AssignmentsTab />
           </TabPane>
         </Tabs>
       </React.Fragment>

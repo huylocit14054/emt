@@ -1,6 +1,7 @@
 import ProjectLayout from '../components/project/ProjectLayout';
 import redirect from '../lib/redirect';
 import checkLoggedIn from '../lib/checkLoggedIn';
+import stylesheet from "styles/assignments.less";
 
 export default class ProjectAssignments extends React.Component {
   static async getInitialProps(context) {
@@ -16,6 +17,7 @@ export default class ProjectAssignments extends React.Component {
   render() {
     return (
       <React.Fragment>
+        <style dangerouslySetInnerHTML={{ __html: stylesheet }} />
         <ProjectLayout activeKey="assignments" />
       </React.Fragment>
     );

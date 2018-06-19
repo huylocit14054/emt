@@ -1,6 +1,6 @@
 class Mutations::AssignDimensionsForMembers < Mutations::BaseMutation
 
-    argument :members, [ID], required: true # id of users not members
+    argument :members, [String], required: true # id of users not members
     argument :project_id, ID, required: true
     argument :choices, [String], required: true # ["1-2", "3-4"]
     
@@ -28,7 +28,18 @@ class Mutations::AssignDimensionsForMembers < Mutations::BaseMutation
               rescue
                 next
               end
+            elsif Dimension.find(dimension_id).category.eql? "selection"
+              auth ||= member.authorizations.find_by(dimension_id: dimension_id)
+              all_options = Dimension.find(dimension_id).options
+              all_options.each do |option|
+                begin
+                  auth.option_authorizations.create(option: option)
+                rescue ActiveRecord::RecordNotUnique
+                  next
+                end
+              end
             end
+       
           end
          
         end

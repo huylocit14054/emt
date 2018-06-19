@@ -16,6 +16,15 @@ query usersSuggestion($query: String!) {
   }
 }
 
+query membersSuggestion($query: String!, $projectId: ID!) {
+  membersSuggestion(query: $query, projectId: $projectId) {
+    id
+    username
+    email
+    avatar
+  }
+}
+
 query getCurrentUserProfile {
   profile: currentUser {
     id
@@ -83,6 +92,10 @@ query getDimensionsByProjectId($projectId: ID!) {
       name
     }
   }
+}
+
+query getProjectDimensionsTreeByProjectId($projectId: ID!){
+  projectDimensionsTree(projectId: $projectId)
 }
 
 query getOptionsByDimensionId($dimensionId: ID!) {
