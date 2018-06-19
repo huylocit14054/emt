@@ -32,7 +32,6 @@ end
     end 
 
 
-<<<<<<< HEAD
     # Seed input dimension
     3.times do |i|
         begin 
@@ -41,17 +40,8 @@ end
         rescue
             retry
         end
-=======
-
-# Seed selection dimension
-4.times do
-    dimension = Dimension.create(name: "UTM_" + Faker::Hacker.unique.abbreviation, category: "selection", project_id: rand(1..10))
-    10.times do
-        Option.create(name: Faker::LeagueOfLegends.unique.champion, dimension: dimension)
->>>>>>> 79e8cec3f6a9ec197b0fcf61e3e4806e3bd7ff21
     end
 
-<<<<<<< HEAD
     dimensions = project.dimensions
     # Seed project member
     10.times do
@@ -61,12 +51,6 @@ end
         rescue
             retry
         end
-=======
-# Seed input dimension
-2.times do
-    Dimension.create(name: "UTM_" + Faker::Hacker.unique.abbreviation, category: "input", project_id: rand(1..10))
-end
->>>>>>> 79e8cec3f6a9ec197b0fcf61e3e4806e3bd7ff21
 
         # Seed authorization
         5.times do
