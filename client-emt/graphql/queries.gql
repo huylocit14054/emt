@@ -72,6 +72,22 @@ query getMembersByProjectId($projectId: ID!) {
   }
 }
 
+query getDimensionsByProjectId($projectId: ID!) {
+  projectDimensions(projectId: $projectId) {
+    id
+    name
+    category
+    createdAt
+  }
+}
+
+query getOptionsByDimensionId($dimensionId: ID!) {
+  dimensionOptions(dimensionId: $dimensionId) {
+    id
+    name
+  }
+}
+
 query getProjectById($id: ID!) {
   project(id: $id) {
     id

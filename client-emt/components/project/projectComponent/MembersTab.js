@@ -4,19 +4,16 @@ import { Query, Mutation, ApolloConsumer } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Image } from 'cloudinary-react';
 import { CLOUD_NAME } from '../../../constants';
-import {
-  getCurrentUserOnClient as GET_CURRENT_USER_QUERY,
-  getMembersByProjectId as GET_MEMBERS_BY_PROJECTS_ID,
-} from '../../../graphql/queries.gql';
+import { getMembersByProjectId as GET_MEMBERS_BY_PROJECTS_ID } from '../../../graphql/queries.gql';
 import { updateMemberRoleInProject as UPDATE_MEMBER_ROLE_IN_PROJECT } from '../../../graphql/mutations.gql';
 import If from '../../../utils/If';
-import AddMemberForm from './MembersTap/AddMemberForm';
+import AddMemberForm from './membersTab/AddMemberForm';
 
 const humanizeString = require('humanize-string');
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
-const { Column, ColumnGroup } = Table;
+const { Column } = Table;
 
 function onChange(updateMemberRoleInProject, e, memberId) {
   updateMemberRoleInProject({

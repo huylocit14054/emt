@@ -1,26 +1,22 @@
-import ProjectLayout from "../components/project/ProjectLayout";
-import redirect from "../lib/redirect";
-import checkLoggedIn from "../lib/checkLoggedIn";
+import ProjectLayout from '../components/project/ProjectLayout';
+import redirect from '../lib/redirect';
+import checkLoggedIn from '../lib/checkLoggedIn';
 
 export default class ProjectMembers extends React.Component {
   static async getInitialProps(context) {
     const { currentUser } = await checkLoggedIn(context.apolloClient);
-    const router = context.router;
     if (!currentUser) {
       // Already signed in? No need to continue.
       // Throw them back to the main page
-      redirect(context, "/");
+      redirect(context, '/');
     }
-    return { currentUser, router };
+    return { currentUser };
   }
 
   render() {
     return (
       <React.Fragment>
-        <ProjectLayout
-          activeKey="members"
-          currentUser={this.props.currentUser}
-        />
+        <ProjectLayout activeKey="members" />
       </React.Fragment>
     );
   }
