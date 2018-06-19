@@ -15,6 +15,6 @@ class Types::Project < Types::BaseObject
   field :is_managed_by_current_user, Boolean, null: true
 
   def is_managed_by_current_user
-    ProjectMember.exists?(user: context[:current_user], project: object, role: "project_admin")
+    ::ProjectMember.exists?(user: context[:current_user], project: object, role: "project_admin")
   end
 end

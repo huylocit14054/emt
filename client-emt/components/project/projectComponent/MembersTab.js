@@ -89,7 +89,7 @@ class MembersTab extends React.Component {
                         key="role"
                         render={member => {
                           if (member.user.role === 'root_admin') {
-                            return <Tag color="gold">Root admin</Tag>;
+                            return <Tag color="#faad14">Root admin</Tag>;
                           }
                           return (
                             <Mutation
@@ -120,7 +120,7 @@ class MembersTab extends React.Component {
                                   }
                                   else={
                                     member.role === 'project_admin' ? (
-                                      <Tag color="cyan">{humanizeString(member.role)}</Tag>
+                                      <Tag color="#13c2c2">{humanizeString(member.role)}</Tag>
                                     ) : (
                                       <p>{humanizeString(member.role)}</p>
                                     )

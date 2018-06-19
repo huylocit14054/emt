@@ -78,6 +78,10 @@ query getDimensionsByProjectId($projectId: ID!) {
     name
     category
     createdAt
+    options {
+      id
+      name
+    }
   }
 }
 

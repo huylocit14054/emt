@@ -11,22 +11,13 @@ import UpdateProjectModal from './projectComponent/UpdateProjectModal';
 
 const { TabPane } = Tabs;
 class ProjectLayout extends React.Component {
-  state = {
-    editProjectName: false,
-    editProjectDescription: false,
-  };
-
   callback = key => {
     const projectId = this.props.router.query.id;
     const site = _.capitalize(key);
     Router.push(`/project${site}?id=${projectId}`, `/project/${projectId}/${key}`);
   };
 
-  toggleEditName = () => {
-    this.setState(prevState => ({ editProjectName: !prevState.editProjectName }));
-  };
   render() {
-    const { editProjectDescription, editProjectName } = this.state;
     const { activeKey } = this.props;
     return (
       <React.Fragment>

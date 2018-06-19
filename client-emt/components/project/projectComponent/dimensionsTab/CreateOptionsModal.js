@@ -1,7 +1,8 @@
-import { Button, message, Icon } from 'antd';
+import { Button, message, Icon, Divider } from 'antd';
 import { Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
 import { createOptions as CREATE_OPTIONS_MUTATION } from '../../../../graphql/mutations.gql';
-
+import _ from 'lodash';
 import CreateOptionsForm from './createOptionsModal/CreateOptionsForm';
 
 class CreateOptionsModal extends React.Component {
@@ -20,31 +21,42 @@ class CreateOptionsModal extends React.Component {
       if (err) {
         return;
       }
-      console.log(values);
-      //   createOptions({
-      //     variables: {
-      //       input: {
-      //         names: values,
-      //         dimensionId: this.props.dimensionId,
-      //       },
-      //     },
-      // update: (
-      //   store,
-      //   {
-      //     data: {
-      //       createOptions: { createdOptions },
-      //     },
-      //   },
-      // ) => {
-      //   const data = store.readQuery({ query: GET_ALL_OPTIONSS_QUERY });
+      const { dimension } = this.props;
 
-      //   data.optionss.splice(0, 0, createdOptions);
-      //   store.writeQuery({
-      //     query: GET_ALL_OPTIONSS_QUERY,
-      //     data,
-      //   });
-      // },
-      //   });
+      createOptions({
+        variables: {
+          input: {
+            names: _.compact(values.names),
+            dimensionId: dimension.id,
+          },
+        },
+        update: (
+          client,
+          {
+            data: {
+              createOptions: { createdOptions },
+            },
+          },
+        ) => {
+          // update dimension options
+          client.writeFragment({
+            id: `Dimension:${dimension.id}`,
+            fragment: gql`
+              fragment dimensionEdited on Dimension {
+                id
+                options {
+                  id
+                  name
+                }
+              }
+            `,
+            data: {
+              options: createdOptions,
+              __typename: 'Dimension',
+            },
+          });
+        },
+      });
     });
   };
   saveFormRef = formRef => {
@@ -53,15 +65,13 @@ class CreateOptionsModal extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Button type="primary" icon="plus" onClick={this.showModal}>
-          Add Options
-        </Button>
-        <br />
-        <br />
+     
+        
+        <Icon type="plus-circle-o" onClick={this.showModal} style={{cursor: 'pointer', fontSize: 18, verticalAlign: "middle"}} className="add-options-btn"/>
+
         <Mutation
           mutation={CREATE_OPTIONS_MUTATION}
           onCompleted={data => {
-            console.log(data);
             const { form } = this.formRef.props;
             // this.setState({ visible: false });
             message.success('Options Added');
@@ -81,6 +91,7 @@ class CreateOptionsModal extends React.Component {
               visible={this.state.visible}
               onCancel={this.handleCancel}
               onCreate={() => this.handleCreate(createOptions)}
+              dimensionName={this.props.dimension.name}
             />
           )}
         </Mutation>

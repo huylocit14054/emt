@@ -3,7 +3,7 @@ class Mutations::CreateOptions < Mutations::BaseMutation
     argument :names, [String] , required: true
     argument :dimension_id, ID, required: true
     
-    field :created_options, Boolean, null: true
+    field :created_options, [Types::Option], null: true
     
     def resolve(names:, dimension_id:)
         names.each do |name|
@@ -14,7 +14,7 @@ class Mutations::CreateOptions < Mutations::BaseMutation
             end
         end
         {
-            created_options: true
+            created_options: Dimension.find(dimension_id).options
         }
  
     end

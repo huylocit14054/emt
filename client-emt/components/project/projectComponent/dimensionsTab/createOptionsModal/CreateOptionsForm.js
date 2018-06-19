@@ -1,15 +1,14 @@
-import { Form, Input, Modal, Icon, Button } from 'antd';
-
-import { Query } from 'react-apollo';
+import { Form, Input, Icon, Button, Modal } from 'antd';
 
 const FormItem = Form.Item;
+
 let uuid = 0;
 const CreateOptionForm = Form.create()(class extends React.Component {
     remove = k => {
       const { form } = this.props;
       // can use data-binding to get
       const keys = form.getFieldValue('keys');
-      // We need at least one passenger
+      // We need at least one option
       if (keys.length === 1) {
         return;
       }
@@ -33,25 +32,35 @@ const CreateOptionForm = Form.create()(class extends React.Component {
       });
     };
 
+    handleSubmit = e => {
+      e.preventDefault();
+      this.props.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('Received values of form: ', values);
+        }
+      });
+    };
+
     render() {
       const {
         visible, onCancel, onCreate, form, confirmLoading,
       } = this.props;
-      const { getFieldDecorator, getFieldValue } = form;
+      const { getFieldDecorator, getFieldValue } = this.props.form;
+
       getFieldDecorator('keys', { initialValue: [] });
       const keys = getFieldValue('keys');
       const formItems = keys.map((k, index) => (
-        <FormItem label={index === 0 ? 'Passengers' : ''} required={false} key={k}>
+        <FormItem label={index === 0 ? 'Options' : ''} required={false} key={k}>
           {getFieldDecorator(`names[${k}]`, {
             validateTrigger: ['onChange', 'onBlur'],
             rules: [
               {
                 required: true,
                 whitespace: true,
-                message: "Please input passenger's name or delete this field.",
+                message: "Please input option's name or delete this field.",
               },
             ],
-          })(<Input placeholder="passenger name" style={{ width: '60%', marginRight: 8 }} />)}
+          })(<Input placeholder="option name" style={{ width: '95%', marginRight: 8 }} />)}
           {keys.length > 1 ? (
             <Icon
               className="dynamic-delete-button"
@@ -64,18 +73,21 @@ const CreateOptionForm = Form.create()(class extends React.Component {
       ));
       return (
         <Modal
+          title={`${this.props.dimensionName} dimension`}
           confirmLoading={confirmLoading}
           visible={visible}
-          okText="create"
+          okText="add"
           onCancel={onCancel}
           cancelText="cancel"
           onOk={onCreate}
+          closable={false}
         >
-          <Form onSubmit={onCreate}>
+          <Form onSubmit={this.onCreate}>
+            <br />
             {formItems}
             <FormItem>
-              <Button type="primary" htmlType="submit">
-                Submit
+              <Button type="dashed" onClick={this.add} style={{ width: '100%' }}>
+                <Icon type="plus" /> Add Option
               </Button>
             </FormItem>
           </Form>

@@ -35,9 +35,9 @@ class UpdateDimensionModal extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <a onClick={this.showModal}>Edit</a>
-        <br />
-        <br />
+        
+        <Icon type="edit" onClick={this.showModal} style={{marginLeft: 15, cursor: 'pointer' }} className="edit-btn"/>
+
         <Mutation
           mutation={UPDATE_DIMENSION_MUTATION}
           onCompleted={data => {

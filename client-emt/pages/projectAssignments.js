@@ -2,7 +2,7 @@ import ProjectLayout from '../components/project/ProjectLayout';
 import redirect from '../lib/redirect';
 import checkLoggedIn from '../lib/checkLoggedIn';
 
-export default class ProjectDimensions extends React.Component {
+export default class ProjectAssignments extends React.Component {
   static async getInitialProps(context) {
     const { currentUser } = await checkLoggedIn(context.apolloClient);
     if (!currentUser) {
@@ -16,7 +16,7 @@ export default class ProjectDimensions extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <ProjectLayout activeKey="dimensions" />
+        <ProjectLayout activeKey="assignments" />
       </React.Fragment>
     );
   }
