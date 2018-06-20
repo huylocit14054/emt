@@ -12,10 +12,8 @@ import { getCurrentUser as GET_CURRENT_USER_QUERY } from '../graphql/queries.gql
 const { Header } = Layout;
 
 class TopHeader extends React.Component {
-  signout = () => {
-    document.cookie = cookie.serialize('token', '', {
-      maxAge: -1, // Expire the cookie immediately
-    });
+  signout = async() => {
+    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     window.location.replace('/login');
   };
 

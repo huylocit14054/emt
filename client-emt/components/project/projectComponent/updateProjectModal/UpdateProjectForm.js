@@ -5,6 +5,7 @@ import { getProjectById as GET_PROJECT_BY_ID } from '../../../../graphql/queries
 const { TextArea } = Input;
 const FormItem = Form.Item;
 
+// if project has more information, query project again with more info instead of using local state
 const UpdateProjectForm = Form.create()(class extends React.Component {
   render() {
     const {

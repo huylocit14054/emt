@@ -59,11 +59,21 @@ query getProjectOfCurrentUser {
     id
     name
     description
+    shortenMembers {
+      id
+      avatar
+    }
+    memberCount
   }
   projectsAsAdminOfCurrentUser {
     id
     name
     description
+    shortenMembers {
+      id
+      avatar
+    }
+    memberCount
   }
 }
 

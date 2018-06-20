@@ -1,6 +1,8 @@
 import { List, Card, Avatar, Divider, Icon, Button } from 'antd';
 import { Query } from 'react-apollo';
 import Link from 'next/link';
+import { Image } from 'cloudinary-react';
+import { CLOUD_NAME } from '../../constants';
 import { getProjectOfCurrentUser as GET_PROJECTS_OF_CURRENT_USER } from '../../graphql/queries.gql';
 import ListItem from './projectsList/ListItem';
 import CreateProjectModal from './projectsList/CreateProjectModal';
@@ -51,21 +53,41 @@ class ProjectsList extends React.Component {
                                   <b>{project.name}</b>
                                 </h4>
                                 <p>{truncate(project.description, 30)}</p>
-                                <div>
-                                  <Avatar icon="user" />
-                                  <Avatar>U</Avatar>
-                                  <Avatar>USER</Avatar>
-                                  <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                                  <Avatar
-                                    style={{
-                                      color: '#f56a00',
-                                      backgroundColor: '#fde3cf',
-                                    }}
-                                  >
-                                    U
-                                  </Avatar>
-                                  <Avatar style={{ backgroundColor: '#87d068' }} icon="user" />
-                                </div>
+                              
+                                {
+                                  project.memberCount > 0 && (
+                                   
+                                      <div>
+                                      {project.shortenMembers.map(member => (
+                                        <Image
+      cloudName={CLOUD_NAME}
+      publicId={member.avatar}
+      width="30"
+      crop="scale"
+      style={{ borderRadius: '50%', marginRight: 5 }}
+    />
+                                      ))}
+                                      {project.memberCount > 5 && (
+                                        <Avatar
+                                        style={{
+                                          color: '#f56a00',
+                                          backgroundColor: '#fde3cf',
+                                        }}
+                                      >
+                                        +{project.memberCount - 5}
+                                      </Avatar>
+                                      )}
+                                      </div>
+                                    
+
+                                          
+                                      
+                                  )
+                                }
+                                 
+                                  
+                                 
+                            
                               </Card>
                             </a>
                           </Link>

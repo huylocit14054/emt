@@ -11,6 +11,12 @@ class Types::Project < Types::BaseObject
   #Relationships
   field :dimensions, [Types::Dimension], null: true
   field :members, [Types::User], null: true
+  field :shorten_members, [Types::User], null: true
+
+  def shorten_members
+    object.members.limit(5)
+  end
+
   field :member_relationships, [Types::ProjectMember], null: true
   field :is_managed_by_current_user, Boolean, null: true
 
