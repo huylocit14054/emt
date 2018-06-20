@@ -8,6 +8,6 @@ class GraphqlPolicy
   }
 
   def self.guard(type, field)
-    RULES.dig(type.to_s, field)
+    type.introspection? ? ->(_obj, _args, _ctx) { true } : RULES.dig(type.to_s, field)
   end
 end
