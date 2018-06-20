@@ -26,41 +26,19 @@ const AssignDimensionsForm = Form.create()(class extends React.Component {
         membersSuggestion: [],
         fetching: true,
       });
-      const { data } = await this.props.client.query({
-        query: MEMBERS_SUGGESTION_QUERY,
-        variables: {
-          query: value,
-          projectId: this.props.projectId,
-        },
-      });
-      const { membersSuggestion } = data;
-
-      this.setState({ membersSuggestion, fetching: false });
-    };
-
-    onAdd = async (e, addMemberToProject) => {
-      e.preventDefault();
-      this.props.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values);
-          addMemberToProject({
-            variables: {
-              input: {
-                projectId: parseInt(this.props.projectId),
-                ...values,
-              },
-            },
-            refetchQueries: [
-              {
-                query: GET_MEMBERS_BY_PROJECTS_ID_QUERY,
-                variables: {
-                  projectId: parseInt(this.props.projectId),
-                },
-              },
-            ],
-          });
-        }
-      });
+      if (value !== '') {
+        const { data } = await this.props.client.query({
+          query: MEMBERS_SUGGESTION_QUERY,
+          variables: {
+            query: value,
+            projectId: this.props.projectId,
+          },
+        });
+        const { membersSuggestion } = data;
+  
+        this.setState({ membersSuggestion, fetching: false });
+      }
+     
     };
 
     handleChange = value => {

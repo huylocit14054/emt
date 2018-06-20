@@ -28,30 +28,40 @@ class ProjectLayout extends React.Component {
             if (error) return `Error! ${error.message}`;
             const { project } = data;
             return (
+              <React.Fragment>
               <div style={{ marginBottom: '1%' }}>
-                <h2>
-                  {project.name}
-                  {project.isManagedByCurrentUser && (
-                    <UpdateProjectModal projectId={this.props.router.query.id} />
-                  )}
-                </h2>
-                <p>{project.description}</p>
-              </div>
+              <h2>
+                {project.name}
+                {project.isManagedByCurrentUser && (
+                  <UpdateProjectModal projectId={this.props.router.query.id} />
+                )}
+              </h2>
+              <p>{project.description}</p>
+            </div>
+              <Tabs activeKey={activeKey} onChange={this.callback} animated={false}>
+          <TabPane tab="Members" key="members">
+            <MembersTab />
+          </TabPane>
+          {project.isManagedByCurrentUser && (
+            <TabPane tab="Dimensions" key="dimensions">
+            <DimensionsTab />
+          </TabPane>
+          )}
+          {project.isManagedByCurrentUser && (
+            <TabPane tab="Assignments" key="assignments">
+            <AssignmentsTab />
+          </TabPane>
+          )}
+ 
+          
+        </Tabs>
+              </React.Fragment>
+            
             );
           }}
         </Query>
 
-        <Tabs activeKey={activeKey} onChange={this.callback}>
-          <TabPane tab="Members" key="members">
-            <MembersTab />
-          </TabPane>
-          <TabPane tab="Dimensions" key="dimensions">
-            <DimensionsTab />
-          </TabPane>
-          <TabPane tab="Assignments" key="assignments">
-            <AssignmentsTab />
-          </TabPane>
-        </Tabs>
+        
       </React.Fragment>
     );
   }

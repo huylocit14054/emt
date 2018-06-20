@@ -77,7 +77,38 @@ query getMembersByProjectId($projectId: ID!) {
       username
       role
       avatar
+}
+  }
+}
+
+query getAssignmentsByProjectId($projectId: ID!) {
+  assignments: projectMembers(projectId: $projectId){
+    id
+    user {
+      id
+      username
+      avatar
     }
+    authorizedDimensions
+    authorizations {
+      dimension {
+        id
+      }
+      optionAuthorizations {
+        option {
+          id
+          name
+          dimension {
+            id
+          }
+        }
+      }
+    }
+  }
+  projectDimensions(projectId: $projectId) {
+    id
+    name
+    category
   }
 }
 
