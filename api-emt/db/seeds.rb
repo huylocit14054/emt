@@ -1,7 +1,7 @@
 
 
 # Seed 50 users
-User.create(username: "quangnhat", email: "quangnhat@gmail.com", role: "root_admin", password: "quangnhat")
+User.create(username: "quangnhat", email: "quangnhat@gmail.com", role: User::ROLE_ROOT_ADMIN, password: "quangnhat")
 50.times do
     User.create(username: Faker::Internet.user_name(6..255), email: Faker::Internet.email(6..255), password: "123456")
 end
@@ -17,7 +17,7 @@ end
         ProjectMember.create(user_id: rand(2..51) , project_id: project.id, role: "member")
         rescue
             retry
-        end 
+        end
     end
 end
 
@@ -52,5 +52,4 @@ end
     rescue
         retry
     end
-    
 end

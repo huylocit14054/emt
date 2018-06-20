@@ -5,7 +5,7 @@ class Project < ApplicationRecord
 
     validates :name, length: {minimum: 3}, allow_blank: true, uniqueness: true
 
-    # generate records for assignment table 
+    # generate records for assignment table
     # return an array
     def self.generate_dimensions_assigment_table(project_id:)
         # get the project
@@ -13,7 +13,7 @@ class Project < ApplicationRecord
         # get the member relation
         @member_relationships = @project.member_relationships
         # get all the project dimensions
-        @dimensions = @project.dimensions 
+        @dimensions = @project.dimensions
         records = Jbuilder.encode do |json|
             json.array! @member_relationships do |relationship|
                 # in each relationship get the user
@@ -22,7 +22,7 @@ class Project < ApplicationRecord
                 json.member_name @user.username
                 # each user will have the information of each dimension
                 @dimensions.each do |dimension|
-                    json.set! dimension.name do 
+                    json.set! dimension.name do
                         json.id dimension.id
                         json.category dimension.category
                         # find the authorization dimension base on the dimension to check whether the user have the dimension authorized
@@ -32,22 +32,22 @@ class Project < ApplicationRecord
                         when "input"
                             if @authorization_dimension
                                 json.assigned true
-                            else 
+                            else
                                 json.assigned false
-                            end 
+                            end
                         # when the dimension is selection type the option authorization of the dimension will be load and put to the record
                         when "selection"
                             if @authorization_dimension
                                 @options = @authorization_dimension.option_authorizations
-                                json.options @options 
-                            else 
+                                json.options @options
+                            else
                                 json.options []
-                            end 
+                            end
                         end
-                    end  
-                end 
-            end 
-        end 
+                    end
+                end
+            end
+        end
         JSON.parse(records)
     end
 end
