@@ -20,4 +20,5 @@ class Types::MutationType < Types::BaseObject
   field :update_password, mutation: Mutations::UpdatePassword
   field :update_avatar, mutation: Mutations::UpdateAvatar
   field :assign_dimensions_for_members, mutation: Mutations::AssignDimensionsForMembers
+  field :update_member_assignments, mutation: Mutations::UpdateMemberAssignments
 end
