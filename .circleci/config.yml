@@ -4,7 +4,7 @@
 #
 version: 2
 jobs:
-  lint-api:
+  lint:
     environment:
       - BUNDLE_GEMFILE: Gemfile.tools
     docker:
@@ -19,28 +19,40 @@ jobs:
     steps:
       - checkout
       - restore_cache:
+          name: Restoring Gem Tools Cache
           keys:
-          - v1-tools-dependencies-{{ checksum "api-emt/Gemfile.tools.lock" }}
+          - gem-tools-cache-v1-{{ checksum "Gemfile.tools.lock" }}
           # fallback to using the latest cache if no exact match is found
-          - v1-tools-dependencies-
-
+          - gem-tools-cache-v1-
       - run:
           name: Install cmake
-          command: |
-            sudo apt-get install cmake
+          command: sudo apt-get install cmake
       - run:
-          name: Install dependencies
+          name: Install Dependencies
           command: |
-            cd ~/emt/api-emt && bundle check --path vendor/bundle || cd ~/emt/api-emt && bundle install --jobs=4 --retry=3 --path vendor/bundle
+            bundle check --path vendor/bundle || bundle install --jobs=4 --retry=3 --path vendor/bundle
       - save_cache:
+          name: Saving Gem Tools Cache
+          key: gem-tools-cache-v1-{{ checksum "Gemfile.tools.lock" }}
           paths:
-            - ./vendor/bundle
-          key: v1-tools-dependencies-{{ checksum "api-emt/Gemfile.tools.lock" }}
-
+            - vendor/bundle
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-cache-v1-{{ checksum "client-emt/yarn.lock" }}
+            - yarn-packages-cache-v1-
+      - run:
+          name: Install Dependencies
+          command: cd ~/emt/client-emt && yarn install
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-cache-v1-{{ checksum "client-emt/yarn.lock" }}
+          paths:
+            - client-emt/node_modules/
       - run:
           name: Run source code analysis
           command: |
-            cd ~/emt/api-emt && bundle exec pronto run -c origin/master -f github_status -f github_pr_review --exit-code
+            bundle exec pronto run -c origin/master -f github_status -f github_pr_review --exit-code
       - store_artifacts:
           path: ./tmp
 
@@ -117,5 +129,5 @@ workflows:
   version: 2
   release:
     jobs:
-      - lint-api
+      - lint
       - build
