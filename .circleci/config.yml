@@ -4,6 +4,46 @@
 #
 version: 2
 jobs:
+  lint-api:
+    environment:
+      - BUNDLE_GEMFILE: Gemfile.tools
+    docker:
+      # specify the version you desire here
+      - image: circleci/ruby:2.5-stretch-node-browsers
+        environment:
+          RAILS_ENV: test
+          RACK_ENV: test
+
+    working_directory: ~/emt
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-tools-dependencies-{{ checksum "api-emt/Gemfile.tools.lock" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-tools-dependencies-
+
+      - run:
+          name: Install cmake
+          command: |
+            sudo apt-get install cmake
+      - run:
+          name: Install dependencies
+          command: |
+            cd ~/emt/api-emt && bundle check --path vendor/bundle || cd ~/emt/api-emt && bundle install --jobs=4 --retry=3 --path vendor/bundle
+      - save_cache:
+          paths:
+            - ./vendor/bundle
+          key: v1-tools-dependencies-{{ checksum "api-emt/Gemfile.tools.lock" }}
+
+      - run:
+          name: Run source code analysis
+          command: |
+            cd ~/emt/api-emt && bundle exec pronto run -c origin/master -f github_status -f github_pr_review --exit-code
+      - store_artifacts:
+          path: ./tmp
+
   build:
     docker:
       # specify the version you desire here
@@ -12,7 +52,7 @@ jobs:
           PGHOST: 127.0.0.1
           PGUSER: postgres
           RAILS_ENV: test
-      
+
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
@@ -22,7 +62,7 @@ jobs:
           - POSTGRES_PASSWORD=password
 
     working_directory: ~/emt
-    
+
     steps:
       - checkout
       # Download and cache dependencies
@@ -36,12 +76,11 @@ jobs:
           name: api-emt/install dependencies
           command: |
             cd api-emt && bundle install --jobs=4 --retry=3 --path vendor/bundle
-
       - save_cache:
           paths:
             - ./vendor/bundle
           key: v1-dependencies-{{ checksum "api-emt/Gemfile.lock" }}
-        
+
       - run:
           name: install dockerize
           command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
@@ -60,7 +99,7 @@ jobs:
       #     command: |
       #       mkdir /tmp/test-results
       #       TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)"
-            
+
       #       bundle exec rspec --format progress \
       #                       --format RspecJunitFormatter \
       #                       --out /tmp/test-results/rspec.xml \
@@ -73,3 +112,10 @@ jobs:
       # - store_artifacts:
       #     path: /tmp/test-results
       #     destination: test-results
+
+workflows:
+  version: 2
+  release:
+    jobs:
+      - lint-api
+      - build
