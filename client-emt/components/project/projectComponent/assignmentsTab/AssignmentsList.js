@@ -1,9 +1,10 @@
 import { Table, Icon, Divider, Tag } from 'antd';
 import { Query } from 'react-apollo';
-import { Image } from 'cloudinary-react';
-import { CLOUD_NAME } from '../../../../constants';
-import { getAssignmentsByProjectId as GET_ASSIGNMENTS_BY_PROJECT_ID } from '../../../../graphql/queries.gql';
+
 import _ from 'lodash'
+
+import { getAssignmentsByProjectId as GET_ASSIGNMENTS_BY_PROJECT_ID } from '../../../../graphql/queries.gql';
+import UpdateMemberAssignmentsModal from './assigmentList/UpdateMemberAssignmentsModal'
 
 const { Column, ColumnGroup } = Table
 
@@ -28,17 +29,9 @@ export default class AssignmentsList extends React.Component {
               title="Username"
               key="username"
               render={(text, member) => (
-                <a href="javascript:;">
-                  {' '}
-                  <Image
-                    cloudName={CLOUD_NAME}
-                    publicId={member.user.avatar}
-                    width="40"
-                    crop="scale"
-                    style={{ borderRadius: '50%', marginRight: 20 }}
-                  />
-                  {member.user.username}
-                </a>
+               
+                  <UpdateMemberAssignmentsModal memberId={member.id} projectId={this.props.projectId} member={member.user}/>
+                
               )}
             />
             <ColumnGroup title="Dimensions">
@@ -53,8 +46,8 @@ export default class AssignmentsList extends React.Component {
                       return (
                         
                           _.find(member.authorizations, {dimension: {id: dimension.id}}).optionAuthorizations.map(auth => (
-                            <div>
-                            <Tag color="#e8e8e8" style={{color: 'black', margin: "2%"}} key={auth.option.id}>{auth.option.name}</Tag>
+                            <div key={auth.option.id}>
+                            <Tag color="#e8e8e8" style={{color: 'black', margin: "2%"}} >{auth.option.name}</Tag>
                             </div>
                               
                             

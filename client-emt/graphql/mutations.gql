@@ -113,3 +113,31 @@ mutation updateMemberRoleInProject($input: UpdateMemberRoleInProjectInput!) {
     updated
   }
 }
+
+mutation updateMemberAssignments($input: UpdateMemberAssignmentsInput!) {
+  updateMemberAssignments(input: $input){
+    updatedMember {
+        id
+        user {
+          id
+          username
+          avatar
+        }
+        authorizedDimensions
+        authorizations {
+          dimension {
+            id
+          }
+          optionAuthorizations {
+            option {
+              id
+              name
+              dimension {
+                id
+              }
+            }
+          }
+        }
+    }
+  }
+}

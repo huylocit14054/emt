@@ -28,30 +28,7 @@ class AssignDimensionsModal extends React.Component {
             ...values,
           },
         },
-        // update: (
-        //   store,
-        //   {
-        //     data: {
-        //       assignDimensions: { createdDimension },
-        //     },
-        //   },
-        // ) => {
-        //   const data = store.readQuery({
-        //     query: GET_DIMENSIONS_BY_PROJECT_ID_QUERY,
-        //     variables: {
-        //       projectId: this.props.projectId,
-        //     },
-        //   });
-
-        //   data.projectDimensions.splice(0, 0, createdDimension);
-        //   store.writeQuery({
-        //     query: GET_DIMENSIONS_BY_PROJECT_ID_QUERY,
-        //     variables: {
-        //       projectId: this.props.projectId,
-        //     },
-        //     data,
-        //   });
-        // },
+        
       });
     });
   };
