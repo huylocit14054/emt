@@ -8,6 +8,10 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/ruby:2.4.1-node-browsers
+        environment:
+          PGHOST: 127.0.0.1
+          PGUSER: postgres
+          RAILS_ENV: test
       
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -18,7 +22,7 @@ jobs:
           - POSTGRES_PASSWORD=password
 
     working_directory: ~/emt
-
+    
     steps:
       - checkout
       # Download and cache dependencies
@@ -47,8 +51,8 @@ jobs:
           name: Wait for db
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       # Database setup
-      - run: bundle exec rake db:create
-      - run: bundle exec rake db:schema:load
+      - run: cd api-emt && bundle exec rake db:create
+      - run: cd api-emt && bundle exec rake db:schema:load
 
       # run tests!
       # - run:
