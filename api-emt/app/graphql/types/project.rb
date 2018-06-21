@@ -14,7 +14,7 @@ class Types::Project < Types::BaseObject
   field :shorten_members, [Types::User], null: true
 
   def shorten_members
-    object.members.limit(5)
+    object.members.sample(5)
   end
 
   field :member_relationships, [Types::ProjectMember], null: true

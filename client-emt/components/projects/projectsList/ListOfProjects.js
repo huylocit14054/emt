@@ -49,6 +49,8 @@ const ListOfProjects = ({ projects }) => (
                         style={{
                           color: '#f56a00',
                           backgroundColor: '#fde3cf',
+                          width: 30,
+                          height: 30
                         }}
                       >
                         +{project.memberCount - 5}
