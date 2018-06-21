@@ -1,9 +1,10 @@
 import { Table, Icon, Divider, Tag } from 'antd';
 import { Query } from 'react-apollo';
-import { Image } from 'cloudinary-react';
-import { CLOUD_NAME } from '../../../../constants';
-import { getAssignmentsByProjectId as GET_ASSIGNMENTS_BY_PROJECT_ID } from '../../../../graphql/queries.gql';
+
 import _ from 'lodash'
+
+import { getAssignmentsByProjectId as GET_ASSIGNMENTS_BY_PROJECT_ID } from '../../../../graphql/queries.gql';
+import UpdateMemberAssignmentsModal from './assigmentList/UpdateMemberAssignmentsModal'
 
 const { Column, ColumnGroup } = Table
 
@@ -28,17 +29,9 @@ export default class AssignmentsList extends React.Component {
               title="Username"
               key="username"
               render={(text, member) => (
-                <a href="javascript:;">
-                  {' '}
-                  <Image
-                    cloudName={CLOUD_NAME}
-                    publicId={member.user.avatar}
-                    width="40"
-                    crop="scale"
-                    style={{ borderRadius: '50%', marginRight: 20 }}
-                  />
-                  {member.user.username}
-                </a>
+               
+                  <UpdateMemberAssignmentsModal memberId={member.id} projectId={this.props.projectId} member={member.user}/>
+                
               )}
             />
             <ColumnGroup title="Dimensions">

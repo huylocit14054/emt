@@ -54,16 +54,10 @@ const ListOfProjects = ({ projects }) => (
                       </Avatar>
                       )}
                       </div>
-                    
 
-                          
-                      
                   )
                 }
-                  
-                  
-                  
-            
+
               </Card>
             </a>
           </Link>

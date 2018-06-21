@@ -59,7 +59,7 @@ class Types::QueryType < Types::BaseObject
     ::Option.find(id)
   end
 
-  field :dimension_options, [Types::Option], null: false do 
+  field :dimension_options, [Types::Option], null: false do
     argument :dimension_id, ID, required: false
   end
 
@@ -141,11 +141,11 @@ class Types::QueryType < Types::BaseObject
   end
 
   #return member autheticate assignment
-  field :member_assignment, [String], null:false do 
+  field :member_assignments, [String], null: false do
     argument :member_id, ID, required: true
   end
 
-  def member_assignment(member_id:)
+  def member_assignments(member_id:)
     ::ProjectMember.get_authorize_array(project_member_id: member_id)
-  end 
+  end
 end

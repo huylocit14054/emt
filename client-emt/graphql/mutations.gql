@@ -113,3 +113,9 @@ mutation updateMemberRoleInProject($input: UpdateMemberRoleInProjectInput!) {
     updated
   }
 }
+
+mutation updateMemberAssignments($input: UpdateMemberAssignmentsInput!) {
+  updateMemberAssignments(input: $input){
+
+  }
+}

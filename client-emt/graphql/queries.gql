@@ -139,6 +139,7 @@ query getProjectDimensionsTreeByProjectId($projectId: ID!){
   projectDimensionsTree(projectId: $projectId)
 }
 
+
 query getOptionsByDimensionId($dimensionId: ID!) {
   dimensionOptions(dimensionId: $dimensionId) {
     id
@@ -153,4 +154,8 @@ query getProjectById($id: ID!) {
     description
     isManagedByCurrentUser
   }
+}
+
+query getAssignmentsByMemberId($memberId: ID!){
+  memberAssignments(memberId: $memberId)
 }

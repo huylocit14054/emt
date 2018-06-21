@@ -59,6 +59,7 @@ const AssignDimensionsForm = Form.create()(class extends React.Component {
 
       return (
         <Modal
+        title="Assign dimensions for multiple members"
           confirmLoading={confirmLoading}
           visible={visible}
           closable={false}
@@ -79,7 +80,7 @@ const AssignDimensionsForm = Form.create()(class extends React.Component {
                 initialValue: [],
               })(<Select
                 mode="multiple"
-                placeholder="Username or email address"
+                placeholder="Usernames or email addresses"
                 notFoundContent={
                     fetching ? <Icon type="loading" style={{ fontSize: 24 }} spin /> : null
                   }
