@@ -39,6 +39,10 @@ mutation createDimension($input: CreateDimensionInput!) {
       name
       category
       createdAt
+      options {
+        id
+        name
+      }
     }
   }
 }

@@ -73,6 +73,7 @@ const UpdateMemberAssignmentsForm = Form.create()(class extends React.Component 
                 if (loading) return 'Loading...';
                 if (error) return `Error! ${error.message}`;
                 const previousAssignmentsOfMember = data.memberAssignments
+                console.log(previousAssignmentsOfMember)
                 return (
                     <FormItem>
                     {getFieldDecorator('newAssignments', {

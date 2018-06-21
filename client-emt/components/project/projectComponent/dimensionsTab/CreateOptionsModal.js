@@ -42,8 +42,7 @@ class CreateOptionsModal extends React.Component {
           client.writeFragment({
             id: `Dimension:${dimension.id}`,
             fragment: gql`
-              fragment dimensionEdited on Dimension {
-                id
+              fragment dimension on Dimension {
                 options {
                   id
                   name
@@ -51,6 +50,7 @@ class CreateOptionsModal extends React.Component {
               }
             `,
             data: {
+
               options: createdOptions,
               __typename: 'Dimension',
             },
