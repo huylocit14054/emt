@@ -11,9 +11,26 @@ import { getCurrentUser as GET_CURRENT_USER_QUERY } from '../graphql/queries.gql
 
 const { Header } = Layout;
 
+function getCookie(cname) {
+  var name = cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for(var i = 0; i <ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+          c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+      }
+  }
+  return "";
+}
 class TopHeader extends React.Component {
-  signout = async() => {
-    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+  signout = () => {
+    do {
+      document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    } while (getCookie("token") !== "");
     window.location.replace('/login');
   };
 
