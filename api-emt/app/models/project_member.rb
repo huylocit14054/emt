@@ -34,7 +34,7 @@ class ProjectMember < ApplicationRecord
          # the number dose not equal to each other
          # need to return with format "dimension_id-option_id"
          else 
-            @options_authorization.each {|op_auth| @member_assignment.push("#{@dimension.id}-#{op_auth.id}")} 
+            @options_authorization.each {|op_auth| @member_assignment.push("#{@dimension.id}-#{op_auth.option_id}")} 
          end 
       end 
     end
