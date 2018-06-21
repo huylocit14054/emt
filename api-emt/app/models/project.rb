@@ -81,4 +81,12 @@ class Project < ApplicationRecord
     end
     JSON.parse(@selection_tree)
   end
+
+  # update user assignment by delete all record and create new record
+  def self update_member_assignments(member_id:, new_assignments: )
+    @member = ProjectMember.find(member_id)
+    # destroy all the authorization
+    @member.authorizations.destroy_all 
+  end 
+
 end
