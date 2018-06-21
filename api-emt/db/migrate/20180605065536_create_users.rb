@@ -3,7 +3,7 @@ class CreateUsers < ActiveRecord::Migration[5.1]
     create_table :users do |t|
       t.string :username, unique: true
       t.string :password_digest
-      t.string :role, default: "user"
+      t.string :role, default: User::ROLE_USER
       t.timestamps
     end
   end
