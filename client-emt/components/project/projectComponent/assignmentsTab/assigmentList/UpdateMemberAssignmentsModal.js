@@ -1,5 +1,6 @@
 import { Button, message, Icon,Tooltip } from 'antd';
 import { Mutation } from 'react-apollo';
+import _ from 'lodash'
 import { Image } from 'cloudinary-react';
 import { CLOUD_NAME } from '../../../../../constants';
 import {getAssignmentsByProjectId as GET_ASSIGNMENTS_BY_PROJECT_ID} from '../../../../../graphql/queries.gql'
@@ -30,17 +31,34 @@ class UpdateMemberAssignmentsModal extends React.Component {
             ...values,
           },
         },
-        refetchQueries: [
-            {
-              query: GET_ASSIGNMENTS_BY_PROJECT_ID,
-              variables: {
-                projectId: this.props.projectId,
-              },
+        update: (
+          store,
+          {
+            data: {
+                updateMemberAssignments: { updatedMember },
             },
-          ],
+          },
+        ) => {
+          const data = store.readQuery({
+            query: GET_ASSIGNMENTS_BY_PROJECT_ID,
+            variables: {
+              projectId: this.props.projectId,
+            },
+          });
+
+          const indexOfUpdatedMember = _.findIndex(data.assignments, {id: this.props.memberId});
+          data.assignments.splice(indexOfUpdatedMember, 1, updatedMember);
+          store.writeQuery({
+            query: GET_ASSIGNMENTS_BY_PROJECT_ID,
+            variables: {
+              projectId: this.props.projectId,
+            },
+            data,
+          });
+        },
           
         },
-      });
+      );
     });
   };
   saveFormRef = formRef => {
@@ -72,7 +90,7 @@ class UpdateMemberAssignmentsModal extends React.Component {
             const { form } = this.formRef.props;
             // this.setState({ visible: false });
             message.success('Dimensions Updated');
-            form.resetFields();
+ 
           }}
           onError={error => {
             // If you want to send error to external service?

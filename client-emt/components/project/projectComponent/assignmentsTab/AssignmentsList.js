@@ -46,8 +46,8 @@ export default class AssignmentsList extends React.Component {
                       return (
                         
                           _.find(member.authorizations, {dimension: {id: dimension.id}}).optionAuthorizations.map(auth => (
-                            <div>
-                            <Tag color="#e8e8e8" style={{color: 'black', margin: "2%"}} key={auth.option.id}>{auth.option.name}</Tag>
+                            <div key={auth.option.id}>
+                            <Tag color="#e8e8e8" style={{color: 'black', margin: "2%"}} >{auth.option.name}</Tag>
                             </div>
                               
                             
