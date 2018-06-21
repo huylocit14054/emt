@@ -13,7 +13,7 @@ const { Column } = Table;
 const renderCategory = category => {
   switch (category) {
     case 'selection':
-      return <Tag color="#2db7f5">{category}</Tag>;
+      return <Tag color="#eb2f96">{category}</Tag>;
       break;
     case 'input':
       return <Tag color="#ffa940">{category}</Tag>;
@@ -24,12 +24,12 @@ const renderCategory = category => {
   }
 };
 
-const randomColor = ['#faad14', '#13c2c2', '#eb2f96', '#52c41a'];
+
 
 const renderOptions = options => (
   <React.Fragment>
     {options.map(option => (
-      <Tag key={option.id} color={_.sample(randomColor)}>
+      <Tag key={option.id} color='#d6e4ff' style={{color: '#333'}}>
         {option.name}
       </Tag>
     ))}

@@ -39,8 +39,9 @@ const ListOfProjects = ({ projects }) => (
                           cloudName={CLOUD_NAME}
                           publicId={member.avatar}
                           width="30"
+                          height="30"
                           crop="scale"
-                          style={{ borderRadius: '50%', marginRight: 5 }}
+                          style={{ borderRadius: '50%', border: "1px solid #00b5d0" , marginRight: 5 }}
                         />
                       ))}
                       {project.memberCount > 5 && (

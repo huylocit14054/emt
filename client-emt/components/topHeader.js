@@ -49,9 +49,9 @@ class TopHeader extends React.Component {
                     <Image
                       cloudName={CLOUD_NAME}
                       publicId={currentUserSync.avatar}
-                      width="40"
+                      width="40" height="40"
                       crop="scale"
-                      style={{ borderRadius: '50%' }}
+                      style={{ borderRadius: '50%', border: "1px solid #00b5d0" , border: "1px solid #00b5d0" }}
                     />
                   }
                   title={<a>{currentUserSync.username}</a>}
@@ -88,9 +88,9 @@ class TopHeader extends React.Component {
                   <Image
                     cloudName={CLOUD_NAME}
                     publicId={currentUserSync.avatar}
-                    width="40"
+                    width="40" height="40"
                     crop="scale"
-                    style={{ borderRadius: '50%' }}
+                    style={{ borderRadius: '50%', border: "1px solid #00b5d0"  }}
                   />
                 </div>
               </Dropdown>

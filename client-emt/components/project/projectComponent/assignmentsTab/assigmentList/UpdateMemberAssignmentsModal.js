@@ -74,9 +74,9 @@ class UpdateMemberAssignmentsModal extends React.Component {
             <Image
                 cloudName={CLOUD_NAME}
                 publicId={member.avatar}
-                width="40"
+                width="40" height="40"
                 crop="scale"
-                style={{ borderRadius: '50%', marginRight: 20 }}
+                style={{ borderRadius: '50%', border: "1px solid #00b5d0" , marginRight: 20 }}
             />
             {member.username}
        </a>

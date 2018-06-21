@@ -95,8 +95,9 @@ const AssignDimensionsForm = Form.create()(class extends React.Component {
                       cloudName={CLOUD_NAME}
                       publicId={user.avatar}
                       width="25"
+                      height="25"
                       crop="scale"
-                      style={{ borderRadius: '50%', marginRight: 10 }}
+                      style={{ borderRadius: '50%', border: "1px solid #00b5d0" , marginRight: 10 }}
                     />
                     <Highlighter
                       highlightClassName="highlight-keyword-username"

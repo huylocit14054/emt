@@ -31,7 +31,7 @@ class NavigationLayout extends React.Component {
             const currentUserSync = data.currentUser;
             return (
               <Sider
-                collapsed={false}
+                collapsed={true}
                 style={{ paddingTop: 0, height: '100vh', position: 'fixed' }}
               >
                 <Menu mode="inline" theme="dark" selectedKeys={[currentPage]}>
@@ -58,12 +58,12 @@ class NavigationLayout extends React.Component {
             );
           }}
         </Query>
-        <Layout style={{ marginLeft: this.state.collapsed ? 0 : 120 }}>
+        <Layout style={{ marginLeft: this.state.collapsed ? 0 : 82 }}>
           <TopHeader />
 
           <Content
             style={{
-              margin: '15px 16px 16px 100px',
+              margin: '15px 16px 16px 15px',
               padding: 24,
               background: '#fff',
               minHeight: '100vh',
