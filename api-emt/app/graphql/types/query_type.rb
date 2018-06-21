@@ -139,4 +139,13 @@ class Types::QueryType < Types::BaseObject
   def dimensions_assignment(project_id:)
     ::Project.generate_dimensions_assigment_table(project_id: project_id)
   end
+
+  #return member autheticate assignment
+  field :member_assignment, [String], null:false do 
+    argument :member_id, ID, required: true
+  end
+
+  def member_assignment(member_id:)
+    ::ProjectMember.get_authorize_array(project_member_id: member_id)
+  end 
 end
