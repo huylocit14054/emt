@@ -71,7 +71,8 @@ class Project < ApplicationRecord
           json.children @options do |option|
             #create value for value and key using dimension id + its option id
             @value = "#{dimension.id}-#{option.id}"
-            json.label option.name
+            @name = "#{dimension.name}: #{option.name}"
+            json.label @name
             json.value @value
             json.key @value
           end
