@@ -56,74 +56,37 @@ jobs:
       - store_artifacts:
           path: ./tmp
 
+  # Build and run test
   build:
-    docker:
-      # specify the version you desire here
-      - image: circleci/ruby:2.4.1-node-browsers
-        environment:
-          PGHOST: 127.0.0.1
-          PGUSER: postgres
-          RAILS_ENV: test
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      - image: circleci/postgres:9.4
-        environment:
-          - POSTGRES_USER=postgres
-          - POSTGRES_PASSWORD=password
-
-    working_directory: ~/emt
-
+    machine:
+      image: circleci/classic:edge
     steps:
       - checkout
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "api-emt/Gemfile.lock" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
       - run:
-          name: api-emt/install dependencies
-          command: |
-            cd api-emt && bundle install --jobs=4 --retry=3 --path vendor/bundle
-      - save_cache:
-          paths:
-            - ./vendor/bundle
-          key: v1-dependencies-{{ checksum "api-emt/Gemfile.lock" }}
-
+          name: docker-compose build
+          command: docker-compose build
       - run:
-          name: install dockerize
-          command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
-          environment:
-            DOCKERIZE_VERSION: v0.3.0
+          name: docker-compose up
+          command: docker-compose up -d
       - run:
-          name: Wait for db
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
-      # Database setup
-      - run: cd api-emt && bundle exec rake db:create
-      - run: cd api-emt && bundle exec rake db:schema:load
-
-      # run tests!
+          name: sleep for waiting launch db
+          command: sleep 2
+      - run:
+          name: "before_test: setup db"
+          command: docker-compose run api rails db:create db:migrate
       # - run:
-      #     name: run tests
-      #     command: |
-      #       mkdir /tmp/test-results
-      #       TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)"
-
-      #       bundle exec rspec --format progress \
-      #                       --format RspecJunitFormatter \
-      #                       --out /tmp/test-results/rspec.xml \
-      #                       --format progress \
-      #                       $TEST_FILES
-
-      # collect reports
-      # - store_test_results:
-      #     path: /tmp/test-results
-      # - store_artifacts:
-      #     path: /tmp/test-results
-      #     destination: test-results
+      #     name: test
+      #     command: docker-compose run api rails test
+      - run:
+          name: docker-compose down
+          command: docker-compose down
+  
+    # Build production image and deploy
+    deploy:
+      machine:
+        image: circleci/classic:edge
+      steps:
+        - checkout
 
 workflows:
   version: 2
@@ -131,3 +94,9 @@ workflows:
     jobs:
       - lint
       - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
