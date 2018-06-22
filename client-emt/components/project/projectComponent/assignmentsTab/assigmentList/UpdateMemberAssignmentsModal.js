@@ -70,7 +70,7 @@ class UpdateMemberAssignmentsModal extends React.Component {
       <React.Fragment>
         <div className="editable-cell">
             <div style={{ paddingRight: 24 }}>
-                <div>
+                <div>  
                   <Image
                       cloudName={CLOUD_NAME}
                       publicId={member.avatar}
@@ -80,11 +80,13 @@ class UpdateMemberAssignmentsModal extends React.Component {
                   />
                   {member.username}
                 </div>
-                <Icon
-                  type="edit"
-                  className="editable-cell-icon"
-                  onClick={this.showModal}
-                />
+                <Tooltip placement="topLeft" title="Edit">
+                  <Icon
+                    type="edit"
+                    className="editable-cell-icon"
+                    onClick={this.showModal}
+                  />
+                </Tooltip>
             </div>    
         </div>
 

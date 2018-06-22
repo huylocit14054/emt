@@ -31,7 +31,7 @@ class MembersTab extends React.Component {
   render() {
     const projectId = this.props.router.query.id;
     return (
-      <Query query={GET_MEMBERS_BY_PROJECTS_ID} variables={{ projectId }}>
+      <Query query={GET_MEMBERS_BY_PROJECTS_ID} variables={{ projectId: parseInt(projectId) }}>
         {({ loading, error, data }) => {
           if (loading) return 'Loading...';
           if (error) return `Error! ${error.message}`;

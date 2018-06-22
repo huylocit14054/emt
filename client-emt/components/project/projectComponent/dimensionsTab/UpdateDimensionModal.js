@@ -1,4 +1,4 @@
-import { Button, message, Icon } from 'antd';
+import { Button, message, Icon, Tooltip } from 'antd';
 import { Mutation } from 'react-apollo';
 import { updateDimension as UPDATE_DIMENSION_MUTATION } from '../../../../graphql/mutations.gql';
 import UpdateDimensionForm from './updateDimensionModal/UpdateDimensionForm';
@@ -40,11 +40,13 @@ class UpdateDimensionModal extends React.Component {
       <div className="editable-cell">
         <div style={{ paddingRight: 24 }}>
             <span>{dimension.name}</span>
-            <Icon
-              type="edit"
-              className="editable-cell-icon"
-              onClick={this.showModal}
-            />
+            <Tooltip placement="topLeft" title="Edit">
+              <Icon
+                type="edit"
+                className="editable-cell-icon"
+                onClick={this.showModal}
+              />
+            </Tooltip>
         </div>    
       </div>
 

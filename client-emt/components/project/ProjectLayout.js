@@ -20,9 +20,13 @@ class ProjectLayout extends React.Component {
 
   render() {
     const { activeKey } = this.props;
+    if (!this.props.router.query.id) {
+      return (
+        <div>Loading...</div>
+      )
+    }
     return (
-      <React.Fragment>
-        <Query query={GET_PROJECT_BY_ID} variables={{ id: this.props.router.query.id }}>
+        <Query query={GET_PROJECT_BY_ID} variables={{ id: parseInt(this.props.router.query.id) }}>
           {({ loading, error, data }) => {
             if (loading) return 'Loading...';
             if (error) return `Error! ${error.message}`;
@@ -39,30 +43,25 @@ class ProjectLayout extends React.Component {
               <p>{project.description}</p>
             </div>
               <Tabs activeKey={activeKey} onChange={this.callback} animated={false}>
-          <TabPane tab="Members" key="members">
-            <MembersTab />
-          </TabPane>
-          {project.isManagedByCurrentUser && (
-            <TabPane tab="Dimensions" key="dimensions">
-            <DimensionsTab />
-          </TabPane>
-          )}
-          {project.isManagedByCurrentUser && (
-            <TabPane tab="Assignments" key="assignments">
-            <AssignmentsTab />
-          </TabPane>
-          )}
- 
-          
-        </Tabs>
+                  <TabPane tab="Members" key="members">
+                    <MembersTab />
+                  </TabPane>
+                  {project.isManagedByCurrentUser && (
+                    <TabPane tab="Dimensions" key="dimensions">
+                    <DimensionsTab />
+                  </TabPane>
+                  )}
+                  {project.isManagedByCurrentUser && (
+                    <TabPane tab="Assignments" key="assignments">
+                    <AssignmentsTab />
+                  </TabPane>
+                  )} 
+              </Tabs>
               </React.Fragment>
             
             );
           }}
         </Query>
-
-        
-      </React.Fragment>
     );
   }
 }
