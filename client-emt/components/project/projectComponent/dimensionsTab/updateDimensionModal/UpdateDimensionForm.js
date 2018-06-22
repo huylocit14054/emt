@@ -31,6 +31,20 @@ const UpdateDimensionForm = Form.create()(class extends React.Component {
                 initialValue: dimension.name,
               })(<Input />)}
           </FormItem>
+          <FormItem label="category">
+          {getFieldDecorator('category', {
+              rules: [
+                {
+                  required: true,
+                  message: "Please select dimension's category",
+                },
+              ],
+              initialValue: dimension.category
+            })(<Select placeholder="Select dimension's category">
+              <Option key="selection">selection</Option>
+              <Option key="input">input</Option>
+            </Select>)}
+           </FormItem>
         </Form>
       </Modal>
     );

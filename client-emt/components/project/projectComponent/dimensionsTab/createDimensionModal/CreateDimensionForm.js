@@ -29,7 +29,7 @@ const CreateDimensionForm = Form.create()(class extends React.Component {
                     message: 'Please input the name of dimension!',
                   },
                 ],
-              })(<Input />)}
+              })(<Input placeholder="Dimension's name"/>)}
           </FormItem>
           <FormItem label="category">
             {getFieldDecorator('category', {
@@ -39,8 +39,8 @@ const CreateDimensionForm = Form.create()(class extends React.Component {
                     message: "Please select dimension's category",
                   },
                 ],
-                initialValue: 'selection',
-              })(<Select>
+               
+              })(<Select placeholder="Select dimension's category">
                 <Option key="selection">selection</Option>
                 <Option key="input">input</Option>
               </Select>)}
