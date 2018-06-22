@@ -1,0 +1,102 @@
+# Ruby CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-ruby/ for more details
+#
+version: 2
+jobs:
+  lint:
+    environment:
+      - BUNDLE_GEMFILE: Gemfile.tools
+    docker:
+      # specify the version you desire here
+      - image: circleci/ruby:2.5-stretch-node-browsers
+        environment:
+          RAILS_ENV: test
+          RACK_ENV: test
+
+    working_directory: ~/emt
+
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restoring Gem Tools Cache
+          keys:
+          - gem-tools-cache-v1-{{ checksum "Gemfile.tools.lock" }}
+          # fallback to using the latest cache if no exact match is found
+          - gem-tools-cache-v1-
+      - run:
+          name: Install cmake
+          command: sudo apt-get install cmake
+      - run:
+          name: Install Dependencies
+          command: |
+            bundle check --path vendor/bundle || bundle install --jobs=4 --retry=3 --path vendor/bundle
+      - save_cache:
+          name: Saving Gem Tools Cache
+          key: gem-tools-cache-v1-{{ checksum "Gemfile.tools.lock" }}
+          paths:
+            - vendor/bundle
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-cache-v1-{{ checksum "client-emt/yarn.lock" }}
+            - yarn-packages-cache-v1-
+      - run:
+          name: Install Dependencies
+          command: cd ~/emt/client-emt && yarn install
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-cache-v1-{{ checksum "client-emt/yarn.lock" }}
+          paths:
+            - client-emt/node_modules/
+      - run:
+          name: Run source code analysis
+          command: |
+            bundle exec pronto run -c origin/master -f github_status -f github_pr_review --exit-code
+      - store_artifacts:
+          path: ./tmp
+
+  # Build and run test
+  build:
+    machine:
+      image: circleci/classic:edge
+    steps:
+      - checkout
+      - run:
+          name: docker-compose build
+          command: docker-compose build
+      - run:
+          name: docker-compose up
+          command: docker-compose up -d
+      - run:
+          name: sleep for waiting launch db
+          command: sleep 2
+      - run:
+          name: "before_test: setup db"
+          command: docker-compose run api rails db:create db:migrate
+      # - run:
+      #     name: test
+      #     command: docker-compose run api rails test
+      - run:
+          name: docker-compose down
+          command: docker-compose down
+  
+    # Build production image and deploy
+    deploy:
+      machine:
+        image: circleci/classic:edge
+      steps:
+        - checkout
+
+workflows:
+  version: 2
+  release:
+    jobs:
+      - lint
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master

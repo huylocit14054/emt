@@ -1,0 +1,48 @@
+AllCops:
+  Include:
+    - Rakefile
+    - config.ru
+  Exclude:
+    - db/schema.rb
+    - public/**/*
+    - app/assets/**/*
+  TargetRubyVersion: 2.5
+  TargetRailsVersion: 5.1
+
+Rails:
+  Enabled: true
+
+Metrics/LineLength:
+  Max: 120
+
+Documentation:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/HashSyntax:
+  EnforcedStyle: ruby19_no_mixed_keys
+
+Layout/AlignHash:
+  EnforcedHashRocketStyle: key
+  SupportedHashRocketStyles:
+    - key
+    - table
+  EnforcedColonStyle: key
+  SupportedColonStyles:
+    - key
+    - table
+
+Metrics/MethodLength:
+  Max: 20
+
+Metrics/ClassLength:
+  Max: 1500
+
+Metrics/AbcSize:
+  Max: 35
