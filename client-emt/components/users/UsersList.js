@@ -16,9 +16,9 @@ const columns = [
         <Image
           cloudName={CLOUD_NAME}
           publicId={user.avatar}
-          width="40"
+          width="40" height="40"
           crop="scale"
-          style={{ borderRadius: '50%', marginRight: 20 }}
+          style={{ borderRadius: '50%', border: "1px solid #00b5d0" , marginRight: 20 }}
         />
         {user.username}
       </a>
@@ -46,6 +46,7 @@ export default class UsersList extends React.Component {
             if (error) return `Error! ${error.message}`;
             return (
               <Table
+                bordered
                 columns={columns}
                 pagination={{ pageSize: 8 }}
                 loading={loading}

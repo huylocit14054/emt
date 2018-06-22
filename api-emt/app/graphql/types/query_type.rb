@@ -59,6 +59,14 @@ class Types::QueryType < Types::BaseObject
     ::Option.find(id)
   end
 
+  field :dimension_options, [Types::Option], null: false do
+    argument :dimension_id, ID, required: false
+  end
+
+  def dimension_options(dimension_id:)
+    ::Dimension.find(dimension_id).options
+  end
+
   field :authorization, Types::Authorization, null: false, description: "Authorization" do
     argument :id, ID, required: false
   end
@@ -85,12 +93,12 @@ class Types::QueryType < Types::BaseObject
   end
 
   # suggestions on typing in dimensions assignment
-  field :member_suggestion, [Types::User, null: true], null: false do
+  field :members_suggestion, [Types::User, null: true], null: false do
     argument :project_id, ID, required: true
     argument :query, String, required: true
   end
 
-  def member_suggestion(project_id:, query:)
+  def members_suggestion(project_id:, query:)
     project = ::Project.find(project_id)
     suggestions = project.members.where("username LIKE ? OR email LIKE ?", "%#{query}%", "%#{query}%")
   end
@@ -112,7 +120,15 @@ class Types::QueryType < Types::BaseObject
 
   def project_dimensions(project_id:)
     project = ::Project.find(project_id)
-    members = project.dimensions
+    dimensions = project.dimensions.order(created_at: :desc)
+  end
+
+  field :project_dimensions_tree, Types::Json, null: false do
+    argument :project_id, ID, required: true
+  end
+
+  def project_dimensions_tree(project_id:)
+    ::Project.generate_dimensions_selection_tree(project_id: project_id)
   end
 
   #return table of dimensions assignment
@@ -122,5 +138,14 @@ class Types::QueryType < Types::BaseObject
 
   def dimensions_assignment(project_id:)
     ::Project.generate_dimensions_assigment_table(project_id: project_id)
+  end
+
+  #return member autheticate assignment
+  field :member_assignments, [String], null: false do
+    argument :member_id, ID, required: true
+  end
+
+  def member_assignments(member_id:)
+    ::ProjectMember.get_authorize_array(project_member_id: member_id)
   end
 end

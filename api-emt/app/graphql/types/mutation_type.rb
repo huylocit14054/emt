@@ -16,8 +16,10 @@ class Types::MutationType < Types::BaseObject
   field :update_member_role_in_project, mutation: Mutations::UpdateMemberRoleInProject
   field :create_dimension, mutation: Mutations::CreateDimension
   field :update_dimension, mutation: Mutations::UpdateDimension
-  field :create_option, mutation: Mutations::CreateOption
+  field :create_options, mutation: Mutations::CreateOptions
   field :update_password, mutation: Mutations::UpdatePassword
   field :update_avatar, mutation: Mutations::UpdateAvatar
   field :assign_dimensions_for_members, mutation: Mutations::AssignDimensionsForMembers
+  field :update_member_assignments, mutation: Mutations::UpdateMemberAssignments
+  field :detete_project, mutation: Mutations::DeleteProject
 end

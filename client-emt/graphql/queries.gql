@@ -16,6 +16,15 @@ query usersSuggestion($query: String!) {
   }
 }
 
+query membersSuggestion($query: String!, $projectId: ID!) {
+  membersSuggestion(query: $query, projectId: $projectId) {
+    id
+    username
+    email
+    avatar
+  }
+}
+
 query getCurrentUserProfile {
   profile: currentUser {
     id
@@ -50,11 +59,21 @@ query getProjectOfCurrentUser {
     id
     name
     description
+    shortenMembers {
+      id
+      avatar
+    }
+    memberCount
   }
   projectsAsAdminOfCurrentUser {
     id
     name
     description
+    shortenMembers {
+      id
+      avatar
+    }
+    memberCount
   }
 }
 
@@ -72,6 +91,62 @@ query getMembersByProjectId($projectId: ID!) {
   }
 }
 
+query getAssignmentsByProjectId($projectId: ID!) {
+  assignments: projectMembers(projectId: $projectId){
+    id
+    user {
+      id
+      username
+      avatar
+    }
+    authorizedDimensions
+    authorizations {
+      dimension {
+        id
+      }
+      optionAuthorizations {
+        option {
+          id
+          name
+          dimension {
+            id
+          }
+        }
+      }
+    }
+  }
+  projectDimensions(projectId: $projectId) {
+    id
+    name
+    category
+  }
+}
+
+query getDimensionsByProjectId($projectId: ID!) {
+  projectDimensions(projectId: $projectId) {
+    id
+    name
+    category
+    createdAt
+    options {
+      id
+      name
+    }
+  }
+}
+
+query getProjectDimensionsTreeByProjectId($projectId: ID!){
+  projectDimensionsTree(projectId: $projectId)
+}
+
+
+query getOptionsByDimensionId($dimensionId: ID!) {
+  dimensionOptions(dimensionId: $dimensionId) {
+    id
+    name
+  }
+}
+
 query getProjectById($id: ID!) {
   project(id: $id) {
     id
@@ -79,4 +154,8 @@ query getProjectById($id: ID!) {
     description
     isManagedByCurrentUser
   }
+}
+
+query getAssignmentsByMemberId($memberId: ID!){
+  memberAssignments(memberId: $memberId)
 }

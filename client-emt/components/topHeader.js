@@ -11,11 +11,26 @@ import { getCurrentUser as GET_CURRENT_USER_QUERY } from '../graphql/queries.gql
 
 const { Header } = Layout;
 
+function getCookie(cname) {
+  var name = cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for(var i = 0; i <ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+          c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+      }
+  }
+  return "";
+}
 class TopHeader extends React.Component {
   signout = () => {
-    document.cookie = cookie.serialize('token', '', {
-      maxAge: -1, // Expire the cookie immediately
-    });
+    do {
+      document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    } while (getCookie("token") !== "");
     window.location.replace('/login');
   };
 
@@ -34,9 +49,9 @@ class TopHeader extends React.Component {
                     <Image
                       cloudName={CLOUD_NAME}
                       publicId={currentUserSync.avatar}
-                      width="40"
+                      width="40" height="40"
                       crop="scale"
-                      style={{ borderRadius: '50%' }}
+                      style={{ borderRadius: '50%', border: "1px solid #00b5d0" , border: "1px solid #00b5d0" }}
                     />
                   }
                   title={<a>{currentUserSync.username}</a>}
@@ -45,7 +60,7 @@ class TopHeader extends React.Component {
               </Menu.Item>
               <Menu.Divider />
               <Menu.Item key="profile">
-                <Link prefetch as="/me/profile" href="/profile">
+                <Link  as="/me/profile" href="/profile">
                   <a>
                     <Icon type="profile" /> Profile
                   </a>
@@ -73,9 +88,9 @@ class TopHeader extends React.Component {
                   <Image
                     cloudName={CLOUD_NAME}
                     publicId={currentUserSync.avatar}
-                    width="40"
+                    width="40" height="40"
                     crop="scale"
-                    style={{ borderRadius: '50%' }}
+                    style={{ borderRadius: '50%', border: "1px solid #00b5d0"  }}
                   />
                 </div>
               </Dropdown>

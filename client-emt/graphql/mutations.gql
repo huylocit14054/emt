@@ -31,6 +31,53 @@ mutation updateAvatar($input: UpdateAvatarInput!) {
     avatarUrl
   }
 }
+
+mutation createDimension($input: CreateDimensionInput!) {
+  createDimension(input: $input) {
+    createdDimension {
+      id
+      name
+      category
+      createdAt
+      options {
+        id
+        name
+      }
+    }
+  }
+}
+
+mutation updateDimension($input: UpdateDimensionInput!) {
+  updateDimension(input: $input) {
+    updatedDimension {
+      id
+      name
+      category
+      options {
+        id
+        name
+      }
+    }
+  }
+}
+
+mutation createOptions($input: CreateOptionsInput!) {
+  createOptions(input: $input) {
+    createdOptions {
+      id
+      name
+    }
+  }
+}
+mutation updateProject($input: UpdateProjectInput!) {
+  updateProject(input: $input) {
+    updatedProject {
+      id
+      name
+      description
+    }
+  }
+}
 mutation addMemberToProject($input: AddMemberToProjectInput!) {
   addMemberToProject(input: $input) {
     addedMember {
@@ -47,6 +94,13 @@ mutation addMemberToProject($input: AddMemberToProjectInput!) {
   }
 }
 
+mutation assignDimensionsForMembers($input: AssignDimensionsForMembersInput!) {
+  assignDimensionsForMembers(input: $input){
+    assigned
+  }
+
+}
+
 mutation updatePassword($input: UpdatePasswordInput!) {
   updatePassword(input: $input) {
     passwordIsUpdated
@@ -56,15 +110,48 @@ mutation updatePassword($input: UpdatePasswordInput!) {
 mutation createProject($input: CreateProjectInput!) {
   createProject(input: $input) {
     createdProject {
-      id
+       id
       name
       description
-    }
+      shortenMembers {
+        id
+        avatar
+      }
+      memberCount
+      }
   }
 }
 
 mutation updateMemberRoleInProject($input: UpdateMemberRoleInProjectInput!) {
   updateMemberRoleInProject(input: $input) {
     updated
+  }
+}
+
+mutation updateMemberAssignments($input: UpdateMemberAssignmentsInput!) {
+  updateMemberAssignments(input: $input){
+    updatedMember {
+        id
+        user {
+          id
+          username
+          avatar
+        }
+        authorizedDimensions
+        authorizations {
+          dimension {
+            id
+          }
+          optionAuthorizations {
+            option {
+              id
+              name
+              dimension {
+                id
+              }
+            }
+          }
+        }
+    }
   }
 }

@@ -11,10 +11,16 @@ class Types::Project < Types::BaseObject
   #Relationships
   field :dimensions, [Types::Dimension], null: true
   field :members, [Types::User], null: true
+  field :shorten_members, [Types::User], null: true
+
+  def shorten_members
+    object.members.sample(5)
+  end
+
   field :member_relationships, [Types::ProjectMember], null: true
   field :is_managed_by_current_user, Boolean, null: true
 
   def is_managed_by_current_user
-    ProjectMember.exists?(user: context[:current_user], project: object, role: "project_admin")
+    ::ProjectMember.exists?(user: context[:current_user], project: object, role: "project_admin")
   end
 end

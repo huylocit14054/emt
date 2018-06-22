@@ -109,8 +109,9 @@ class ChangeAvatarModal extends React.Component {
                         cloudName={CLOUD_NAME}
                         publicId={currentUser.avatar}
                         width="300"
+                        height="300"
                         crop="scale"
-                        style={{ margin: 'auto' }}
+                        style={{ margin: 'auto',  }}
                       />
                     </Spin>
                   </Upload>

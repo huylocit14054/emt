@@ -49,7 +49,7 @@ const AddMemberForm = Form.create()(class extends React.Component {
               {
                 query: GET_MEMBERS_BY_PROJECTS_ID_QUERY,
                 variables: {
-                  projectId: this.props.projectId,
+                  projectId: parseInt(this.props.projectId),
                 },
               },
             ],
@@ -110,8 +110,9 @@ const AddMemberForm = Form.create()(class extends React.Component {
                         cloudName={CLOUD_NAME}
                         publicId={user.avatar}
                         width="25"
+                        height="25"
                         crop="scale"
-                        style={{ borderRadius: '50%', marginRight: 10 }}
+                        style={{ borderRadius: '50%', border: "1px solid #00b5d0" , marginRight: 10 }}
                       />
                       <Highlighter
                         highlightClassName="highlight-keyword-username"

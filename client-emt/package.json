@@ -37,6 +37,7 @@
     "postcss-easy-import": "^3.0.0",
     "postcss-loader": "^2.0.7",
     "prop-types": "^15.6.1",
+    "randomcolor": "^0.5.3",
     "raw-loader": "^0.5.1",
     "react": "^16.0.0",
     "react-apollo": "^2.1.5",

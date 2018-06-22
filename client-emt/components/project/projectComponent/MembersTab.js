@@ -4,27 +4,42 @@ import { Query, Mutation, ApolloConsumer } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Image } from 'cloudinary-react';
 import { CLOUD_NAME } from '../../../constants';
-import {
-  getCurrentUserOnClient as GET_CURRENT_USER_QUERY,
-  getMembersByProjectId as GET_MEMBERS_BY_PROJECTS_ID,
-} from '../../../graphql/queries.gql';
+import { getMembersByProjectId as GET_MEMBERS_BY_PROJECTS_ID } from '../../../graphql/queries.gql';
 import { updateMemberRoleInProject as UPDATE_MEMBER_ROLE_IN_PROJECT } from '../../../graphql/mutations.gql';
 import If from '../../../utils/If';
-import AddMemberForm from './MembersTap/AddMemberForm';
+import AddMemberForm from './membersTab/AddMemberForm';
 
 const humanizeString = require('humanize-string');
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
-const { Column, ColumnGroup } = Table;
+const { Column } = Table;
 
 function onChange(updateMemberRoleInProject, e, memberId) {
+  const role = e.target.value
   updateMemberRoleInProject({
     variables: {
       input: {
         projectMemberId: memberId,
-        role: e.target.value,
+        role,
       },
+    },
+    update: (
+      client,
+    ) => {
+      // update dimension options
+      client.writeFragment({
+        id: `ProjectMember:${memberId}`,
+        fragment: gql`
+          fragment projectMember on ProjectMember {
+            role
+          }
+        `,
+        data: {
+          role,
+          __typename: 'ProjectMember',
+        },
+      });
     },
   });
   console.log(`radio checked:${e.target.value}`);
@@ -34,7 +49,7 @@ class MembersTab extends React.Component {
   render() {
     const projectId = this.props.router.query.id;
     return (
-      <Query query={GET_MEMBERS_BY_PROJECTS_ID} variables={{ projectId }}>
+      <Query query={GET_MEMBERS_BY_PROJECTS_ID} variables={{ projectId: parseInt(projectId) }}>
         {({ loading, error, data }) => {
           if (loading) return 'Loading...';
           if (error) return `Error! ${error.message}`;
@@ -60,6 +75,7 @@ class MembersTab extends React.Component {
                     />
                     <br />
                     <Table
+                      bordered
                       pagination={{ pageSize: 7 }}
                       loading={loading}
                       dataSource={data.projectMembers}
@@ -74,9 +90,9 @@ class MembersTab extends React.Component {
                             <Image
                               cloudName={CLOUD_NAME}
                               publicId={member.user.avatar}
-                              width="40"
+                              width="40" height="40"
                               crop="scale"
-                              style={{ borderRadius: '50%', marginRight: 20 }}
+                              style={{ borderRadius: '50%', border: "1px solid #00b5d0" , marginRight: 20 }}
                             />
                             {member.user.username}
                           </a>
@@ -92,7 +108,7 @@ class MembersTab extends React.Component {
                         key="role"
                         render={member => {
                           if (member.user.role === 'root_admin') {
-                            return <Tag color="gold">Root admin</Tag>;
+                            return <Tag color="#faad14">Root admin</Tag>;
                           }
                           return (
                             <Mutation
@@ -123,7 +139,7 @@ class MembersTab extends React.Component {
                                   }
                                   else={
                                     member.role === 'project_admin' ? (
-                                      <Tag color="cyan">{humanizeString(member.role)}</Tag>
+                                      <Tag color="#13c2c2">{humanizeString(member.role)}</Tag>
                                     ) : (
                                       <p>{humanizeString(member.role)}</p>
                                     )
