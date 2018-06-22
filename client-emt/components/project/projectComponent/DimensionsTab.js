@@ -49,7 +49,7 @@ class DimensionsTab extends React.Component {
             if (loading) return 'Loading...';
             if (error) return `Error! ${error.message}`;
             return (
-              <Table pagination={{ pageSize: 7 }} dataSource={data.projectDimensions} rowKey="id">
+              <Table bordered pagination={{ pageSize: 7 }} dataSource={data.projectDimensions} rowKey="id">
                 <Column
                   title="Name"
                   key="name"
