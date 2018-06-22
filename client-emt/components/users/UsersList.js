@@ -46,6 +46,7 @@ export default class UsersList extends React.Component {
             if (error) return `Error! ${error.message}`;
             return (
               <Table
+                bordered
                 columns={columns}
                 pagination={{ pageSize: 8 }}
                 loading={loading}

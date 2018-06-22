@@ -41,6 +41,13 @@ const CreateOptionForm = Form.create()(class extends React.Component {
       });
   };
 
+  isEntered = e => {
+    console.log(e.keyCode)
+    if (e.keyCode == 13) {
+      this.add()
+    }
+  }
+
   render() {
     const {visible, onCancel, onCreate, form, confirmLoading} = this.props;
     const {getFieldDecorator, getFieldValue} = this.props.form;
@@ -66,6 +73,7 @@ const CreateOptionForm = Form.create()(class extends React.Component {
             }
           ]
         })(<Input
+          onKeyUp={this.isEntered}
           placeholder="option name"
           style={{
           width: '95%',

@@ -57,6 +57,7 @@ class MembersTab extends React.Component {
                     />
                     <br />
                     <Table
+                      bordered
                       pagination={{ pageSize: 7 }}
                       loading={loading}
                       dataSource={data.projectMembers}
