@@ -24,12 +24,12 @@ const renderCategory = category => {
   }
 };
 
-
-
 const renderOptions = options => (
   <React.Fragment>
     {options.map(option => (
-      <Tag key={option.id} color='#d6e4ff' style={{color: '#333'}}>
+      <Tag key={option.id} color='#d6e4ff' style={{
+        color: '#333', height: 'auto', whiteSpace: 'pre-wrap'
+      }}>
         {option.name}
       </Tag>
     ))}
@@ -53,10 +53,8 @@ class DimensionsTab extends React.Component {
                 <Column
                   title="Name"
                   key="name"
-                  render={dimension => (<React.Fragment>
-                    <span>{dimension.name}</span>
+                  render={dimension => (                 
                     <UpdateDimensionModal dimension={dimension} />
-                  </React.Fragment>
                )}
                 />
                 <Column

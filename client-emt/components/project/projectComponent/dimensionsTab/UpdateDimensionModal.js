@@ -33,10 +33,20 @@ class UpdateDimensionModal extends React.Component {
     this.formRef = formRef;
   };
   render() {
+    const { dimension } = this.props
     return (
       <React.Fragment>
         
-        <Icon type="edit" onClick={this.showModal} style={{marginLeft: 15, cursor: 'pointer' }} className="edit-btn"/>
+      <div className="editable-cell">
+        <div style={{ paddingRight: 24 }}>
+            <span>{dimension.name}</span>
+            <Icon
+              type="edit"
+              className="editable-cell-icon"
+              onClick={this.showModal}
+            />
+        </div>    
+      </div>
 
         <Mutation
           mutation={UPDATE_DIMENSION_MUTATION}

@@ -68,21 +68,26 @@ class UpdateMemberAssignmentsModal extends React.Component {
       const {member} = this.props
     return (
       <React.Fragment>
-      <Tooltip placement="topLeft" title={`Edit ${member.username}'s assignment`} arrowPointAtCenter>
-      <a href="javascript:;" onClick={this.showModal}>
-            {' '}
-            <Image
-                cloudName={CLOUD_NAME}
-                publicId={member.avatar}
-                width="40" height="40"
-                crop="scale"
-                style={{ borderRadius: '50%', border: "1px solid #00b5d0" , marginRight: 20 }}
-            />
-            {member.username}
-       </a>
-       </Tooltip>
-        <br />
-        <br />
+        <div className="editable-cell">
+            <div style={{ paddingRight: 24 }}>
+                <div>
+                  <Image
+                      cloudName={CLOUD_NAME}
+                      publicId={member.avatar}
+                      width="40" height="40"
+                      crop="scale"
+                      style={{ borderRadius: '50%', border: "1px solid #00b5d0" , marginRight: 20 }}
+                  />
+                  {member.username}
+                </div>
+                <Icon
+                  type="edit"
+                  className="editable-cell-icon"
+                  onClick={this.showModal}
+                />
+            </div>    
+        </div>
+
         <Mutation
           mutation={UPDATE_MEMBER_ASSIGNMENTS_MUTATION}
           onCompleted={data => {
