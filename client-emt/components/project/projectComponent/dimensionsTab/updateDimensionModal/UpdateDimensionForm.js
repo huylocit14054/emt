@@ -1,6 +1,7 @@
 import { Form, Input, Modal, Select } from 'antd';
 
 const FormItem = Form.Item;
+const { Option } = Select
 
 const UpdateDimensionForm = Form.create()(class extends React.Component {
   render() {

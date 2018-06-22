@@ -7,6 +7,10 @@ const fs = require("fs");
 
 module.exports = withGraphql({
   webpack: (config, { dev }) => {
+    if (dev) {
+      config.devtool = 'eval-source-map';
+    }
+
     config.module.rules.push(
       {
         test: /\.(css|less)/,

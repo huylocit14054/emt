@@ -4,7 +4,6 @@ export default apolloClient =>
   apolloClient
     .query({ query: GET_CURRENT_USER_QUERY })
     .then(({ data }) => {
-      console.log(data);
       return { currentUser: data.currentUser };
     })
     .catch(err => {

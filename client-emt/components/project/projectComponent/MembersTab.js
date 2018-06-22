@@ -16,12 +16,30 @@ const RadioGroup = Radio.Group;
 const { Column } = Table;
 
 function onChange(updateMemberRoleInProject, e, memberId) {
+  const role = e.target.value
   updateMemberRoleInProject({
     variables: {
       input: {
         projectMemberId: memberId,
-        role: e.target.value,
+        role,
       },
+    },
+    update: (
+      client,
+    ) => {
+      // update dimension options
+      client.writeFragment({
+        id: `ProjectMember:${memberId}`,
+        fragment: gql`
+          fragment projectMember on ProjectMember {
+            role
+          }
+        `,
+        data: {
+          role,
+          __typename: 'ProjectMember',
+        },
+      });
     },
   });
   console.log(`radio checked:${e.target.value}`);

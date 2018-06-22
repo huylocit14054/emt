@@ -60,7 +60,7 @@ class TopHeader extends React.Component {
               </Menu.Item>
               <Menu.Divider />
               <Menu.Item key="profile">
-                <Link prefetch as="/me/profile" href="/profile">
+                <Link  as="/me/profile" href="/profile">
                   <a>
                     <Icon type="profile" /> Profile
                   </a>

@@ -49,7 +49,7 @@ const AddMemberForm = Form.create()(class extends React.Component {
               {
                 query: GET_MEMBERS_BY_PROJECTS_ID_QUERY,
                 variables: {
-                  projectId: this.props.projectId,
+                  projectId: parseInt(this.props.projectId),
                 },
               },
             ],

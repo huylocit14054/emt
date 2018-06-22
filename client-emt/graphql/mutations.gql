@@ -52,6 +52,11 @@ mutation updateDimension($input: UpdateDimensionInput!) {
     updatedDimension {
       id
       name
+      category
+      options {
+        id
+        name
+      }
     }
   }
 }

@@ -87,7 +87,7 @@ query getMembersByProjectId($projectId: ID!) {
       username
       role
       avatar
-}
+    }
   }
 }
 
