@@ -73,7 +73,7 @@ class CreateOptionsModal extends React.Component {
           mutation={CREATE_OPTIONS_MUTATION}
           onCompleted={data => {
             const { form } = this.formRef.props;
-            // this.setState({ visible: false });
+            this.setState({ visible: false });
             message.success('Options Added');
             form.resetFields();
           }}
