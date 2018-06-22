@@ -12,6 +12,13 @@ import AssignmentsTab from './projectComponent/AssignmentsTab';
 
 const { TabPane } = Tabs;
 class ProjectLayout extends React.Component {
+  componentDidMount () {
+    const projectId = this.props.router.query.id;
+    Router.prefetch(`/projectDimensions?id=${projectId}`);
+    Router.prefetch(`/projectAssignments?id=${projectId}`);
+    Router.prefetch(`/projectMembers?id=${projectId}`);
+  }
+  
   callback = key => {
     const projectId = this.props.router.query.id;
     const site = _.capitalize(key);
