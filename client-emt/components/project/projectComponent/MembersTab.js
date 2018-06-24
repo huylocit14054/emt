@@ -1,5 +1,5 @@
 import { withRouter } from 'next/router';
-import { Table, Icon, Divider, Radio, message, Tag } from 'antd';
+import { Table, Icon, Divider, Radio, message, Tag, notification } from 'antd';
 import { Query, Mutation, ApolloConsumer } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Image } from 'cloudinary-react';
@@ -14,9 +14,19 @@ const humanizeString = require('humanize-string');
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const { Column } = Table;
+const openNotification = (username, newRole) => {
+  notification.open({
+    message: <b>Role Updated</b>,
+    description: (
+      <div>
+        <b>{username}</b>'s role is set to <b>{newRole}</b>
+      </div>
+    ),
+  });
+};
 
-function onChange(updateMemberRoleInProject, e, memberId) {
-  const role = e.target.value
+function onChange(updateMemberRoleInProject, e, memberId, username) {
+  const role = e.target.value;
   updateMemberRoleInProject({
     variables: {
       input: {
@@ -24,9 +34,7 @@ function onChange(updateMemberRoleInProject, e, memberId) {
         role,
       },
     },
-    update: (
-      client,
-    ) => {
+    update: client => {
       // update dimension options
       client.writeFragment({
         id: `ProjectMember:${memberId}`,
@@ -40,6 +48,7 @@ function onChange(updateMemberRoleInProject, e, memberId) {
           __typename: 'ProjectMember',
         },
       });
+      openNotification(username, humanizeString(e.target.value));
     },
   });
   console.log(`radio checked:${e.target.value}`);
@@ -90,9 +99,14 @@ class MembersTab extends React.Component {
                             <Image
                               cloudName={CLOUD_NAME}
                               publicId={member.user.avatar}
-                              width="40" height="40"
+                              width="40"
+                              height="40"
                               crop="scale"
-                              style={{ borderRadius: '50%', border: "1px solid #00b5d0" , marginRight: 20 }}
+                              style={{
+                                borderRadius: '50%',
+                                border: '1px solid #00b5d0',
+                                marginRight: 20,
+                              }}
                             />
                             {member.user.username}
                           </a>
@@ -129,7 +143,12 @@ class MembersTab extends React.Component {
                                   then={
                                     <RadioGroup
                                       onChange={e =>
-                                        onChange(updateMemberRoleInProject, e, member.id)
+                                        onChange(
+                                          updateMemberRoleInProject,
+                                          e,
+                                          member.id,
+                                          member.user.username
+                                        )
                                       }
                                       defaultValue={member.role}
                                     >

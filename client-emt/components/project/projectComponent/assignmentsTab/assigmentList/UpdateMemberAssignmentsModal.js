@@ -1,9 +1,7 @@
-import { Button, message, Icon,Tooltip } from 'antd';
+import { message, Icon, Tooltip } from 'antd';
 import { Mutation } from 'react-apollo';
-import _ from 'lodash'
-import { Image } from 'cloudinary-react';
-import { CLOUD_NAME } from '../../../../../constants';
-import {getAssignmentsByProjectId as GET_ASSIGNMENTS_BY_PROJECT_ID} from '../../../../../graphql/queries.gql'
+import _ from 'lodash';
+import { getAssignmentsByProjectId as GET_ASSIGNMENTS_BY_PROJECT_ID } from '../../../../../graphql/queries.gql';
 import { updateMemberAssignments as UPDATE_MEMBER_ASSIGNMENTS_MUTATION } from '../../../../../graphql/mutations.gql';
 import UpdateMemberAssignmentsForm from './updateMemberAssignmentsModal/UpdateMemberAssignmentsForm';
 
@@ -11,12 +9,15 @@ class UpdateMemberAssignmentsModal extends React.Component {
   state = {
     visible: false,
   };
+
   showModal = () => {
     this.setState({ visible: true });
   };
+
   handleCancel = () => {
     this.setState({ visible: false });
   };
+
   handleCreate = updateMemberAssignments => {
     const form = this.formRef.props.form;
     form.validateFields((err, values) => {
@@ -35,9 +36,9 @@ class UpdateMemberAssignmentsModal extends React.Component {
           store,
           {
             data: {
-                updateMemberAssignments: { updatedMember },
+              updateMemberAssignments: { updatedMember },
             },
-          },
+          }
         ) => {
           const data = store.readQuery({
             query: GET_ASSIGNMENTS_BY_PROJECT_ID,
@@ -46,7 +47,7 @@ class UpdateMemberAssignmentsModal extends React.Component {
             },
           });
 
-          const indexOfUpdatedMember = _.findIndex(data.assignments, {id: this.props.memberId});
+          const indexOfUpdatedMember = _.findIndex(data.assignments, { id: this.props.memberId });
           data.assignments.splice(indexOfUpdatedMember, 1, updatedMember);
           store.writeQuery({
             query: GET_ASSIGNMENTS_BY_PROJECT_ID,
@@ -56,39 +57,19 @@ class UpdateMemberAssignmentsModal extends React.Component {
             data,
           });
         },
-          
-        },
-      );
+      });
     });
   };
+
   saveFormRef = formRef => {
     this.formRef = formRef;
   };
+
   render() {
-      const {member} = this.props
+    const { member } = this.props;
     return (
       <React.Fragment>
-        <div className="editable-cell">
-            <div style={{ paddingRight: 24 }}>
-                <div>  
-                  <Image
-                      cloudName={CLOUD_NAME}
-                      publicId={member.avatar}
-                      width="40" height="40"
-                      crop="scale"
-                      style={{ borderRadius: '50%', border: "1px solid #00b5d0" , marginRight: 20 }}
-                  />
-                  {member.username}
-                </div>
-                <Tooltip placement="topLeft" title="Edit">
-                  <Icon
-                    type="edit"
-                    className="editable-cell-icon"
-                    onClick={this.showModal}
-                  />
-                </Tooltip>
-            </div>    
-        </div>
+        <a onClick={this.showModal}>Edit</a>
 
         <Mutation
           mutation={UPDATE_MEMBER_ASSIGNMENTS_MUTATION}
@@ -97,7 +78,6 @@ class UpdateMemberAssignmentsModal extends React.Component {
             const { form } = this.formRef.props;
             // this.setState({ visible: false });
             message.success('Dimensions Updated');
- 
           }}
           onError={error => {
             // If you want to send error to external service?
