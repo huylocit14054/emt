@@ -101,7 +101,11 @@ class TopHeader extends React.Component {
               <div>
                 <Link prefetch href="/">
                   <a>
-                    <img alt="logo" src="../static/enhance-logo.png" className="company-logo" />
+                    <img
+                      alt="logo"
+                      src="http://sv1.upsieutoc.com/2018/06/25/enhance-logo.png"
+                      className="company-logo"
+                    />
                   </a>
                 </Link>
               </div>

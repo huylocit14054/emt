@@ -40,7 +40,11 @@ class NormalLoginForm extends React.Component {
               <Spin indicator={antIcon} spinning={loading} tip="Signing in...">
                 <Link prefetch href="/">
                   <a>
-                    <img src="../../static/enhance-logo.png" className="logo" />
+                    <img
+                      src="http://sv1.upsieutoc.com/2018/06/25/enhance-logo.png"
+                      className="logo"
+                      alt="logo"
+                    />
                   </a>
                 </Link>
 

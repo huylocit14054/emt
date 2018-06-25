@@ -101,6 +101,12 @@ mutation assignDimensionsForMembers($input: AssignDimensionsForMembersInput!) {
 
 }
 
+mutation deteteProject($input: DeleteProjectInput!){
+  deteteProject(input: $input){
+    deleted
+  }
+}
+
 mutation updatePassword($input: UpdatePasswordInput!) {
   updatePassword(input: $input) {
     passwordIsUpdated
@@ -155,3 +161,4 @@ mutation updateMemberAssignments($input: UpdateMemberAssignmentsInput!) {
     }
   }
 }
+
