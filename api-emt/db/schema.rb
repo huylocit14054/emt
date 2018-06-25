@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180616152017) do
+ActiveRecord::Schema.define(version: 20180625024356) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,6 +74,27 @@ ActiveRecord::Schema.define(version: 20180616152017) do
     t.index ["name"], name: "index_projects_on_name", unique: true
   end
 
+  create_table "rule_fields", force: :cascade do |t|
+    t.string "name"
+    t.bigint "dimension_id"
+    t.bigint "rule_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dimension_id"], name: "index_rule_fields_on_dimension_id"
+    t.index ["rule_id", "dimension_id"], name: "rule_field_dimension_key", unique: true
+    t.index ["rule_id", "name"], name: "rule_field_name_key", unique: true
+    t.index ["rule_id"], name: "index_rule_fields_on_rule_id"
+  end
+
+  create_table "rules", force: :cascade do |t|
+    t.bigint "project_id"
+    t.boolean "is_applied", default: false
+    t.string "rule_string"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_rules_on_project_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "username"
     t.string "password_digest"
@@ -94,4 +115,7 @@ ActiveRecord::Schema.define(version: 20180616152017) do
   add_foreign_key "options", "dimensions"
   add_foreign_key "project_members", "projects"
   add_foreign_key "project_members", "users"
+  add_foreign_key "rule_fields", "dimensions"
+  add_foreign_key "rule_fields", "rules"
+  add_foreign_key "rules", "projects"
 end

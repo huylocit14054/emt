@@ -25,8 +25,22 @@ Metrics/BlockLength:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
+Style/RedundantBegin:
+  Description: "Don't use begin blocks when they are not needed."
+  StyleGuide: '#begin-implicit'
+  Enabled: false
+
+
+Style/MutableConstant:
+  Description: 'Do not assign mutable objects to constants.'
+  Enabled: false
+
 Style/HashSyntax:
   EnforcedStyle: ruby19_no_mixed_keys
+
+Style/SymbolArray:
+  Enabled: true
+  EnforcedStyle: brackets
 
 Layout/AlignHash:
   EnforcedHashRocketStyle: key
