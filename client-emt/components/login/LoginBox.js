@@ -1,8 +1,8 @@
 import { Form, Icon, Input, Button, Checkbox, message, Spin } from 'antd';
 import { Mutation, withApollo } from 'react-apollo';
-import redirect from '../../lib/redirect';
 import cookie from 'cookie';
 import Link from 'next/link';
+import redirect from '../../lib/redirect';
 import { loginUser as LOGIN_USER_QUERY } from '../../graphql/mutations.gql';
 
 const FormItem = Form.Item;
@@ -41,8 +41,9 @@ class NormalLoginForm extends React.Component {
                 <Link prefetch href="/">
                   <a>
                     <img
-                      src="http://sv1.upsieutoc.com/2018/06/14/company_logo.jpg"
+                      src="http://sv1.upsieutoc.com/2018/06/25/enhance-logo.png"
                       className="logo"
+                      alt="logo"
                     />
                   </a>
                 </Link>
@@ -69,19 +70,23 @@ class NormalLoginForm extends React.Component {
                   <FormItem>
                     {getFieldDecorator('username', {
                       rules: [{ required: true, message: 'Please input your username!' }],
-                    })(<Input
-                      prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                      placeholder="Username or Email"
-                    />)}
+                    })(
+                      <Input
+                        prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                        placeholder="Username or Email"
+                      />
+                    )}
                   </FormItem>
                   <FormItem>
                     {getFieldDecorator('password', {
                       rules: [{ required: true, message: 'Please input your Password!' }],
-                    })(<Input
-                      prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                      type="password"
-                      placeholder="Password"
-                    />)}
+                    })(
+                      <Input
+                        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                        type="password"
+                        placeholder="Password"
+                      />
+                    )}
                   </FormItem>
                   <FormItem>
                     {getFieldDecorator('remember', {

@@ -1,7 +1,7 @@
+import React from 'react';
 import { withRouter } from 'next/router';
 import { Tabs, Input } from 'antd';
 import { Query } from 'react-apollo';
-import Link from 'next/link';
 import Router from 'next/router';
 import _ from 'lodash';
 import MembersTab from './projectComponent/MembersTab';
@@ -12,13 +12,13 @@ import AssignmentsTab from './projectComponent/AssignmentsTab';
 
 const { TabPane } = Tabs;
 class ProjectLayout extends React.Component {
-  componentDidMount () {
+  componentDidMount() {
     const projectId = this.props.router.query.id;
     Router.prefetch(`/projectDimensions?id=${projectId}`);
     Router.prefetch(`/projectAssignments?id=${projectId}`);
     Router.prefetch(`/projectMembers?id=${projectId}`);
   }
-  
+
   callback = key => {
     const projectId = this.props.router.query.id;
     const site = _.capitalize(key);
@@ -28,47 +28,44 @@ class ProjectLayout extends React.Component {
   render() {
     const { activeKey } = this.props;
     if (!this.props.router.query.id) {
-      return (
-        <div>Loading...</div>
-      )
+      return <div>Loading...</div>;
     }
     return (
-        <Query query={GET_PROJECT_BY_ID} variables={{ id: parseInt(this.props.router.query.id) }}>
-          {({ loading, error, data }) => {
-            if (loading) return 'Loading...';
-            if (error) return `Error! ${error.message}`;
-            const { project } = data;
-            return (
-              <React.Fragment>
+      <Query query={GET_PROJECT_BY_ID} variables={{ id: parseInt(this.props.router.query.id) }}>
+        {({ loading, error, data }) => {
+          if (loading) return 'Loading...';
+          if (error) return `Error! ${error.message}`;
+          const { project } = data;
+          return (
+            <React.Fragment>
               <div style={{ marginBottom: '1%' }}>
-              <h2>
-                {project.name}
-                {project.isManagedByCurrentUser && (
-                  <UpdateProjectModal projectId={this.props.router.query.id} />
-                )}
-              </h2>
-              <p>{project.description}</p>
-            </div>
-              <Tabs activeKey={activeKey} onChange={this.callback} animated={false}>
-                  <TabPane tab="Members" key="members">
-                    <MembersTab />
-                  </TabPane>
+                <h2>
+                  {project.name}
                   {project.isManagedByCurrentUser && (
-                    <TabPane tab="Dimensions" key="dimensions">
+                    <UpdateProjectModal projectId={this.props.router.query.id} />
+                  )}
+                </h2>
+                <p>{project.description}</p>
+              </div>
+              <Tabs activeKey={activeKey} onChange={this.callback} animated={false}>
+                <TabPane tab="Members" key="members">
+                  <MembersTab />
+                </TabPane>
+                {project.isManagedByCurrentUser && (
+                  <TabPane tab="Dimensions" key="dimensions">
                     <DimensionsTab />
                   </TabPane>
-                  )}
-                  {project.isManagedByCurrentUser && (
-                    <TabPane tab="Assignments" key="assignments">
+                )}
+                {project.isManagedByCurrentUser && (
+                  <TabPane tab="Assignments" key="assignments">
                     <AssignmentsTab />
                   </TabPane>
-                  )} 
+                )}
               </Tabs>
-              </React.Fragment>
-            
-            );
-          }}
-        </Query>
+            </React.Fragment>
+          );
+        }}
+      </Query>
     );
   }
 }
