@@ -1,8 +1,10 @@
 import React from 'react';
 import { Form, Input, Select, Button, Spin, Icon, message } from 'antd';
 import { withApollo, Mutation } from 'react-apollo';
+import $ from 'jquery';
 import Highlighter from 'react-highlight-words';
 import { Image } from 'cloudinary-react';
+import _ from 'lodash';
 import { CLOUD_NAME } from '../../../../constants';
 import {
   usersSuggestion as USERS_SUGGESTION_QUERY,
@@ -13,7 +15,6 @@ import { addMemberToProject as ADD_MEMBER_TO_PROJECT_MUTATION } from '../../../.
 const FormItem = Form.Item;
 const { Option } = Select;
 
-const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 const AddMemberForm = Form.create()(
   class extends React.Component {
     state = {
@@ -47,6 +48,10 @@ const AddMemberForm = Form.create()(
       });
     };
 
+    onSelectUser = () => {
+      $('.ant-select-selection__rendered').click();
+    };
+
     fetchUserSuggestion = async value => {
       this.setState({ fetching: true });
       this.setState({ value });
@@ -64,7 +69,6 @@ const AddMemberForm = Form.create()(
     render() {
       const { fetching, usersSuggestion, value } = this.state;
       const { getFieldDecorator } = this.props.form;
-      const { projectId } = this.props;
 
       return (
         <Mutation
@@ -105,7 +109,7 @@ const AddMemberForm = Form.create()(
                     defaultActiveFirstOption={false}
                     showArrow={false}
                     onSearch={this.fetchUserSuggestion}
-                    onSelect={this.focusTextInput}
+                    onSelect={this.onSelectUser}
                     style={{ width: '350px' }}
                   >
                     {usersSuggestion.map(user => (
@@ -147,7 +151,7 @@ const AddMemberForm = Form.create()(
                 {getFieldDecorator('role', {
                   initialValue: 'member',
                 })(
-                  <Select placeholder="Please select member's role">
+                  <Select placeholder="Please select member's role" onSelect={this.onSelectRole}>
                     <Option key="member">member</Option>
                     <Option key="project_admin">admin</Option>
                   </Select>
