@@ -67,7 +67,7 @@ end
           raise unless option_auth.save
         rescue StandardError
           retry
-        end 
+        end
       end
     end
   end

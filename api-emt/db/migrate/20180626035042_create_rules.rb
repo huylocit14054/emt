@@ -1,5 +1,10 @@
 class CreateRules < ActiveRecord::Migration[5.1]
   def change
+    if ActiveRecord::Base.connection.table_exists? 'rule_fileds'
+      drop_table :rule_fileds do |t|
+        t.string :name
+      end
+    end
     if ActiveRecord::Base.connection.table_exists? 'rules'
       drop_table :rules do |t|
         t.string :name
