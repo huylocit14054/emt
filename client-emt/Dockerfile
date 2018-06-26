@@ -1,9 +1,9 @@
 FROM node:8
 
+WORKDIR /client-emt
+
 COPY package*.json .
 COPY yarn.lock .
-
-WORKDIR /client-emt
 
 RUN yarn install
 

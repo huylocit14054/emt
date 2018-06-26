@@ -34,8 +34,10 @@ services:
     environment:
       - PORT=80
       - API_URL=http://api:3000
+      - NODE_ENV=development
     volumes:
       - ./client-emt:/client-emt
+      - /client-emt/node_modules
     ports:
       - '3000:80'
     depends_on:
