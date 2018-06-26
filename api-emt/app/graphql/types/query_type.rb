@@ -1,9 +1,8 @@
 class Types::QueryType < Types::BaseObject
-
   # Add root-level fields here.
   # They will be entry points queries on your schema.
 
-  field :current_user, Types::User, null: true, description: "Current User"
+  field :current_user, Types::User, null: true, description: 'Current User'
 
   def current_user
     context[:current_user]
@@ -18,16 +17,18 @@ class Types::QueryType < Types::BaseObject
   field :projects_as_admin_of_current_user, [Types::Project], null: false
 
   def projects_as_admin_of_current_user
-    ::Project.joins(:member_relationships).where(project_members: {role: "project_admin", user_id: context[:current_user].id}).order(created_at: :desc)
+    ::Project.joins(:member_relationships).where(project_members:
+      { role: 'project_admin', user_id: context[:current_user].id }).order(created_at: :desc)
   end
 
   field :projects_as_member_of_current_user, [Types::Project], null: false
 
   def projects_as_member_of_current_user
-    ::Project.joins(:member_relationships).where(project_members: {role: "member", user_id: context[:current_user].id}).order(created_at: :desc)
+    ::Project.joins(:member_relationships).where(project_members:
+      { role: 'member', user_id: context[:current_user].id }).order(created_at: :desc)
   end
 
-  field :project_member, Types::ProjectMember, null: false, description: "Project Member" do
+  field :project_member, Types::ProjectMember, null: false, description: 'Project Member' do
     argument :id, ID, required: false
   end
 
@@ -35,7 +36,7 @@ class Types::QueryType < Types::BaseObject
     ::ProjectMember.find(id)
   end
 
-  field :project, Types::Project, null: false, description: "Project" do
+  field :project, Types::Project, null: false, description: 'Project' do
     argument :id, ID, required: false
   end
 
@@ -43,7 +44,7 @@ class Types::QueryType < Types::BaseObject
     ::Project.find(id)
   end
 
-  field :dimension, Types::Dimension, null: false, description: "Dimension" do
+  field :dimension, Types::Dimension, null: false, description: 'Dimension' do
     argument :id, ID, required: false
   end
 
@@ -51,7 +52,7 @@ class Types::QueryType < Types::BaseObject
     ::Dimension.find(id)
   end
 
-  field :option, Types::Option, null: false, description: "Option" do
+  field :option, Types::Option, null: false, description: 'Option' do
     argument :id, ID, required: false
   end
 
@@ -67,7 +68,7 @@ class Types::QueryType < Types::BaseObject
     ::Dimension.find(dimension_id).options
   end
 
-  field :authorization, Types::Authorization, null: false, description: "Authorization" do
+  field :authorization, Types::Authorization, null: false, description: 'Authorization' do
     argument :id, ID, required: false
   end
 
@@ -75,7 +76,7 @@ class Types::QueryType < Types::BaseObject
     ::Authorization.find(id)
   end
 
-  field :option_authorization, Types::OptionAuthorization, null: false, description: "Option Authorization" do
+  field :option_authorization, Types::OptionAuthorization, null: false, description: 'Option Authorization' do
     argument :id, ID, required: false
   end
 
@@ -89,7 +90,7 @@ class Types::QueryType < Types::BaseObject
   end
 
   def users_suggestion(query:)
-    suggestion = ::User.where("username LIKE ? OR email LIKE ?", "%#{query}%", "%#{query}%")
+    ::User.where('username LIKE ? OR email LIKE ?', "%#{query}%", "%#{query}%")
   end
 
   # suggestions on typing in dimensions assignment
@@ -100,27 +101,27 @@ class Types::QueryType < Types::BaseObject
 
   def members_suggestion(project_id:, query:)
     project = ::Project.find(project_id)
-    suggestions = project.members.where("username LIKE ? OR email LIKE ?", "%#{query}%", "%#{query}%")
+    project.members.where('username LIKE ? OR email LIKE ?', "%#{query}%", "%#{query}%")
   end
 
-  #return member list of a project
+  # return member list of a project
   field :project_members, [Types::ProjectMember], null: false do
     argument :project_id, ID, required: true
   end
 
   def project_members(project_id:)
     project = ::Project.find(project_id)
-    members = project.member_relationships.order_as_specified(role: ["project_admin"]).order(:created_at)
+    project.member_relationships.order_as_specified(role: ['project_admin']).order(:created_at)
   end
 
-  #return dimension list of a project
+  # return dimension list of a project
   field :project_dimensions, [Types::Dimension], null: false do
     argument :project_id, ID, required: true
   end
 
   def project_dimensions(project_id:)
     project = ::Project.find(project_id)
-    dimensions = project.dimensions.order(created_at: :desc)
+    project.dimensions.order(created_at: :desc)
   end
 
   field :project_dimensions_tree, Types::Json, null: false do
@@ -131,7 +132,7 @@ class Types::QueryType < Types::BaseObject
     ::Project.generate_dimensions_selection_tree(project_id: project_id)
   end
 
-  #return table of dimensions assignment
+  # return table of dimensions assignment
   field :dimensions_assignment, Types::Json, null: false do
     argument :project_id, ID, required: true
   end
@@ -140,12 +141,22 @@ class Types::QueryType < Types::BaseObject
     ::Project.generate_dimensions_assigment_table(project_id: project_id)
   end
 
-  #return member autheticate assignment
+  # return member autheticate assignment
   field :member_assignments, [String], null: false do
     argument :member_id, ID, required: true
   end
 
   def member_assignments(member_id:)
     ::ProjectMember.get_authorize_array(project_member_id: member_id)
+  end
+
+  # return dimension list of a project
+  field :project_rules, [Types::Rule], null: false do
+    argument :project_id, ID, required: true
+  end
+
+  def project_rules(project_id:)
+    project = ::Project.find(project_id)
+    project.rules.order(created_at: :desc)
   end
 end

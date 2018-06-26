@@ -30,6 +30,9 @@ Style/RedundantBegin:
   StyleGuide: '#begin-implicit'
   Enabled: false
 
+Style/ClassAndModuleChildren:
+  Enabled: false
+
 
 Style/MutableConstant:
   Description: 'Do not assign mutable objects to constants.'

@@ -1,5 +1,5 @@
 class Types::Project < Types::BaseObject
-  description "Project Type"
+  description 'Project Type'
 
   field :id, ID, null: false
   field :name, String, null: false
@@ -8,7 +8,7 @@ class Types::Project < Types::BaseObject
   field :created_at, Types::DateTime, null: false
   field :updated_at, Types::DateTime, null: false
 
-  #Relationships
+  # Relationships
   field :dimensions, [Types::Dimension], null: true
   field :members, [Types::User], null: true
   field :shorten_members, [Types::User], null: true
@@ -21,6 +21,6 @@ class Types::Project < Types::BaseObject
   field :is_managed_by_current_user, Boolean, null: true
 
   def is_managed_by_current_user
-    ::ProjectMember.exists?(user: context[:current_user], project: object, role: "project_admin")
+    ::ProjectMember.exists?(user: context[:current_user], project: object, role: 'project_admin')
   end
 end

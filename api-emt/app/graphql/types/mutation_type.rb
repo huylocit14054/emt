@@ -14,4 +14,5 @@ class Types::MutationType < Types::BaseObject
   field :assign_dimensions_for_members, mutation: Mutations::AssignDimensionsForMembers
   field :update_member_assignments, mutation: Mutations::UpdateMemberAssignments
   field :detete_project, mutation: Mutations::DeleteProject
+  field :create_rule, mutation: Mutations::CreateRule
 end
