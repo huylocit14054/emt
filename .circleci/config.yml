@@ -126,6 +126,10 @@ jobs:
           name: Start EMT applciation
           command: ssh ubuntu@redpola-emt.southeastasia.cloudapp.azure.com "cd /emt && docker-compose up -d"
 
+      - run:
+          name: Ensure the application starts up successfully
+          command: wget --retry-connrefused --no-check-certificate -T 60 http://redpola-emt.southeastasia.cloudapp.azure.com/
+
 workflows:
   version: 2
   release:

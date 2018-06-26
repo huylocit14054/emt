@@ -6,6 +6,7 @@ services:
     environment:
       - RAILS_ENV=production
       - DATABASE_URL=${EMT_DATABASE_URL}
+      - SECRET_KEY_BASE=${EMT_SECRET_KEY_BASE}
     ports:
       - '3004:3000'
 
