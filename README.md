@@ -1,5 +1,7 @@
 # Enhance Management Tool
 
+[![CircleCI](https://circleci.com/gh/red-pola/emt/tree/master.svg?style=svg&circle-token=fc14d7770644296f4d55bde1e84297fab7eb99ee)](https://circleci.com/gh/red-pola/emt/tree/master)
+
 ## Development
 
 ### Using Docker
