@@ -14,8 +14,8 @@ services:
     image: emt-client
     environment:
       - PORT=80
-      - API_URL=http://api:3000
-      - RAILS_ENV=production
+      - API_URL=http://redpola-emt.southeastasia.cloudapp.azure.com:3004
+      - NODE_ENV=production
     ports:
       - '80:80'
     depends_on:
