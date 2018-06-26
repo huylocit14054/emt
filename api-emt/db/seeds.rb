@@ -20,19 +20,23 @@ end
       retry
     end
     10.times do
-      option = Option.create(name: Faker::LeagueOfLegends.champion, dimension: dimension)
-      raise unless option.save
-    rescue StandardError
-      retry
+      begin
+        option = Option.create(name: Faker::LeagueOfLegends.champion, dimension: dimension)
+        raise unless option.save
+      rescue StandardError
+        retry
+      end
     end
   end
 
   # Seed input dimension
   3.times do
-    dimension = Dimension.create(name: 'UTM_' + Faker::Hacker.abbreviation, category: 'input', project: project)
-    raise unless dimension.save
-  rescue StandardError
-    retry
+    begin
+      dimension = Dimension.create(name: 'UTM_' + Faker::Hacker.abbreviation, category: 'input', project: project)
+      raise unless dimension.save
+    rescue StandardError
+      retry
+    end
   end
 
   dimensions = project.dimensions
@@ -58,26 +62,26 @@ end
       options = dimension.options
       # Seed option authorization
       5.times do
-        option_auth = OptionAuthorization.create(authorization: authorization, option: options.sample)
-        raise unless option_auth.save
-      rescue StandardError
-        retry
+        begin
+          option_auth = OptionAuthorization.create(authorization: authorization, option: options.sample)
+          raise unless option_auth.save
+        rescue StandardError
+          retry
+        end 
       end
     end
   end
   dimensions = project.dimensions
   # seed rules
   # seed applied rule
-  rule = project.rules.create(
-    rule_string: "url?utm_source=#{dimensions.first.name}&&utm_medium=#{dimensions.last.name}", is_applied: true
+  project.rules.create(
+    rule_string: "url?utm_source=<<#{dimensions.first.name}>>&&utm_medium=<<#{dimensions.last.name}>>",
+    is_applied: true
   )
-  rule.rule_fields.create(dimension: dimensions.first, name: 'utm_source')
-  rule.rule_fields.create(dimension: dimensions.last, name: 'utm_medium')
   # seed un-applied rule
-  rule = project.rules.create(
-    rule_string: "url?utm_source=#{dimensions.last.name}&&utm_medium=#{dimensions.first.name}", is_applied: false
+  project.rules.create(
+    rule_string: "url?utm_source=<<#{dimensions.last.name}>>&&utm_medium=<<#{dimensions.first.name}>>",
+    is_applied: false
   )
-  rule.rule_fields.create(dimension: dimensions.last, name: 'utm_source')
-  rule.rule_fields.create(dimension: dimensions.first, name: 'utm_medium')
 end
 # rubocop:enable Metrics/BlockLength
