@@ -6,7 +6,7 @@ AllCops:
     - db/schema.rb
     - public/**/*
     - app/assets/**/*
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 2.4
   TargetRailsVersion: 5.1
 
 Rails:
@@ -45,7 +45,7 @@ Style/SymbolArray:
   Enabled: true
   EnforcedStyle: brackets
 
-Layout/AlignHash:
+Style/AlignHash:
   EnforcedHashRocketStyle: key
   SupportedHashRocketStyles:
     - key

@@ -75,13 +75,11 @@ end
   # seed rules
   # seed applied rule
   project.rules.create(
-    rule_string: "url?utm_source=<<#{dimensions.first.name}>>&&utm_medium=<<#{dimensions.last.name}>>",
-    is_applied: true
+    rule_string: "url?utm_source=<<#{dimensions.first.id}>>&&utm_medium=<<#{dimensions.last.id}>>"
   )
   # seed un-applied rule
   project.rules.create(
-    rule_string: "url?utm_source=<<#{dimensions.last.name}>>&&utm_medium=<<#{dimensions.first.name}>>",
-    is_applied: false
+    rule_string: "url?utm_source=<<#{dimensions.last.id}>>&&utm_medium=<<#{dimensions.first.id}>>"
   )
 end
 # rubocop:enable Metrics/BlockLength

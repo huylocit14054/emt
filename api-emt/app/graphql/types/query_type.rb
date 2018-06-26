@@ -157,6 +157,6 @@ class Types::QueryType < Types::BaseObject
 
   def project_rules(project_id:)
     project = ::Project.find(project_id)
-    project.rules.order(created_at: :desc)
+    project.rules.order_as_specified(is_applied: [true]).order(:created_at)
   end
 end
