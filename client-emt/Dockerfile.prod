@@ -1,0 +1,21 @@
+FROM node:8
+
+WORKDIR /client-emt
+
+COPY package*.json .
+COPY yarn.lock .
+
+RUN yarn install
+
+COPY . .
+
+ENV NODE_ENV production
+ENV API_URL http://redpola-emt.southeastasia.cloudapp.azure.com:3004
+ENV CLIENT_URL http://redpola-emt.southeastasia.cloudapp.azure.com
+
+RUN yarn build
+
+EXPOSE 80
+
+CMD ["yarn", "start"]
+
