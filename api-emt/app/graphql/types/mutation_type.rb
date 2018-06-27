@@ -15,4 +15,7 @@ class Types::MutationType < Types::BaseObject
   field :update_member_assignments, mutation: Mutations::UpdateMemberAssignments
   field :detete_project, mutation: Mutations::DeleteProject
   field :create_rule, mutation: Mutations::CreateRule
+  field :update_rule_string, mutation: Mutations::UpdateRuleString
+  field :activate_rule, mutation: Mutations::ActivateRule
+  field :delete_rule, mutation: Mutations::DeleteRule
 end
