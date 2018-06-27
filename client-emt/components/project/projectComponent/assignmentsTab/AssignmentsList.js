@@ -98,6 +98,7 @@ export default class AssignmentsList extends React.Component {
               <Column
                 title="Action"
                 key="action"
+                align="center"
                 render={(text, member) => (
                   <UpdateMemberAssignmentsModal
                     memberId={member.id}

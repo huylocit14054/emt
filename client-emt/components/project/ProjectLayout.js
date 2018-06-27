@@ -9,6 +9,7 @@ import DimensionsTab from './projectComponent/DimensionsTab';
 import { getProjectById as GET_PROJECT_BY_ID } from '../../graphql/queries.gql';
 import UpdateProjectModal from './projectComponent/UpdateProjectModal';
 import AssignmentsTab from './projectComponent/AssignmentsTab';
+import RulesTab from './projectComponent/RulesTab';
 
 const { TabPane } = Tabs;
 class ProjectLayout extends React.Component {
@@ -59,6 +60,11 @@ class ProjectLayout extends React.Component {
                 {project.isManagedByCurrentUser && (
                   <TabPane tab="Assignments" key="assignments">
                     <AssignmentsTab />
+                  </TabPane>
+                )}
+                {project.isManagedByCurrentUser && (
+                  <TabPane tab="Rules" key="rules">
+                    <RulesTab />
                   </TabPane>
                 )}
               </Tabs>

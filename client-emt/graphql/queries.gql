@@ -135,6 +135,13 @@ query getDimensionsByProjectId($projectId: ID!) {
   }
 }
 
+query getDimensionSuggestionsByProjectId($projectId: ID!) {
+  projectDimensions(projectId: $projectId) {
+    id
+    name
+  }
+}
+
 query getProjectDimensionsTreeByProjectId($projectId: ID!){
   projectDimensionsTree(projectId: $projectId)
 }
@@ -159,3 +166,5 @@ query getProjectById($id: ID!) {
 query getAssignmentsByMemberId($memberId: ID!){
   memberAssignments(memberId: $memberId)
 }
+
+
