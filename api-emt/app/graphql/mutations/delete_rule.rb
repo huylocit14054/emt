@@ -4,9 +4,16 @@ class Mutations::DeleteRule < Mutations::BaseMutation
   field :deleted, Boolean, null: true
 
   def resolve(rule_id:)
-    Rule.find(rule_id).destroy
-    {
-      deleted: true
-    }
+    rule = Rule.find(rule_id)
+    if rule.is_applied
+      {
+        deleted: false
+      }
+    else
+      rule.destroy
+      {
+        deleted: true
+      }
+    end
   end
 end
