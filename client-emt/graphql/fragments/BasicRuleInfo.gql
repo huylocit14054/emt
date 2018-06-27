@@ -1,0 +1,7 @@
+fragment BasicRuleInfo on Rule {
+  id
+  createdAt
+  updatedAt
+  ruleString
+  isApplied
+}

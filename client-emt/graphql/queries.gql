@@ -1,3 +1,5 @@
+#import "./fragments/BasicRuleInfo.gql"
+
 query getCurrentUser {
   currentUser {
     id
@@ -166,5 +168,12 @@ query getProjectById($id: ID!) {
 query getAssignmentsByMemberId($memberId: ID!){
   memberAssignments(memberId: $memberId)
 }
+
+query getRulesByProjectId($projectId: ID!){
+  projectRules(projectId: $projectId){
+    ...BasicRuleInfo
+  }
+}
+
 
 
