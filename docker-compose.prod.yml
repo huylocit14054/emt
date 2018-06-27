@@ -5,6 +5,7 @@ services:
     image: emt-api
     environment:
       - RAILS_ENV=production
+      - RAILS_LOG_TO_STDOUT=true
       - DATABASE_URL=${EMT_DATABASE_URL}
       - SECRET_KEY_BASE=${EMT_SECRET_KEY_BASE}
     ports:
@@ -14,8 +15,7 @@ services:
     image: emt-client
     environment:
       - PORT=80
-      - API_URL=http://redpola-emt.southeastasia.cloudapp.azure.com:3004
-      - NODE_ENV=staging
+      - NODE_ENV=production
     ports:
       - '80:80'
     depends_on:
