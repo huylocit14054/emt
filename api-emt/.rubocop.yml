@@ -45,7 +45,7 @@ Style/SymbolArray:
   Enabled: true
   EnforcedStyle: brackets
 
-Style/AlignHash:
+Layout/AlignHash:
   EnforcedHashRocketStyle: key
   SupportedHashRocketStyles:
     - key

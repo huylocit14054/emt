@@ -8,12 +8,15 @@ class CreateUserModal extends React.Component {
   state = {
     visible: false,
   };
+
   showModal = () => {
     this.setState({ visible: true });
   };
+
   handleCancel = () => {
     this.setState({ visible: false });
   };
+
   handleCreate = createUser => {
     const form = this.formRef.props.form;
     form.validateFields((err, values) => {
@@ -32,7 +35,7 @@ class CreateUserModal extends React.Component {
             data: {
               createUser: { createdUser },
             },
-          },
+          }
         ) => {
           const data = store.readQuery({ query: GET_ALL_USERS_QUERY });
 
@@ -45,9 +48,11 @@ class CreateUserModal extends React.Component {
       });
     });
   };
+
   saveFormRef = formRef => {
     this.formRef = formRef;
   };
+
   render() {
     return (
       <React.Fragment>
