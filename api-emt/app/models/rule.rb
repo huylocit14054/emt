@@ -8,6 +8,13 @@ class Rule < ApplicationRecord
   REGEX_GET_DIMENSION_IDS = /<<(\d*?)>>/ # get 1|2|3
   REGEX_GET_DIMENSION_CODE = /(<<\d*?>>)/ # get <<1>>|<<2>>|<<3>>
   REGEX_CHECK_VALIDATE_URL = /([-a-zA-Z0-9@:%_\+.~#?&=]+)/ # valid "url?utm_source=--&utm_camp="
+  REGEX_GET_DATE_CODE = /(<<date>>)/ # get code <<date>>
+
+  # activate_rule
+  def activate_rule
+    deactivate_current_rule
+    update(is_applied: true)
+  end
 
   # activate_rule
   def activate_rule
@@ -21,6 +28,7 @@ class Rule < ApplicationRecord
   def check_rule_string_url
     rule = rule_string
     rule_without_code = rule.gsub(REGEX_GET_DIMENSION_CODE, '')
+    rule_without_code = rule_without_code.gsub(REGEX_GET_DATE_CODE, '')
     # get all the valid url syntax and check the size with the rule_without_code original size
     rule_without_code[REGEX_CHECK_VALIDATE_URL].size == rule_without_code.size ? true : errors.add(:rule_string, 'Invalid URL format')
   end
