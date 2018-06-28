@@ -29,16 +29,16 @@ class Rule < ApplicationRecord
 
   private
 
+  # rubocop:disable Metrics/LineLength
   # check rule validation
   def check_rule_string_url
     rule = rule_string
     rule_without_code = rule.gsub(REGEX_GET_DIMENSION_CODE, '')
     rule_without_code = rule_without_code.gsub(REGEX_GET_DATE_CODE, '')
     # get all the valid url syntax and check the size with the rule_without_code original size
-    # rubocop:disable Metrics/LineLength
     !rule_without_code[REGEX_CHECK_VALIDATE_URL].nil? && rule_without_code[REGEX_CHECK_VALIDATE_URL].size == rule_without_code.size ? true : errors.add(:rule_string, 'Invalid URL format')
-    # rubocop:enable Metrics/LineLength
   end
+  # rubocop:enable Metrics/LineLength
 
   # check dimension validation in rule
   def check_dimension_in_rule
