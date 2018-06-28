@@ -46,17 +46,17 @@ const CreateRuleForm = Form.create()(
       const { visible, onCancel, onCreate, confirmLoading, projectId } = this.props;
       const { value } = this.state;
       return (
-        <Modal
-          title="Create Project UTM Rule"
-          confirmLoading={confirmLoading}
-          visible={visible}
-          okText="create"
-          onCancel={onCancel}
-          cancelText="cancel"
-          onOk={() => onCreate(value)}
-        >
-          <MyQuery query={GET_DIMENSION_SUGGESTIONS_BY_PROJECT_ID} variables={{ projectId }}>
-            {({ projectDimensions }) => (
+        <MyQuery query={GET_DIMENSION_SUGGESTIONS_BY_PROJECT_ID} variables={{ projectId }}>
+          {({ projectDimensions }) => (
+            <Modal
+              title="Create Project UTM Rule"
+              confirmLoading={confirmLoading}
+              visible={visible}
+              okText="create"
+              onCancel={onCancel}
+              cancelText="cancel"
+              onOk={() => onCreate(projectDimensions, value)}
+            >
               <CreateRuleInput
                 onChange={this.onChange}
                 onBlur={this.onBlur}
@@ -67,9 +67,9 @@ const CreateRuleForm = Form.create()(
                   display: dimension.name,
                 }))}
               />
-            )}
-          </MyQuery>
-        </Modal>
+            </Modal>
+          )}
+        </MyQuery>
       );
     }
   }

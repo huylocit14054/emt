@@ -3,5 +3,6 @@ fragment BasicRuleInfo on Rule {
   createdAt
   updatedAt
   ruleString
+  ruleStringToDisplay
   isApplied
 }

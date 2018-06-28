@@ -187,9 +187,7 @@ mutation applyRule($input: ActivateRuleInput!){
 mutation updateRuleString($input: UpdateRuleStringInput!){
   updateRuleString(input: $input){
     updatedRule {
-      id
-      ruleString
-      updatedAt
+      ...BasicRuleInfo
     }
   }
 }

@@ -23,27 +23,30 @@ const UpdateRuleForm = class extends React.Component {
   };
 
   onAdd = () => {
+    const { ruleId } = this.props;
+    const ruleName = `#rule-suggestions-update-${ruleId}`;
     // Focus cursor to the end of input after adding suggestion
-    $('#rule-suggestions').blur();
-    $('#rule-suggestions').focus();
+    $(ruleName).blur();
+    $(ruleName).focus();
   };
 
   render() {
-    const { visible, onCancel, onUpdate, confirmLoading, projectId } = this.props;
+    const { visible, onCancel, onUpdate, confirmLoading, projectId, ruleId } = this.props;
     const { value } = this.state;
     return (
-      <Modal
-        title="Update Project UTM Rule"
-        confirmLoading={confirmLoading}
-        visible={visible}
-        okText="update"
-        onCancel={onCancel}
-        cancelText="cancel"
-        onOk={() => onUpdate(value)}
-      >
-        <MyQuery query={GET_DIMENSION_SUGGESTIONS_BY_PROJECT_ID} variables={{ projectId }}>
-          {({ projectDimensions }) => (
+      <MyQuery query={GET_DIMENSION_SUGGESTIONS_BY_PROJECT_ID} variables={{ projectId }}>
+        {({ projectDimensions }) => (
+          <Modal
+            title="Update Project UTM Rule"
+            confirmLoading={confirmLoading}
+            visible={visible}
+            okText="update"
+            onCancel={onCancel}
+            cancelText="cancel"
+            onOk={() => onUpdate(projectDimensions, value)}
+          >
             <UpdateRuleInput
+              ruleId={ruleId}
               onChange={this.onChange}
               onBlur={this.onBlur}
               onAdd={this.onAdd}
@@ -53,9 +56,9 @@ const UpdateRuleForm = class extends React.Component {
                 display: dimension.name,
               }))}
             />
-          )}
-        </MyQuery>
-      </Modal>
+          </Modal>
+        )}
+      </MyQuery>
     );
   }
 };

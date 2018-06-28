@@ -2,6 +2,7 @@ import { message } from 'antd';
 import { Mutation } from 'react-apollo';
 import { withRouter } from 'next/router';
 import React from 'react';
+import _ from 'lodash';
 import { updateRuleString as UPDATE_RULE_MUTATION } from '../../../../graphql/mutations.gql';
 import UpdateRuleForm from './updateRuleModal/UpdateRuleForm';
 
@@ -18,9 +19,15 @@ class UpdateRuleModal extends React.Component {
     this.setState({ visible: false });
   };
 
-  handleUpdate = (updateRule, rule_string) => {
+  handleUpdate = (updateRule, ruleString, projectDimensions) => {
     const { rule } = this.props;
     const { id } = rule;
+    let rule_string = ruleString;
+
+    // Map utm_names to ids
+    _.forEach(projectDimensions, dimension => {
+      rule_string = _.replace(rule_string, dimension.name, dimension.id);
+    });
     updateRule({
       variables: {
         input: {
@@ -91,10 +98,13 @@ class UpdateRuleModal extends React.Component {
               wrappedComponentRef={this.saveFormRef}
               confirmLoading={loading}
               visible={visible}
-              prevRuleString={rule.ruleString}
+              ruleId={rule.id}
+              prevRuleString={rule.ruleStringToDisplay}
               projectId={projectId}
               onCancel={this.handleCancel}
-              onUpdate={ruleString => this.handleUpdate(updateRule, ruleString)}
+              onUpdate={(projectDimensions, newRuleString) =>
+                this.handleUpdate(updateRule, newRuleString, projectDimensions)
+              }
             />
           )}
         </Mutation>

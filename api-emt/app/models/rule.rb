@@ -4,7 +4,7 @@ class Rule < ApplicationRecord
 
   before_create :deactivate_current_rule
   validate :check_rule_string_url, :check_dimension_in_rule
-
+  validates :rule_string, uniqueness: true
   REGEX_GET_DIMENSION_IDS = /<<(\d*?)>>/ # get 1|2|3
   REGEX_GET_DIMENSION_CODE = /(<<\d*?>>)/ # get <<1>>|<<2>>|<<3>>
   REGEX_CHECK_VALIDATE_URL = /([-a-zA-Z0-9@:%_\+.~#?&=]+)/ # valid "url?utm_source=--&utm_camp="
@@ -32,11 +32,11 @@ class Rule < ApplicationRecord
   # check rule validation
   def check_rule_string_url
     rule = rule_string
-    rule_without_code = rule.gsub(REGEX_GET_DIMENSION_CODE, '')
-    rule_without_code = rule_without_code.gsub(REGEX_GET_DATE_CODE, '')
+    rule_without_code = rule.gsub(REGEX_GET_DIMENSION_CODE, "")
+    rule_without_code = rule_without_code.gsub(REGEX_GET_DATE_CODE, "")
     # get all the valid url syntax and check the size with the rule_without_code original size
     # rubocop:disable Metrics/LineLength
-    !rule_without_code[REGEX_CHECK_VALIDATE_URL].nil? && rule_without_code[REGEX_CHECK_VALIDATE_URL].size == rule_without_code.size ? true : errors.add(:rule_string, 'Invalid URL format')
+    !rule_without_code[REGEX_CHECK_VALIDATE_URL].nil? && rule_without_code[REGEX_CHECK_VALIDATE_URL].size == rule_without_code.size ? true : errors.add(:rule_string, "Invalid URL format")
     # rubocop:enable Metrics/LineLength
   end
 
@@ -51,7 +51,7 @@ class Rule < ApplicationRecord
     if (dimension_ids - project_dimension_ids).empty?
       true
     else
-      errors.add(:rule_string, 'Dimension does not in the project')
+      errors.add(:rule_string, "Dimension does not in the project")
     end
   end
 

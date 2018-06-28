@@ -2,7 +2,7 @@ import { Button, message } from 'antd';
 import { Mutation } from 'react-apollo';
 import { withRouter } from 'next/router';
 import React from 'react';
-import $ from 'jquery';
+import _ from 'lodash';
 import { createRule as CREATE_RULE_MUTATION } from '../../../../graphql/mutations.gql';
 import { getRulesByProjectId as GET_RULES_BY_PROJECT_ID_QUERY } from '../../../../graphql/queries.gql';
 import CreateRuleForm from './createRuleModal/CreateRuleForm';
@@ -20,9 +20,16 @@ class CreateRuleModal extends React.Component {
     this.setState({ visible: false });
   };
 
-  handleCreate = (createRule, rule_string) => {
+  handleCreate = (createRule, ruleString, projectDimensions) => {
     const { router } = this.props;
     const project_id = router.query.id;
+    let rule_string = ruleString;
+
+    // Map utm_name to id
+    _.forEach(projectDimensions, dimension => {
+      rule_string = _.replace(rule_string, dimension.name, dimension.id);
+    });
+
     createRule({
       variables: {
         input: {
@@ -61,7 +68,6 @@ class CreateRuleModal extends React.Component {
           },
           data,
         });
-        console.log($('#rule-suggestions').val());
       },
     });
   };
@@ -102,7 +108,9 @@ class CreateRuleModal extends React.Component {
               visible={visible}
               projectId={projectId}
               onCancel={this.handleCancel}
-              onCreate={rule => this.handleCreate(createRule, rule)}
+              onCreate={(projectDimensions, rule) =>
+                this.handleCreate(createRule, rule, projectDimensions)
+              }
             />
           )}
         </Mutation>

@@ -34,7 +34,7 @@ class RulesList extends Component {
                     highlightClassName="highlight-dimension"
                     searchWords={['<<(.*?)>>']}
                     autoEscape={false}
-                    textToHighlight={rule.ruleString}
+                    textToHighlight={rule.ruleStringToDisplay}
                   />
                 </code>
               )}
