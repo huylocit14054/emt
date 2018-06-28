@@ -4,6 +4,7 @@ class ProjectMember < ApplicationRecord
   belongs_to :project, counter_cache: :member_count, inverse_of: :member_relationships
   has_many :authorizations, dependent: :destroy
   has_many :dimensions, through: :authorizations
+  has_many :utms, dependent: :destroy
 
   DIMENSION_CATEGORY_SELECTION = 'selection'
   DIMENSION_CATEGORY_INPUT = 'input'

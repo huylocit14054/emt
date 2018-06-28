@@ -119,6 +119,7 @@ class Project < ApplicationRecord
       choice = choice.split('-')
       choices_array << choice
     end
+    choices_array
   end
 
   # create authorization and option authorization for each user
