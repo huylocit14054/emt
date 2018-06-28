@@ -1,3 +1,5 @@
+#import "./fragments/BasicRuleInfo.gql"
+
 mutation loginUser($input: LoginInput!) {
   loginUser(input: $input) {
     token
@@ -162,3 +164,30 @@ mutation updateMemberAssignments($input: UpdateMemberAssignmentsInput!) {
   }
 }
 
+mutation createRule($input: CreateRuleInput!){
+  createRule(input: $input){
+    createdRule {
+      ...BasicRuleInfo
+    }
+  }
+}
+
+mutation deleteRule($input: DeleteRuleInput!){
+  deleteRule(input: $input){
+    deleted
+  }
+}
+
+mutation applyRule($input: ActivateRuleInput!){
+  activateRule(input: $input){
+    activated
+  }
+}
+
+mutation updateRuleString($input: UpdateRuleStringInput!){
+  updateRuleString(input: $input){
+    updatedRule {
+      ...BasicRuleInfo
+    }
+  }
+}

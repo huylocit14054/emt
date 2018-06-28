@@ -2,7 +2,9 @@ import { Button, message } from 'antd';
 import { Mutation } from 'react-apollo';
 import { withRouter } from 'next/router';
 import React from 'react';
-import { createUser as CREATE_USER_MUTATION } from '../../../../graphql/mutations.gql';
+import _ from 'lodash';
+import { createRule as CREATE_RULE_MUTATION } from '../../../../graphql/mutations.gql';
+import { getRulesByProjectId as GET_RULES_BY_PROJECT_ID_QUERY } from '../../../../graphql/queries.gql';
 import CreateRuleForm from './createRuleModal/CreateRuleForm';
 
 class CreateRuleModal extends React.Component {
@@ -18,39 +20,56 @@ class CreateRuleModal extends React.Component {
     this.setState({ visible: false });
   };
 
-  handleCreate = (createRule, rule) => {
+  handleCreate = (createRule, ruleString, projectDimensions) => {
     const { router } = this.props;
-    const projectId = router.query.id;
-    console.log(rule);
-    console.log(projectId);
-    // createRule({
-    //   variables: {
-    //     input: {
-    //       attributes: JSON.stringify(values),
-    //     },
-    //   },
-    //   update: (
-    //     store,
-    //     {
-    //       data: {
-    //         createRule: { createdRule },
-    //       },
-    //     }
-    //   ) => {
-    //     const data = store.readQuery({ query: GET_ALL_USERS_QUERY });
+    const project_id = router.query.id;
+    let rule_string = ruleString;
 
-    //     data.rules.splice(0, 0, createdRule);
-    //     store.writeQuery({
-    //       query: GET_ALL_USERS_QUERY,
-    //       data,
-    //     });
-    //   },
-    // });
-    // });
-  };
+    // Map utm_name to id
+    _.forEach(projectDimensions, dimension => {
+      rule_string = _.replace(rule_string, dimension.name, dimension.id);
+    });
 
-  saveFormRef = formRef => {
-    this.formRef = formRef;
+    createRule({
+      variables: {
+        input: {
+          attributes: JSON.stringify({ rule_string, project_id }),
+        },
+      },
+      update: (
+        store,
+        {
+          data: {
+            createRule: { createdRule },
+          },
+        }
+      ) => {
+        const data = store.readQuery({
+          query: GET_RULES_BY_PROJECT_ID_QUERY,
+          variables: {
+            projectId: project_id,
+          },
+        });
+
+        data.projectRules = data.projectRules.map(rule => {
+          if (rule.isApplied) {
+            return {
+              ...rule,
+              isApplied: false,
+            };
+          }
+          return rule;
+        });
+        data.projectRules.splice(0, 0, createdRule);
+        store.writeQuery({
+          query: GET_RULES_BY_PROJECT_ID_QUERY,
+          variables: {
+            projectId: project_id,
+          },
+          data,
+        });
+      },
+    });
   };
 
   render() {
@@ -65,13 +84,12 @@ class CreateRuleModal extends React.Component {
         <br />
         <br />
         <Mutation
-          mutation={CREATE_USER_MUTATION}
+          mutation={CREATE_RULE_MUTATION}
           onCompleted={data => {
             console.log(data);
-            const { form } = this.formRef.props;
-            // this.setState({ visible: false });
+            this.setState({ visible: false });
+            this.child.resetState();
             message.success('Rule Created');
-            form.resetFields();
           }}
           onError={error => {
             // If you want to send error to external service?
@@ -82,12 +100,17 @@ class CreateRuleModal extends React.Component {
         >
           {(createRule, { loading }) => (
             <CreateRuleForm
+              onRef={instance => {
+                this.child = instance;
+              }}
               wrappedComponentRef={this.saveFormRef}
               confirmLoading={loading}
               visible={visible}
               projectId={projectId}
               onCancel={this.handleCancel}
-              onCreate={rule => this.handleCreate(createRule, rule)}
+              onCreate={(projectDimensions, rule) =>
+                this.handleCreate(createRule, rule, projectDimensions)
+              }
             />
           )}
         </Mutation>

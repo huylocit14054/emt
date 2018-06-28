@@ -20,6 +20,8 @@
     "jest": true
   },
   "rules": {
+    "react/destructuring-assignment": 0,
+    "camelcase": 0,
     "react/no-danger": 0,
     "import/no-extraneous-dependencies": 0,
     "no-debugger": 0,

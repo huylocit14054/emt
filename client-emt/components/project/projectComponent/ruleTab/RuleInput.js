@@ -1,22 +1,22 @@
 import React from 'react';
 import { MentionsInput, Mention } from 'react-mentions';
-import _ from 'lodash';
-import defaultStyle from './CreateRuleFormStyle';
 
-export default class CreateRuleInput extends React.Component {
+import defaultStyle from './RuleFormStyle';
+
+export default class RuleInput extends React.Component {
   render() {
-    const { data, onChange, onBlur, onAdd, value } = this.props;
+    const { data, onChange, onBlur, onAdd, value, ruleId } = this.props;
     return (
       <MentionsInput
-        id="rule-suggestions"
+        id={ruleId ? `rule-suggestions-update-${ruleId}` : 'rule-suggestions'}
         rows="10"
         autoFocus
         value={value}
         onChange={onChange}
         onBlur={onBlur}
-        markup="<<__id__>>"
+        markup="<<__display__>>"
         style={defaultStyle}
-        displayTransform={id => `<<${_.find(data, { id }).display}>>`}
+        displayTransform={display => `<<${display}>>`}
       >
         <Mention
           trigger={/(<<(.*))$/}
