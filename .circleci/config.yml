@@ -94,11 +94,11 @@ jobs:
 
       - run:
           name: Build Docker image for emt-client
-          command: cd ~/project/client-emt && docker build -t emt-client . && docker save -o ~/project/emt-client.tar emt-client
+          command: cd ~/project/client-emt && docker build -t emt-client -f Dockerfile.prod . && docker save -o ~/project/emt-client.tar emt-client
 
       - run:
           name: Push images to production server
-          command: | 
+          command: |
             scp ~/project/emt-api.tar ubuntu@redpola-emt.southeastasia.cloudapp.azure.com:/emt/emt-api.tar
             scp ~/project/emt-client.tar ubuntu@redpola-emt.southeastasia.cloudapp.azure.com:/emt/emt-client.tar
 
