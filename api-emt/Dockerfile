@@ -1,7 +1,11 @@
-FROM ruby:2.5
+FROM ruby:2.5-alpine
 
-RUN apt-get update -qq \
-    && apt-get install -y build-essential libpq-dev nodejs
+RUN apk update \
+    && apk add build-base \
+        tzdata \
+        git \
+        postgresql-dev \
+        nodejs
 
 WORKDIR /api-emt
 

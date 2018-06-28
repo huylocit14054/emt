@@ -44,7 +44,7 @@ $ docker-compose run api rails c
 #### Access to running containers
 
 ```
-$ docker-compose exec api bash
+$ docker-compose exec api sh
 $ docker-compose exec db psql -h db -U postgres
 ```
 
