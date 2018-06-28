@@ -1,6 +1,6 @@
 import { Table, Icon, Tag } from 'antd';
 import { Query } from 'react-apollo';
-
+import React from 'react';
 import _ from 'lodash';
 import { Image } from 'cloudinary-react';
 import { CLOUD_NAME } from '../../../../constants';
@@ -44,57 +44,60 @@ export default class AssignmentsList extends React.Component {
                   </React.Fragment>
                 )}
               />
-              <ColumnGroup title="Dimensions">
-                {data.projectDimensions.map(dimension => (
-                  <Column
-                    title={dimension.name}
-                    key={dimension.id}
-                    render={member => {
-                      if (_.includes(member.authorizedDimensions, dimension.id.toString())) {
-                        switch (dimension.category) {
-                          case 'selection':
-                            return _.find(member.authorizations, {
-                              dimension: { id: dimension.id },
-                            }).optionAuthorizations.map(auth => (
-                              <div key={auth.option.id}>
-                                <Tag color="#e8e8e8" style={{ color: 'black', margin: '2%' }}>
-                                  {auth.option.name}
-                                </Tag>
-                              </div>
-                            ));
+              {data.projectDimensions.length > 0 && (
+                <ColumnGroup title="Dimensions">
+                  {data.projectDimensions.map(dimension => (
+                    <Column
+                      title={dimension.name}
+                      key={dimension.id}
+                      render={member => {
+                        if (_.includes(member.authorizedDimensions, dimension.id.toString())) {
+                          switch (dimension.category) {
+                            case 'selection':
+                              return _.find(member.authorizations, {
+                                dimension: { id: dimension.id },
+                              }).optionAuthorizations.map(auth => (
+                                <div key={auth.option.id}>
+                                  <Tag color="#e8e8e8" style={{ color: 'black', margin: '2%' }}>
+                                    {auth.option.name}
+                                  </Tag>
+                                </div>
+                              ));
 
-                          case 'input':
-                            return (
-                              <Icon
-                                type="check"
-                                style={{
-                                  color: '#52c41a',
-                                  fontSize: '14pt',
-                                  marginLeft: '40%',
-                                  fontWeight: 'bold',
-                                }}
-                              />
-                            );
-                          default:
-                            break;
+                            case 'input':
+                              return (
+                                <Icon
+                                  type="check"
+                                  style={{
+                                    color: '#52c41a',
+                                    fontSize: '14pt',
+                                    marginLeft: '40%',
+                                    fontWeight: 'bold',
+                                  }}
+                                />
+                              );
+                            default:
+                              break;
+                          }
                         }
-                      }
 
-                      return (
-                        <Icon
-                          type="close"
-                          style={{
-                            color: '#f5222d',
-                            marginLeft: '40%',
-                            fontSize: '14pt',
-                            fontWeight: 'bold',
-                          }}
-                        />
-                      );
-                    }}
-                  />
-                ))}
-              </ColumnGroup>
+                        return (
+                          <Icon
+                            type="close"
+                            style={{
+                              color: '#f5222d',
+                              marginLeft: '40%',
+                              fontSize: '14pt',
+                              fontWeight: 'bold',
+                            }}
+                          />
+                        );
+                      }}
+                    />
+                  ))}
+                </ColumnGroup>
+              )}
+
               <Column
                 title="Action"
                 key="action"

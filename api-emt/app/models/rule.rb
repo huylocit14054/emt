@@ -4,7 +4,7 @@ class Rule < ApplicationRecord
 
   before_create :deactivate_current_rule
   validate :check_rule_string_url, :check_dimension_in_rule
-
+  validates :rule_string, uniqueness: true
   REGEX_GET_DIMENSION_IDS = /<<(\d*?)>>/ # get 1|2|3
   REGEX_GET_DIMENSION_CODE = /(<<\d*?>>)/ # get <<1>>|<<2>>|<<3>>
   REGEX_CHECK_VALIDATE_URL = /([-a-zA-Z0-9@:%_\+.~#?&=]+)/ # valid "url?utm_source=--&utm_camp="
