@@ -16,10 +16,15 @@ class Rule < ApplicationRecord
     update(is_applied: true)
   end
 
-  # activate_rule
-  def activate_rule
-    deactivate_current_rule
-    update(is_applied: true)
+  def display_name
+    rule = rule_string
+    # get all dimension id in rule
+    dimension_ids = rule.scan(REGEX_GET_DIMENSION_IDS).flatten.map(&:to_i).uniq
+    dimension_ids.each do |dimension_id|
+      dimension_name = Dimension.find(dimension_id).name
+      rule = rule.gsub(dimension_id.to_s, dimension_name)
+    end
+    rule
   end
 
   private
@@ -30,7 +35,9 @@ class Rule < ApplicationRecord
     rule_without_code = rule.gsub(REGEX_GET_DIMENSION_CODE, '')
     rule_without_code = rule_without_code.gsub(REGEX_GET_DATE_CODE, '')
     # get all the valid url syntax and check the size with the rule_without_code original size
-    rule_without_code[REGEX_CHECK_VALIDATE_URL].size == rule_without_code.size ? true : errors.add(:rule_string, 'Invalid URL format')
+    # rubocop:disable Metrics/LineLength
+    !rule_without_code[REGEX_CHECK_VALIDATE_URL].nil? && rule_without_code[REGEX_CHECK_VALIDATE_URL].size == rule_without_code.size ? true : errors.add(:rule_string, 'Invalid URL format')
+    # rubocop:enable Metrics/LineLength
   end
 
   # check dimension validation in rule
