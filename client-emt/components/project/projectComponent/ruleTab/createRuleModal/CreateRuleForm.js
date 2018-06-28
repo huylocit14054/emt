@@ -2,7 +2,7 @@ import { Form, Modal } from 'antd';
 import React from 'react';
 import $ from 'jquery';
 import MyQuery from '../../../../MyQuery';
-import CreateRuleInput from './createRuleForm/CreateRuleInput';
+import CreateRuleInput from '../RuleInput';
 import { getDimensionSuggestionsByProjectId as GET_DIMENSION_SUGGESTIONS_BY_PROJECT_ID } from '../../../../../graphql/queries.gql';
 
 const CreateRuleForm = Form.create()(
@@ -11,11 +11,21 @@ const CreateRuleForm = Form.create()(
       value: '',
     };
 
+    componentDidMount() {
+      const { onRef } = this.props;
+      onRef(this);
+    }
+
+    componentWillUnmount() {
+      const { onRef } = this.props;
+      onRef(undefined);
+    }
+
     onChange = (_, newValue) => {
       this.setState({ value: newValue });
     };
 
-    onBlur = () => (ev, clickedOnSuggestion) => {
+    onBlur = () => (_, clickedOnSuggestion) => {
       if (!clickedOnSuggestion) {
         console.log('finished editing');
       }
@@ -25,6 +35,11 @@ const CreateRuleForm = Form.create()(
       // Focus cursor to the end of input after adding suggestion
       $('#rule-suggestions').blur();
       $('#rule-suggestions').focus();
+    };
+
+    resetState = () => {
+      $('#rule-suggestions').val('');
+      this.setState({ value: '' });
     };
 
     render() {

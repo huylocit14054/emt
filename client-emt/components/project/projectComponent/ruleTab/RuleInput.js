@@ -1,7 +1,7 @@
 import React from 'react';
 import { MentionsInput, Mention } from 'react-mentions';
 import _ from 'lodash';
-import defaultStyle from './CreateRuleFormStyle';
+import defaultStyle from './RuleFormStyle';
 
 export default class CreateRuleInput extends React.Component {
   render() {

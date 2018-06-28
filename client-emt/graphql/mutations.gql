@@ -177,3 +177,19 @@ mutation deleteRule($input: DeleteRuleInput!){
     deleted
   }
 }
+
+mutation applyRule($input: ActivateRuleInput!){
+  activateRule(input: $input){
+    activated
+  }
+}
+
+mutation updateRuleString($input: UpdateRuleStringInput!){
+  updateRuleString(input: $input){
+    updatedRule {
+      id
+      ruleString
+      updatedAt
+    }
+  }
+}

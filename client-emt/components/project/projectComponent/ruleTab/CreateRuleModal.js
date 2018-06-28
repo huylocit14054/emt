@@ -61,12 +61,9 @@ class CreateRuleModal extends React.Component {
           },
           data,
         });
+        console.log($('#rule-suggestions').val());
       },
     });
-  };
-
-  saveFormRef = formRef => {
-    this.formRef = formRef;
   };
 
   render() {
@@ -85,8 +82,8 @@ class CreateRuleModal extends React.Component {
           onCompleted={data => {
             console.log(data);
             this.setState({ visible: false });
+            this.child.resetState();
             message.success('Rule Created');
-            $('#rule-suggestions').val('');
           }}
           onError={error => {
             // If you want to send error to external service?
@@ -97,6 +94,9 @@ class CreateRuleModal extends React.Component {
         >
           {(createRule, { loading }) => (
             <CreateRuleForm
+              onRef={instance => {
+                this.child = instance;
+              }}
               wrappedComponentRef={this.saveFormRef}
               confirmLoading={loading}
               visible={visible}

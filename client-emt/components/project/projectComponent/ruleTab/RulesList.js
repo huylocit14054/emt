@@ -5,8 +5,12 @@ import { withRouter } from 'next/router';
 import { Mutation } from 'react-apollo';
 import { Table, Divider, Icon, message, Popconfirm } from 'antd';
 import _ from 'lodash';
+import UpdateRuleModal from './UpdateRuleModal';
 import { getRulesByProjectId as GET_RULES_BY_PROJECT_ID_QUERY } from '../../../../graphql/queries.gql';
-import { deleteRule as DELETE_RULE_MUTATION } from '../../../../graphql/mutations.gql';
+import {
+  deleteRule as DELETE_RULE_MUTATION,
+  applyRule as APPLY_RULE_MUTATION,
+} from '../../../../graphql/mutations.gql';
 import MyQuery from '../../../MyQuery';
 
 const { Column } = Table;
@@ -37,13 +41,13 @@ class RulesList extends Component {
             />
             <Column
               align="center"
-              title="Created At"
+              title="Created at"
               key="createdAt"
               render={rule => <TimeAgo date={rule.createdAt} />}
             />
             <Column
               align="center"
-              title="Updated At"
+              title="Updated at"
               key="updatedAt"
               render={rule => <TimeAgo date={rule.updatedAt} />}
             />
@@ -65,7 +69,7 @@ class RulesList extends Component {
               key="action"
               render={rule => (
                 <span>
-                  <a>Edit</a>
+                  <UpdateRuleModal rule={rule} />
 
                   {!rule.isApplied && (
                     <React.Fragment>
@@ -76,9 +80,6 @@ class RulesList extends Component {
                           input: {
                             ruleId: rule.id,
                           },
-                        }}
-                        onCompleted={() => {
-                          message.success('Rule Deleted!');
                         }}
                         onError={error => {
                           // If you want to send error to external service?
@@ -93,7 +94,7 @@ class RulesList extends Component {
                               projectId,
                             },
                           });
-                          data.projectRules = _.remove(data.projectRules, { id: rule.id });
+                          _.remove(data.projectRules, { id: rule.id });
                           store.writeQuery({
                             query: GET_RULES_BY_PROJECT_ID_QUERY,
                             variables: {
@@ -101,6 +102,8 @@ class RulesList extends Component {
                             },
                             data,
                           });
+
+                          message.success('Rule Deleted!', 3);
                         }}
                       >
                         {(deleteRule, { loading }) => {
@@ -118,7 +121,67 @@ class RulesList extends Component {
                         }}
                       </Mutation>
                       <Divider type="vertical" />
-                      <a>Apply</a>
+                      <Mutation
+                        mutation={APPLY_RULE_MUTATION}
+                        variables={{
+                          input: {
+                            ruleId: rule.id,
+                          },
+                        }}
+                        onError={error => {
+                          // If you want to send error to external service?
+                          error.graphQLErrors.map(error => {
+                            message.error(error.message, 3);
+                          });
+                        }}
+                        update={store => {
+                          const data = store.readQuery({
+                            query: GET_RULES_BY_PROJECT_ID_QUERY,
+                            variables: {
+                              projectId,
+                            },
+                          });
+                          data.projectRules = data.projectRules.map(ruleObject => {
+                            if (ruleObject.isApplied) {
+                              return {
+                                ...ruleObject,
+                                isApplied: false,
+                              };
+                            }
+                            if (ruleObject.id === rule.id) {
+                              return {
+                                ...ruleObject,
+                                isApplied: true,
+                                updatedAt: Date.now(),
+                              };
+                            }
+                            return ruleObject;
+                          });
+                          store.writeQuery({
+                            query: GET_RULES_BY_PROJECT_ID_QUERY,
+                            variables: {
+                              projectId,
+                            },
+                            data,
+                          });
+
+                          message.success('Rule Applied!', 3);
+                        }}
+                      >
+                        {(applyRule, { loading }) => {
+                          if (loading) return <Icon type="loading" />;
+                          return (
+                            <Popconfirm
+                              title="Are you sure apply this rule?"
+                              onConfirm={applyRule}
+                              okText="Yes"
+                              cancelText="No"
+                            >
+                              <a>Apply</a>
+                            </Popconfirm>
+                          );
+                        }}
+                      </Mutation>
                     </React.Fragment>
                   )}
                 </span>
