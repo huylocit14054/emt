@@ -1,11 +1,9 @@
-import { List, Card, Avatar, Divider, Icon, Button } from 'antd';
+import React from 'react';
+import { Divider, Icon } from 'antd';
 import { Query } from 'react-apollo';
-import Link from 'next/link';
 import { getProjectOfCurrentUser as GET_PROJECTS_OF_CURRENT_USER } from '../../graphql/queries.gql';
 import ListOfProjects from './projectsList/ListOfProjects';
 import CreateProjectModal from './projectsList/CreateProjectModal';
-
-const truncate = require('truncate');
 
 class ProjectsList extends React.Component {
   render() {
@@ -18,7 +16,7 @@ class ProjectsList extends React.Component {
             if (loading) return 'Loading...';
             if (error) return `Error! ${error.message}`;
             const { projectsAsAdminOfCurrentUser, projectsAsMemberOfCurrentUser } = data;
-            console.log(projectsAsMemberOfCurrentUser)
+            console.log(projectsAsMemberOfCurrentUser);
             return (
               <div>
                 {projectsAsAdminOfCurrentUser.length > 0 && (
@@ -28,8 +26,6 @@ class ProjectsList extends React.Component {
                     </Divider>
 
                     <ListOfProjects projects={projectsAsAdminOfCurrentUser} />
-                    
-                  
                   </React.Fragment>
                 )}
                 {projectsAsMemberOfCurrentUser.length > 0 && (

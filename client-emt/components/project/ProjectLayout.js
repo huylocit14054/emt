@@ -1,11 +1,11 @@
 import React from 'react';
-import { withRouter } from 'next/router';
-import { Tabs, Input } from 'antd';
+import Router, { withRouter } from 'next/router';
+import { Tabs } from 'antd';
 import { Query } from 'react-apollo';
-import Router from 'next/router';
 import _ from 'lodash';
 import MembersTab from './projectComponent/MembersTab';
 import DimensionsTab from './projectComponent/DimensionsTab';
+import UTMBuildersTab from './projectComponent/UTMBuilderTab';
 import { getProjectById as GET_PROJECT_BY_ID } from '../../graphql/queries.gql';
 import UpdateProjectModal from './projectComponent/UpdateProjectModal';
 import AssignmentsTab from './projectComponent/AssignmentsTab';
@@ -18,11 +18,13 @@ class ProjectLayout extends React.Component {
     Router.prefetch(`/projectDimensions?id=${projectId}`);
     Router.prefetch(`/projectAssignments?id=${projectId}`);
     Router.prefetch(`/projectMembers?id=${projectId}`);
+    Router.prefetch(`/projectRules?id=${projectId}`);
+    Router.prefetch(`/projectBuilders?id=${projectId}`);
   }
 
   callback = key => {
     const projectId = this.props.router.query.id;
-    const site = _.capitalize(key);
+    const site = key === 'utm_builder' ? 'UTMBuilder' : _.capitalize(key);
     Router.push(`/project${site}?id=${projectId}`, `/project/${projectId}/${key}`);
   };
 
@@ -49,9 +51,13 @@ class ProjectLayout extends React.Component {
                 <p>{project.description}</p>
               </div>
               <Tabs activeKey={activeKey} onChange={this.callback} animated={false}>
+                <TabPane tab="UTM Builder" key="utm_builder">
+                  <UTMBuildersTab />
+                </TabPane>
                 <TabPane tab="Members" key="members">
                   <MembersTab />
                 </TabPane>
+
                 {project.isManagedByCurrentUser && (
                   <TabPane tab="Dimensions" key="dimensions">
                     <DimensionsTab />
