@@ -10,6 +10,8 @@ class Rule < ApplicationRecord
   REGEX_CHECK_VALIDATE_URL = /([-a-zA-Z0-9@:%_\+.~#?&=]+)/ # valid "url?utm_source=--&utm_camp="
   REGEX_GET_DATE_CODE = /(<<date>>)/ # get code <<date>>
 
+  REGEX_GET_INVALID_DIMENSION_STRING = /(<<.*?>>)/ # get <<HEHE>>
+
   # activate_rule
   def activate_rule
     deactivate_current_rule
@@ -36,7 +38,7 @@ class Rule < ApplicationRecord
     rule_without_code = rule.gsub(REGEX_GET_DIMENSION_CODE, '')
     rule_without_code = rule_without_code.gsub(REGEX_GET_DATE_CODE, '')
     # get all the valid url syntax and check the size with the rule_without_code original size
-    !rule_without_code[REGEX_CHECK_VALIDATE_URL].nil? && rule_without_code[REGEX_CHECK_VALIDATE_URL].size == rule_without_code.size ? true : errors.add(:rule_string, 'Invalid URL format')
+    !rule_without_code[REGEX_CHECK_VALIDATE_URL].nil? && rule_without_code[REGEX_CHECK_VALIDATE_URL].size == rule_without_code.size ? true : get_invalid_url_charactor(rule_without_code: rule_without_code)
   end
   # rubocop:enable Metrics/LineLength
 
@@ -59,5 +61,19 @@ class Rule < ApplicationRecord
   def deactivate_current_rule
     current_rule = Rule.find_by(project_id: project_id, is_applied: true)
     current_rule&.update(is_applied: false)
+  end
+
+  def get_invalid_url_charactor(rule_without_code:)
+    # get all invalid dimension string
+    invalid_dimension = rule_without_code.scan(REGEX_GET_INVALID_DIMENSION_STRING).flatten.join(',')
+    errors.add(:rule_string, "cannot get dimensions #{invalid_dimension}") if invalid_dimension
+    rule_without_code = rule_without_code.gsub(REGEX_GET_INVALID_DIMENSION_STRING,'')
+    # get all valid url and split it to array
+    rule_valid = rule_without_code[REGEX_CHECK_VALIDATE_URL].split('')
+    # split the rule to array
+    rule_without_code = rule_without_code.split('')
+    # rule - valid_rule = invalid rule
+    invalid_url = (rule_without_code - rule_valid).uniq.join(',')
+    errors.add(:rule_string, "cannot contain #{invalid_url}")
   end
 end
