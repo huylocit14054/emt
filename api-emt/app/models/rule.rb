@@ -74,6 +74,6 @@ class Rule < ApplicationRecord
     rule_without_code = rule_without_code.split('')
     # rule - valid_rule = invalid rule
     invalid_url = (rule_without_code - rule_valid).uniq.join(',')
-    errors.add(:rule_string, "cannot contain #{invalid_url}")
+    errors.add(:rule_string, "cannot contain #{invalid_url}") if invalid_url.present?
   end
 end
