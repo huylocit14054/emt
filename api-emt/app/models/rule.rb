@@ -67,7 +67,7 @@ class Rule < ApplicationRecord
     # get all invalid dimension string
     invalid_dimension = rule_without_code.scan(REGEX_GET_INVALID_DIMENSION_STRING).flatten.join(',')
     errors.add(:rule_string, "cannot get dimensions #{invalid_dimension}") if invalid_dimension
-    rule_without_code = rule_without_code.gsub(REGEX_GET_INVALID_DIMENSION_STRING,'')
+    rule_without_code = rule_without_code.gsub(REGEX_GET_INVALID_DIMENSION_STRING, '')
     # get all valid url and split it to array
     rule_valid = rule_without_code[REGEX_CHECK_VALIDATE_URL].split('')
     # split the rule to array
