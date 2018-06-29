@@ -175,5 +175,20 @@ query getRulesByProjectId($projectId: ID!){
   }
 }
 
+query getAssignmentsOfCurrentMember($projectId: ID!){
+  assignments: memberAssignmentsDetails(projectId: $projectId) {
+    dimension {
+      id
+      name
+      category
+    }
+    optionAuthorizations {
+      option {
+        id
+        name
+      }
+    }
+  }
+}
 
 

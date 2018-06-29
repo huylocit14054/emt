@@ -20,6 +20,8 @@
     "jest": true
   },
   "rules": {
+    "no-return-assign": 0,
+    "react/no-access-state-in-setstate": 0,
     "react/destructuring-assignment": 0,
     "camelcase": 0,
     "react/no-danger": 0,

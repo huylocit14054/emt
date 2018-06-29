@@ -159,4 +159,15 @@ class Types::QueryType < Types::BaseObject
     project = ::Project.find(project_id)
     project.rules.order_as_specified(is_applied: [true]).order(:created_at)
   end
+
+  # get authorized dimensions for current user in specific project
+  field :member_assignments_details, [Types::Authorization], null: false do 
+    argument :project_id, ID, required: true
+  end
+
+  def member_assignments_details(project_id:)
+    member = ::ProjectMember.find_by(user: context[:current_user], project_id: project_id)
+    member.authorizations
+  end
+  
 end

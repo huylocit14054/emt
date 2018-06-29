@@ -1,5 +1,5 @@
 import React from 'react';
-import stylesheet from '../styles/projectRules.less';
+import stylesheet from '../styles/utmBuilder.less';
 import ProjectLayout from '../components/project/ProjectLayout';
 import redirect from '../lib/redirect';
 import checkLoggedIn from '../lib/checkLoggedIn';
