@@ -1,307 +1,185 @@
-import React, { PureComponent } from 'react';
-import DataSheet from 'react-datasheet';
+const React = require('react');
+const { Alert, Icon, Tooltip } = require('antd');
+const _ = require('lodash');
 
-import './override-everything.css';
+if (typeof window === 'undefined') {
+  const loading = () => <div>loading...</div>;
+  module.exports = loading;
+} else {
+  const update = require('immutability-helper');
+  const ReactDataGrid = require('react-data-grid');
+  const { UTMTopToolbar } = require('./utmBuilder/UTMTopToolbar');
+  const { Editors } = require('react-data-grid-addons');
+  const { AutoComplete: AutoCompleteEditor } = Editors;
+  let uuid = 0;
+  class UTMBuilder extends React.Component {
+    constructor(props, context) {
+      super(props, context);
+      this._columns = props.assignments.map(assignment => {
+        const { dimension, optionAuthorizations } = assignment;
+        const options = optionAuthorizations.map(optionAuth => ({
+          ...optionAuth.option,
+          title: optionAuth.option.name,
+        }));
+        console.log(options);
 
-const SheetRenderer = props => {
-  const {
-    as: Tag,
-    headerAs: Header,
-    bodyAs: Body,
-    rowAs: Row,
-    cellAs: Cell,
-    className,
-    columns,
-    selections,
-    onSelectAllChanged,
-  } = props;
-  return (
-    <Tag className={className}>
-      <Header className="data-header">
-        <Row>
-          <Cell className="action-cell cell">
-            <input
-              type="checkbox"
-              checked={selections.every(s => s)}
-              onChange={e => onSelectAllChanged(e.target.checked)}
-            />
-          </Cell>
-          {columns.map(column => (
-            <Cell className="cell" style={{ width: column.width }} key={column.label}>
-              {column.label}
-            </Cell>
-          ))}
-        </Row>
-      </Header>
-      <Body className="data-body">{props.children}</Body>
-    </Tag>
-  );
-};
-
-const RowRenderer = props => {
-  const { as: Tag, cellAs: Cell, className, row, selected, onSelectChanged } = props;
-  return (
-    <Tag className={className}>
-      <Cell className="action-cell cell">
-        <input
-          type="checkbox"
-          checked={selected}
-          onChange={e => onSelectChanged(row, e.target.checked)}
-        />
-      </Cell>
-      {props.children}
-    </Tag>
-  );
-};
-
-const CellRenderer = props => {
-  const {
-    as: Tag,
-    cell,
-    row,
-    col,
-    columns,
-    attributesRenderer,
-    selected,
-    editing,
-    updated,
-    style,
-    ...rest
-  } = props;
-
-  // hey, how about some custom attributes on our cell?
-  const attributes = cell.attributes || {};
-  // ignore default style handed to us by the component and roll our own
-  attributes.style = { width: columns[col].width };
-  if (col === 0) {
-    attributes.title = cell.label;
-  }
-
-  return (
-    <Tag {...rest} {...attributes}>
-      {props.children}
-    </Tag>
-  );
-};
-
-export default class OverrideEverythingSheet extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.handleSelect = this.handleSelect.bind(this);
-    this.handleSelectAllChanged = this.handleSelectAllChanged.bind(this);
-    this.handleSelectChanged = this.handleSelectChanged.bind(this);
-    this.handleCellsChanged = this.handleCellsChanged.bind(this);
-
-    this.sheetRenderer = this.sheetRenderer.bind(this);
-    this.rowRenderer = this.rowRenderer.bind(this);
-    this.cellRenderer = this.cellRenderer.bind(this);
-
-    this.state = {
-      as: 'table',
-      columns: [
-        { label: 'Style', width: '30%' },
-        { label: 'IBUs', width: '20%' },
-        { label: 'Color (SRM)', width: '20%' },
-        { label: 'Rating', width: '20%' },
-      ],
-      grid: [
-        [
-          { value: 'Ordinary Bitter' },
-          { value: '20 - 35' },
-          { value: '5 - 12' },
-          { value: 4, attributes: { 'data-foo': 'bar' } },
-        ],
-        [{ value: 'Special Bitter' }, { value: '28 - 40' }, { value: '6 - 14' }, { value: 4 }],
-        [{ value: 'ESB' }, { value: '30 - 45' }, { value: '6 - 14' }, { value: 5 }],
-        [{ value: 'Scottish Light' }, { value: '9 - 20' }, { value: '6 - 15' }, { value: 3 }],
-        [{ value: 'Scottish Heavy' }, { value: '12 - 20' }, { value: '8 - 30' }, { value: 4 }],
-        [{ value: 'Scottish Export' }, { value: '15 - 25' }, { value: '9 - 19' }, { value: 4 }],
-        [{ value: 'English Summer Ale' }, { value: '20 - 30' }, { value: '3 - 7' }, { value: 3 }],
-        [{ value: 'English Pale Ale' }, { value: '20 - 40' }, { value: '5 - 12' }, { value: 4 }],
-        [{ value: 'English IPA' }, { value: '35 - 63' }, { value: '6 - 14' }, { value: 4 }],
-        [{ value: 'Strong Ale' }, { value: '30 - 65' }, { value: '8 - 21' }, { value: 4 }],
-        [{ value: 'Old Ale' }, { value: '30 -65' }, { value: '12 - 30' }, { value: 4 }],
-        [{ value: 'Pale Mild Ale' }, { value: '10 - 20' }, { value: '6 - 9' }, { value: 3 }],
-        [{ value: 'Dark Mild Ale' }, { value: '10 - 24' }, { value: '17 - 34' }, { value: 3 }],
-        [{ value: 'Brown Ale' }, { value: '12 - 25' }, { value: '12 - 17' }, { value: 3 }],
-      ],
-      selections: [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-      ],
-    };
-  }
-
-  handleSelect(e) {
-    this.setState({ as: e.target.value });
-  }
-
-  handleSelectAllChanged(selected) {
-    const selections = this.state.selections.map(s => selected);
-    this.setState({ selections });
-  }
-
-  handleSelectChanged(index, selected) {
-    const selections = [...this.state.selections];
-    selections[index] = selected;
-    this.setState({ selections });
-  }
-
-  handleCellsChanged(changes, additions) {
-    const grid = this.state.grid.map(row => [...row]);
-    changes.forEach(({ cell, row, col, value }) => {
-      grid[row][col] = { ...grid[row][col], value };
-    });
-    // paste extended beyond end, so add a new row
-    additions &&
-      additions.forEach(({ cell, row, col, value }) => {
-        if (!grid[row]) {
-          grid[row] = [{ value: '' }, { value: '' }, { value: '' }, { value: 0 }];
-        }
-        if (grid[row][col]) {
-          grid[row][col] = { ...grid[row][col], value };
-        }
+        return {
+          key: dimension.id,
+          name: (
+            <div>
+              {dimension.name}
+              {dimension.category === 'selection' && (
+                <Tooltip placement="topRight" title="Selective Dimension">
+                  <Icon type="caret-down" style={{ marginLeft: 10 }} />
+                </Tooltip>
+              )}
+            </div>
+          ),
+          resizable: true,
+          editable: dimension.category === 'input' ? true : undefined,
+          editor:
+            dimension.category === 'selection' ? (
+              <AutoCompleteEditor options={options} />
+            ) : (
+              undefined
+            ),
+        };
       });
-    this.setState({ grid });
-  }
 
-  sheetRenderer(props) {
-    const { columns, selections } = this.state;
-    switch (this.state.as) {
-      case 'list':
-        return (
-          <SheetRenderer
-            columns={columns}
-            selections={selections}
-            onSelectAllChanged={this.handleSelectAllChanged}
-            as="segment"
-            headerAs="div"
-            bodyAs="ul"
-            rowAs="div"
-            cellAs="div"
-            {...props}
-          />
-        );
-      case 'div':
-        return (
-          <SheetRenderer
-            columns={columns}
-            selections={selections}
-            onSelectAllChanged={this.handleSelectAllChanged}
-            as="div"
-            headerAs="div"
-            bodyAs="div"
-            rowAs="div"
-            cellAs="div"
-            {...props}
-          />
-        );
-      default:
-        return (
-          <SheetRenderer
-            columns={columns}
-            selections={selections}
-            onSelectAllChanged={this.handleSelectAllChanged}
-            as="table"
-            headerAs="thead"
-            bodyAs="tbody"
-            rowAs="tr"
-            cellAs="th"
-            {...props}
-          />
-        );
+      this.state = { rows: [], selectedIndexes: [] };
     }
-  }
 
-  rowRenderer(props) {
-    const { selections } = this.state;
-    switch (this.state.as) {
-      case 'list':
+    onRowsSelected = rows => {
+      this.setState({
+        selectedIndexes: this.state.selectedIndexes.concat(rows.map(r => r.rowIdx)),
+      });
+    };
+
+    onRowsDeselected = rows => {
+      const rowIndexes = rows.map(r => r.rowIdx);
+      this.setState({
+        selectedIndexes: this.state.selectedIndexes.filter(i => rowIndexes.indexOf(i) === -1),
+      });
+    };
+
+    getColumns = () => {
+      const clonedColumns = this._columns.slice();
+      clonedColumns[2].events = {
+        onClick: (ev, args) => {
+          const { idx } = args;
+          const { rowIdx } = args;
+          this.grid.openCellEditor(rowIdx, idx);
+        },
+      };
+
+      return clonedColumns;
+    };
+
+    getRowAt = index => {
+      if (index < 0 || index > this.getSize()) {
+        return undefined;
+      }
+
+      return this.state.rows[index];
+    };
+
+    getSize = () => this.state.rows.length;
+
+    handleGridRowsUpdated = ({ fromRow, toRow, updated }) => {
+      const rows = this.state.rows.slice();
+
+      for (let i = fromRow; i <= toRow; i += 1) {
+        const rowToUpdate = rows[i];
+        const updatedRow = update(rowToUpdate, { $merge: updated });
+        rows[i] = updatedRow;
+      }
+      this.setState({ rows });
+    };
+
+    handleAddRow = () => {
+      const newRow = {
+        id: (uuid += 1),
+      };
+
+      let rows = this.state.rows.slice();
+      rows = update(rows, { $push: [newRow] });
+      this.setState({ rows });
+    };
+
+    handleAddMultipleRows = duplicatedRows => {
+      let rows = this.state.rows.slice();
+      rows = update(rows, { $push: duplicatedRows });
+      this.setState({ rows });
+    };
+
+    handleDuplicateRows = () => {
+      let selectedRows = this.state.rows.filter(row =>
+        _.includes(this.state.selectedIndexes, this.state.rows.indexOf(row))
+      );
+      selectedRows = selectedRows.map(row => ({
+        ...row,
+        id: (uuid += 1),
+      }));
+      this.handleAddMultipleRows(selectedRows);
+    };
+
+    handleRemoveSelectedRows = () => {
+      const rows = this.state.rows.filter(
+        row => !_.includes(this.state.selectedIndexes, this.state.rows.indexOf(row))
+      );
+      this.setState({ rows, selectedIndexes: [] });
+    };
+
+    handleGenerateUrls = () => {
+      console.log(this.state.rows);
+    };
+
+    render() {
+      if (this._columns.length > 0) {
         return (
-          <RowRenderer
-            as="li"
-            cellAs="div"
-            selected={selections[props.row]}
-            onSelectChanged={this.handleSelectChanged}
-            className="data-row"
-            {...props}
-          />
+          <React.Fragment>
+            <UTMTopToolbar
+              handleAddRow={this.handleAddRow}
+              handleDuplicateRows={this.handleDuplicateRows}
+              handleRemoveSelectedRows={this.handleRemoveSelectedRows}
+              handleGenerateUrls={this.handleGenerateUrls}
+            />
+            <div style={{ marginTop: 20 }}>
+              <ReactDataGrid
+                ref={node => (this.grid = node)}
+                enableCellSelect
+                columns={this.getColumns()}
+                rowGetter={this.getRowAt}
+                rowsCount={this.getSize()}
+                onGridRowsUpdated={this.handleGridRowsUpdated}
+                rowSelection={{
+                  showCheckbox: true,
+                  enableShiftSelect: true,
+                  onRowsSelected: this.onRowsSelected,
+                  onRowsDeselected: this.onRowsDeselected,
+                  selectBy: {
+                    indexes: this.state.selectedIndexes,
+                  },
+                }}
+                rowHeight={50}
+                minHeight={400}
+                rowScrollTimeout={200}
+              />
+            </div>
+          </React.Fragment>
         );
-      case 'div':
-        return (
-          <RowRenderer
-            as="div"
-            cellAs="div"
-            selected={selections[props.row]}
-            onSelectChanged={this.handleSelectChanged}
-            className="data-row"
-            {...props}
-          />
-        );
-      default:
-        return (
-          <RowRenderer
-            as="tr"
-            cellAs="td"
-            selected={selections[props.row]}
-            onSelectChanged={this.handleSelectChanged}
-            className="data-row"
-            {...props}
-          />
-        );
-    }
-  }
-
-  cellRenderer(props) {
-    switch (this.state.as) {
-      case 'list':
-        return <CellRenderer as="div" columns={this.state.columns} {...props} />;
-      case 'div':
-        return <CellRenderer as="div" columns={this.state.columns} {...props} />;
-      default:
-        return <CellRenderer as="td" columns={this.state.columns} {...props} />;
-    }
-  }
-
-  render() {
-    return (
-      <div>
-        <div>
-          <label>
-            Render with:&nbsp;
-            <select value={this.state.as} onChange={this.handleSelect}>
-              <option value="table">Table</option>
-              <option value="list">List</option>
-              <option value="div">Div</option>
-            </select>
-          </label>
-        </div>
-
-        <DataSheet
-          data={this.state.grid}
-          className="custom-sheet"
-          sheetRenderer={this.sheetRenderer}
-          headerRenderer={this.headerRenderer}
-          bodyRenderer={this.bodyRenderer}
-          rowRenderer={this.rowRenderer}
-          cellRenderer={this.cellRenderer}
-          onCellsChanged={this.handleCellsChanged}
-          valueRenderer={cell => cell.value}
+      }
+      // If current member currently not assigned any dimensiions
+      return (
+        <Alert
+          message="Note"
+          description="You are currently not assigned any dimensions"
+          type="info"
+          showIcon
         />
-        <div className="testNha">hello cac ban</div>
-      </div>
-    );
+      );
+    }
   }
+
+  module.exports = UTMBuilder;
 }

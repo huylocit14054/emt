@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { withRouter } from 'next/router';
-import UTMBuilder from './utmBuilderTab/UTMBuilder';
 import MyQuery from '../../MyQuery';
 import { getAssignmentsOfCurrentMember as GET_ASSIGNMENTS_OF_CURRENT_MEMBER_QUERY } from '../../../graphql/queries.gql';
+
+const UTMBuilder = require('./utmBuilderTab/UTMBuilder');
 
 class UTMBuilderTab extends Component {
   render() {
