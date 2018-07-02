@@ -6,7 +6,7 @@ if (typeof window === 'undefined') {
 } else {
   const _ = require('lodash');
   const Highlighter = require('react-highlight-words');
-  const { Alert, Tag, Card, Col, Icon, Tooltip, message } = require('antd');
+  const { Alert, Card, Col, Icon, Tooltip } = require('antd');
   const update = require('immutability-helper');
   const moment = require('moment');
   const ReactDataGrid = require('react-data-grid');
@@ -156,7 +156,7 @@ if (typeof window === 'undefined') {
         if (_.has(row, 'url')) {
           if (
             row.url !== '' &&
-            !/^((https?):\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(row.url)
+            !/^((https?):\/\/)([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/.test(row.url)
           ) {
             errors.push(`Landing Page URL at index ${row.id} has invalid format`);
             tableIsValid = false;
