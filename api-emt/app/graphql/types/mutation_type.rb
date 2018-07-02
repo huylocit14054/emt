@@ -18,4 +18,5 @@ class Types::MutationType < Types::BaseObject
   field :update_rule_string, mutation: Mutations::UpdateRuleString
   field :activate_rule, mutation: Mutations::ActivateRule
   field :delete_rule, mutation: Mutations::DeleteRule
+  field :generate_utms, mutation: Mutations::GenerateUtms
 end
