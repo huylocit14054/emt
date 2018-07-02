@@ -4,7 +4,7 @@ class Mutations::GenerateUtms < Mutations::BaseMutation
   field :url_strings, [String], null: true
 
   def resolve(values:)
-    url_strings = Utm.generate_utms(values: values)
+    url_strings = Utm.generate_utms(values: values, current_user_id: context[:current_user].id)
     {
       url_strings: url_strings
     }

@@ -23,6 +23,9 @@ class Utm < ApplicationRecord
 
   # generate a utm record(return generated url)
   def self.generate_utm_record(values:, rule:, project_member_id:)
+    puts values
+    puts rule
+    puts project_member_id
     url = values['url']
     # delete the last character '/' if it exist
     url[url.rindex('/')] = '' if url.end_with?('/')
@@ -59,11 +62,12 @@ class Utm < ApplicationRecord
   end
 
   # generate all utms with received values
-  def self.generate_utms(values:)
+  def self.generate_utms(values:, current_user_id:)
     id = values['rule_id']
-    project_member_id = values['project_member_id']
-    # get the rule
+    # get the rule string
     rule = Rule.find(id).rule_string
+    project_id = values['project_id']
+    project_member_id = ProjectMember.find_by(project_id: project_id, user_id: current_user_id).id
     url_strings = []
     # get attributes array and base on each attribute generate a utm recode
     attributes = values['attributes']

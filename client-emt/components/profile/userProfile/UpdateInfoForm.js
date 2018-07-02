@@ -1,3 +1,4 @@
+import React from 'react';
 import { Mutation, Query, withApollo } from 'react-apollo';
 import { Form, Input, Spin, Icon, message, Button } from 'antd';
 import { updateUserInfo as UPDATE_USER_INFO } from '../../../graphql/mutations.gql';
@@ -7,7 +8,8 @@ const FormItem = Form.Item;
 
 const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
-const UpdateUserForm = Form.create({})(class extends React.Component {
+const UpdateUserForm = Form.create({})(
+  class extends React.Component {
     handleUpdate = (e, updateUserInfo) => {
       e.preventDefault();
       const { form } = this.props;
@@ -59,23 +61,17 @@ const UpdateUserForm = Form.create({})(class extends React.Component {
           }}
           onError={error => {
             // If you want to send error to external service?
-            error.graphQLErrors.map(({ message }, i) => {
-              message.error(message, 3);
+            error.graphQLErrors.map(error => {
+              message.error(error.message, 3);
             });
           }}
         >
-          {(updateUserInfo, { loading, data, error }) => (
+          {(updateUserInfo, { loading }) => (
             <Spin indicator={antIcon} spinning={loading} tip="Updating Profile...">
               <br />
               <br />
-              <Query
-                query={GET_CURRENT_USER_PROFILE_QUERY}
-                onCompleted={data => {}}
-                onError={error => {
-                  // If you want to send error to external service?
-                }}
-              >
-                {({ loading, error, data }) => {
+              <Query query={GET_CURRENT_USER_PROFILE_QUERY}>
+                {({ data }) => {
                   const { profile } = data;
                   if (loading) return <p>loading...</p>;
 
@@ -123,6 +119,7 @@ const UpdateUserForm = Form.create({})(class extends React.Component {
         </Mutation>
       );
     }
-});
+  }
+);
 
 export default withApollo(UpdateUserForm);

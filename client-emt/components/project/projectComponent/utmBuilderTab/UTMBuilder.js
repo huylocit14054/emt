@@ -4,9 +4,11 @@ if (typeof window === 'undefined') {
   const loading = () => <div>loading...</div>;
   module.exports = loading;
 } else {
+  const { Mutation } = require('react-apollo');
+  const { generateUtms: GENERATE_UTMS_MUTATION } = require('../../../../graphql/mutations.gql');
   const _ = require('lodash');
   const Highlighter = require('react-highlight-words');
-  const { Alert, Card, Col, Icon, Tooltip } = require('antd');
+  const { Alert, Icon, Tooltip, Spin, message: NotiMessage } = require('antd');
   const update = require('immutability-helper');
   const moment = require('moment');
   const ReactDataGrid = require('react-data-grid');
@@ -14,6 +16,8 @@ if (typeof window === 'undefined') {
   const { URLsList } = require('./utmBuilder/URLsList');
   const { Editors } = require('react-data-grid-addons');
   const { AutoComplete: AutoCompleteEditor } = Editors;
+  const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
+
   let uuid = 0;
   class UTMBuilder extends React.Component {
     constructor(props, context) {
@@ -24,7 +28,6 @@ if (typeof window === 'undefined') {
           ...optionAuth.option,
           title: optionAuth.option.name,
         }));
-        console.log(options);
 
         return {
           key: dimension.id,
@@ -143,49 +146,52 @@ if (typeof window === 'undefined') {
     };
 
     validateTable = () => {
-      let tableIsValid = true;
-      const errors = [];
-
-      const selectiveAssignments = this.props.assignments.filter(
-        assignment => assignment.dimension.category === 'selection'
-      );
-      console.log(selectiveAssignments);
-
-      this.state.rows.forEach(row => {
-        // Check the validation of url regex
-        if (_.has(row, 'url')) {
-          if (
-            row.url !== '' &&
-            !/^((https?):\/\/)([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/.test(row.url)
-          ) {
-            errors.push(`Landing Page URL at index ${row.id} has invalid format`);
-            tableIsValid = false;
-          }
-        }
-        selectiveAssignments.forEach(assignment => {
-          const { dimension, optionAuthorizations } = assignment;
-          const options = optionAuthorizations.map(optionAuth => optionAuth.option.name);
-          const selectiveValueInRow = row[dimension.id];
-
-          if (
-            selectiveValueInRow !== '' &&
-            selectiveValueInRow !== undefined &&
-            !_.includes(options, selectiveValueInRow)
-          ) {
-            errors.push(
-              `Value "${selectiveValueInRow}" of selective dimension ${dimension.name} at index ${
-                row.id
-              } is not found`
-            );
-            tableIsValid = false;
-          }
-        });
-      });
-
-      if (tableIsValid) {
-        this.setState({ isValid: true, errors });
+      if (this.state.rows.length === 0) {
+        this.setState({ isValid: false, errors: [] });
       } else {
-        this.setState({ isValid: false, errors });
+        let tableIsValid = true;
+        const errors = [];
+
+        const selectiveAssignments = this.props.assignments.filter(
+          assignment => assignment.dimension.category === 'selection'
+        );
+
+        this.state.rows.forEach(row => {
+          // Check the validation of url regex
+          if (_.has(row, 'url') && row.url !== '') {
+            if (!/^((https?):\/\/)([\da-z.-]+)\.([a-z.]{2,6})([&=?/\w .-]*)*\/?$/.test(row.url)) {
+              errors.push(`Landing Page URL at index ${row.id} has invalid format`);
+              tableIsValid = false;
+            }
+          } else {
+            errors.push(`Landing Page URL at index ${row.id} cannot be blank`);
+            tableIsValid = false;
+          }
+          selectiveAssignments.forEach(assignment => {
+            const { dimension, optionAuthorizations } = assignment;
+            const options = optionAuthorizations.map(optionAuth => optionAuth.option.name);
+            const selectiveValueInRow = row[dimension.id];
+
+            if (
+              selectiveValueInRow !== '' &&
+              selectiveValueInRow !== undefined &&
+              !_.includes(options, selectiveValueInRow)
+            ) {
+              errors.push(
+                `Value "${selectiveValueInRow}" of selective dimension ${dimension.name} at index ${
+                  row.id
+                } is not found`
+              );
+              tableIsValid = false;
+            }
+          });
+        });
+
+        if (tableIsValid) {
+          this.setState({ isValid: true, errors });
+        } else {
+          this.setState({ isValid: false, errors });
+        }
       }
     };
 
@@ -197,14 +203,14 @@ if (typeof window === 'undefined') {
 
       let rows = this.state.rows.slice();
       rows = update(rows, { $push: [newRow] });
-      this.setState({ rows });
+      this.setState({ rows, isValid: false });
     };
 
     handleAddMultipleRows = duplicatedRows => {
       let rows = this.state.rows.slice();
 
       rows = update(rows, { $push: duplicatedRows });
-      this.setState({ rows });
+      this.setState({ rows }, this.validateTable);
     };
 
     handleDuplicateRows = () => {
@@ -219,16 +225,38 @@ if (typeof window === 'undefined') {
     };
 
     handleRemoveSelectedRows = () => {
-      // reset uuid
       uuid = 0;
-      const rows = this.state.rows.filter(
-        row => !_.includes(this.state.selectedIndexes, this.state.rows.indexOf(row))
-      );
-      this.setState({ rows, selectedIndexes: [] });
+      const rows = this.state.rows
+        .filter(row => !_.includes(this.state.selectedIndexes, this.state.rows.indexOf(row)))
+        .map(row => ({
+          ...row,
+          id: (uuid += 1),
+        }));
+      this.setState({ rows, selectedIndexes: [] }, this.validateTable);
     };
 
-    handleGenerateUrls = () => {
-      console.log(this.state.rows);
+    generateUtms = generate => {
+      const rows = _.clone(this.state.rows);
+
+      const finalRows = rows.map(row => {
+        const rowModified = _.omit(row, 'id');
+        return rowModified;
+      });
+
+      const { projectId, currentAppliedRule } = this.props;
+      const values = {
+        project_id: projectId,
+        rule_id: currentAppliedRule.id,
+        attributes: finalRows,
+      };
+      console.log(values);
+      generate({
+        variables: {
+          input: {
+            values: JSON.stringify(values),
+          },
+        },
+      });
     };
 
     render() {
@@ -238,68 +266,81 @@ if (typeof window === 'undefined') {
       if (this._columns.length > 3) {
         return (
           <React.Fragment>
-            <div style={{ marginBottm: 20 }}>
-              <Col span={24} style={{ marginBottom: 20 }}>
-                <Card
-                  type="inner"
-                  title="Current Applied Rule"
-                  bordered
-                  style={{ textAlign: 'center' }}
-                >
-                  <code>
-                    {' '}
-                    <Highlighter
-                      highlightClassName="highlight-dimension"
-                      searchWords={['<<(.*?)>>', 'landing_page_url']}
-                      autoEscape={false}
-                      textToHighlight={`landing_page_url?${currentAppliedRule.ruleStringToDisplay}`}
-                    />
-                  </code>
-                </Card>
-              </Col>
-            </div>
-
-            <UTMTopToolbar
-              handleAddRow={this.handleAddRow}
-              handleDuplicateRows={this.handleDuplicateRows}
-              handleRemoveSelectedRows={this.handleRemoveSelectedRows}
-              handleGenerateUrls={this.handleGenerateUrls}
-              datasIsValid={isValid}
-            />
-
-            <div style={{ marginTop: 10, marginBottom: 20 }}>
-              <div style={{ marginBottom: 10 }}>
-                {errors.length > 0 && (
-                  <Alert
-                    message="Error"
-                    description={errors.map(error => <div>{error}</div>)}
-                    type="error"
-                    showIcon
+            <div>
+              <Alert
+                style={{ marginBottom: 20 }}
+                message={<b>Current Applied Rule</b>}
+                description={
+                  <Highlighter
+                    highlightClassName="highlight-dimension"
+                    searchWords={['<<(.*?)>>', 'landing_page_url']}
+                    autoEscape={false}
+                    textToHighlight={`landing_page_url?${currentAppliedRule.ruleStringToDisplay}`}
                   />
-                )}
-              </div>
-              <ReactDataGrid
-                ref={node => (this.grid = node)}
-                enableCellSelect
-                columns={this.getColumns()}
-                rowGetter={this.getRowAt}
-                rowsCount={this.getSize()}
-                onGridRowsUpdated={this.handleGridRowsUpdated}
-                rowSelection={{
-                  showCheckbox: true,
-                  enableShiftSelect: true,
-                  onRowsSelected: this.onRowsSelected,
-                  onRowsDeselected: this.onRowsDeselected,
-                  selectBy: {
-                    indexes: this.state.selectedIndexes,
-                  },
-                }}
-                rowHeight={50}
-                minHeight={200}
-                rowScrollTimeout={200}
+                }
+                type="info"
+                showIcon
               />
             </div>
-            <URLsList />
+
+            <Mutation
+              mutation={GENERATE_UTMS_MUTATION}
+              onError={error => {
+                // If you want to send error to external service?
+                error.graphQLErrors.map(({ message }) => {
+                  NotiMessage.error(message, 3);
+                });
+              }}
+            >
+              {(generateUtms, { loading, data }) => (
+                <React.Fragment>
+                  <UTMTopToolbar
+                    handleAddRow={this.handleAddRow}
+                    handleDuplicateRows={this.handleDuplicateRows}
+                    handleRemoveSelectedRows={this.handleRemoveSelectedRows}
+                    handleGenerateUrls={() => this.generateUtms(generateUtms)}
+                    isGenerating={loading}
+                    datasIsValid={isValid}
+                  />
+
+                  <div style={{ marginTop: 10, marginBottom: 20 }}>
+                    <div style={{ marginBottom: 10 }}>
+                      {errors.length > 0 && (
+                        <Alert
+                          message="Error"
+                          description={errors.map((error, index) => <div key={index}>{error}</div>)}
+                          type="error"
+                          showIcon
+                        />
+                      )}
+                    </div>
+                    <ReactDataGrid
+                      ref={node => (this.grid = node)}
+                      enableCellSelect
+                      columns={this.getColumns()}
+                      rowGetter={this.getRowAt}
+                      rowsCount={this.getSize()}
+                      onGridRowsUpdated={this.handleGridRowsUpdated}
+                      rowSelection={{
+                        showCheckbox: true,
+                        enableShiftSelect: true,
+                        onRowsSelected: this.onRowsSelected,
+                        onRowsDeselected: this.onRowsDeselected,
+                        selectBy: {
+                          indexes: this.state.selectedIndexes,
+                        },
+                      }}
+                      rowHeight={40}
+                      minHeight={300}
+                      rowScrollTimeout={200}
+                    />
+                  </div>
+                  <Spin indicator={antIcon} spinning={loading}>
+                    {data && <URLsList urls={data.generateUtms.urlStrings} />}
+                  </Spin>
+                </React.Fragment>
+              )}
+            </Mutation>
           </React.Fragment>
         );
       }

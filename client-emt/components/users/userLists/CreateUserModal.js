@@ -1,4 +1,5 @@
-import { Button, message, Icon } from 'antd';
+import React from 'react';
+import { Button, message } from 'antd';
 import { Mutation } from 'react-apollo';
 import { createUser as CREATE_USER_MUTATION } from '../../../graphql/mutations.gql';
 import { getAllUsers as GET_ALL_USERS_QUERY } from '../../../graphql/queries.gql';
@@ -18,7 +19,7 @@ class CreateUserModal extends React.Component {
   };
 
   handleCreate = createUser => {
-    const form = this.formRef.props.form;
+    const { form } = this.formRef.props;
     form.validateFields((err, values) => {
       if (err) {
         return;
@@ -72,12 +73,12 @@ class CreateUserModal extends React.Component {
           }}
           onError={error => {
             // If you want to send error to external service?
-            error.graphQLErrors.map(({ message }, i) => {
-              message.error(message, 3);
+            error.graphQLErrors.map(error => {
+              message.error(error.message, 3);
             });
           }}
         >
-          {(createUser, { loading, data, error }) => (
+          {(createUser, { loading }) => (
             <CreateUserForm
               wrappedComponentRef={this.saveFormRef}
               confirmLoading={loading}
