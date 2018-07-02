@@ -23,9 +23,6 @@ class Utm < ApplicationRecord
 
   # generate a utm record(return generated url)
   def self.generate_utm_record(values:, rule:, project_member_id:)
-    puts values
-    puts rule
-    puts project_member_id
     url = values['url']
     # delete the last character '/' if it exist
     url[url.rindex('/')] = '' if url.end_with?('/')
