@@ -191,3 +191,9 @@ mutation updateRuleString($input: UpdateRuleStringInput!){
     }
   }
 }
+
+mutation generateUtms($input: GenerateUtmsInput!){
+  generateUtms(input: $input){
+    urlStrings
+  }
+}

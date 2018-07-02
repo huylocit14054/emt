@@ -48,6 +48,7 @@ export default class AssignmentsList extends React.Component {
                 <ColumnGroup title="Dimensions">
                   {data.projectDimensions.map(dimension => (
                     <Column
+                      align="center"
                       title={dimension.name}
                       key={dimension.id}
                       render={member => {
@@ -71,7 +72,7 @@ export default class AssignmentsList extends React.Component {
                                   style={{
                                     color: '#52c41a',
                                     fontSize: '14pt',
-                                    marginLeft: '40%',
+
                                     fontWeight: 'bold',
                                   }}
                                 />
@@ -86,7 +87,7 @@ export default class AssignmentsList extends React.Component {
                             type="close"
                             style={{
                               color: '#f5222d',
-                              marginLeft: '40%',
+
                               fontSize: '14pt',
                               fontWeight: 'bold',
                             }}

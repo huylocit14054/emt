@@ -26,7 +26,7 @@ class UpdateRuleModal extends React.Component {
 
     // Map utm_names to ids
     _.forEach(projectDimensions, dimension => {
-      rule_string = _.replace(rule_string, dimension.name, dimension.id);
+      rule_string = _.replace(rule_string, new RegExp(dimension.name, 'g'), dimension.id);
     });
     updateRule({
       variables: {
@@ -34,40 +34,6 @@ class UpdateRuleModal extends React.Component {
           attributes: JSON.stringify({ id, rule_string }),
         },
       },
-      //   update: (
-      //     store,
-      //     {
-      //       data: {
-      //         updateRuleString: { updatedRule },
-      //       },
-      //     }
-      //   ) => {
-      //     const data = store.readQuery({
-      //       query: GET_RULES_BY_PROJECT_ID_QUERY,
-      //       variables: {
-      //         projectId: project_id,
-      //       },
-      //     });
-
-      //     data.projectRules = data.projectRules.map(rule => {
-      //       if (rule.isApplied) {
-      //         return {
-      //           ...rule,
-      //           isApplied: false,
-      //         };
-      //       }
-      //       return rule;
-      //     });
-      //     data.projectRules.splice(0, 0, updatedRule);
-      //     store.writeQuery({
-      //       query: GET_RULES_BY_PROJECT_ID_QUERY,
-      //       variables: {
-      //         projectId: project_id,
-      //       },
-      //       data,
-      //     });
-      //     console.log($('#rule-suggestions').val());
-      //   },
     });
   };
 

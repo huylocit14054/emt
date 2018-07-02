@@ -1,29 +1,27 @@
 import React from 'react';
-import stylesheet from '../styles/login.less';
+import stylesheet from '../styles/utmBuilder.less';
+import ProjectLayout from '../components/project/ProjectLayout';
 import redirect from '../lib/redirect';
 import checkLoggedIn from '../lib/checkLoggedIn';
-import UsersList from '../components/users/UsersList';
 
-class Users extends React.Component {
+export default class ProjectUTMBuilder extends React.Component {
   static async getInitialProps(context) {
-    const { currentUser } = await checkLoggedIn(context.apolloClient);
-
-    if (currentUser.role !== 'root_admin') {
+    const { apolloClient } = context;
+    const { currentUser } = await checkLoggedIn(apolloClient);
+    if (!currentUser) {
       // Already signed in? No need to continue.
       // Throw them back to the main page
       redirect(context, '/');
     }
-    return {};
+    return { currentUser };
   }
 
   render() {
     return (
       <React.Fragment>
         <style dangerouslySetInnerHTML={{ __html: stylesheet }} />
-        <UsersList />
+        <ProjectLayout activeKey="utm_builder" />
       </React.Fragment>
     );
   }
 }
-
-export default Users;

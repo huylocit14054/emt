@@ -1,5 +1,6 @@
+import React from 'react';
 import { withRouter } from 'next/router';
-import { Table, Icon, Divider, Radio, message, Tag, notification } from 'antd';
+import { Table, Radio, Tag, notification } from 'antd';
 import { Query, Mutation, ApolloConsumer } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Image } from 'cloudinary-react';
@@ -94,7 +95,7 @@ class MembersTab extends React.Component {
                         title="Username"
                         key="username"
                         render={member => (
-                          <a href="javascript:;">
+                          <a>
                             {' '}
                             <Image
                               cloudName={CLOUD_NAME}
@@ -115,11 +116,12 @@ class MembersTab extends React.Component {
                       <Column
                         title="Email"
                         key="email"
-                        render={member => <a href="javascript:;">{member.user.email}</a>}
+                        render={member => <a>{member.user.email}</a>}
                       />
                       <Column
                         title="Role"
                         key="role"
+                        align="center"
                         render={member => {
                           if (member.user.role === 'root_admin') {
                             return <Tag color="#faad14">Root admin</Tag>;
@@ -127,17 +129,14 @@ class MembersTab extends React.Component {
                           return (
                             <Mutation
                               mutation={UPDATE_MEMBER_ROLE_IN_PROJECT}
-                              onCompleted={data => {
-                                console.log(data);
-                              }}
                               onError={error => {
                                 // If you want to send error to external service?
-                                error.graphQLErrors.map(({ message }, i) => {
+                                error.graphQLErrors.map(({ message }) => {
                                   message.error(message, 3);
                                 });
                               }}
                             >
-                              {(updateMemberRoleInProject, { loading, data, error }) => (
+                              {updateMemberRoleInProject => (
                                 <If
                                   condition={isManagedByCurrentUser}
                                   then={

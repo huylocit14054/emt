@@ -59,11 +59,12 @@ class Utm < ApplicationRecord
   end
 
   # generate all utms with received values
-  def self.generate_utms(values:)
+  def self.generate_utms(values:, current_user_id:)
     id = values['rule_id']
-    project_member_id = values['project_member_id']
-    # get the rule
+    # get the rule string
     rule = Rule.find(id).rule_string
+    project_id = values['project_id']
+    project_member_id = ProjectMember.find_by(project_id: project_id, user_id: current_user_id).id
     url_strings = []
     # get attributes array and base on each attribute generate a utm recode
     attributes = values['attributes']
