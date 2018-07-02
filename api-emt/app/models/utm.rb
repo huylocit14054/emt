@@ -21,22 +21,6 @@ class Utm < ApplicationRecord
   # }
   # url?x=<<1>>-<2>&b=<<4>>&date=<<date>>
 
-  # generate all utms with received values
-  def self.generate_utms(values:)
-    id = values['rule_id']
-    project_member_id = values['project_member_id']
-    # get the rule
-    rule = Rule.find(id).rule_string
-    url_strings = []
-    # get attributes array and base on each attribute generate a utm recode
-    attributes = values['attributes']
-    attributes.each do |attribute|
-      url = generate_utm_record(values: attribute, rule: rule, project_member_id: project_member_id)
-      url_strings << url
-    end
-    url_strings
-  end
-
   # generate a utm record(return generated url)
   def self.generate_utm_record(values:, rule:, project_member_id:)
     url = values['url']
@@ -72,5 +56,21 @@ class Utm < ApplicationRecord
   # standardize url landing pageattributes
   def self.standardize_landing_page(url:, rule:)
     url.include?('?') ? url + '&' + rule : url + '?' + rule
+  end
+
+  # generate all utms with received values
+  def self.generate_utms(values:)
+    id = values['rule_id']
+    project_member_id = values['project_member_id']
+    # get the rule
+    rule = Rule.find(id).rule_string
+    url_strings = []
+    # get attributes array and base on each attribute generate a utm recode
+    attributes = values['attributes']
+    attributes.each do |attribute|
+      url = generate_utm_record(values: attribute, rule: rule, project_member_id: project_member_id)
+      url_strings << url
+    end
+    url_strings
   end
 end
