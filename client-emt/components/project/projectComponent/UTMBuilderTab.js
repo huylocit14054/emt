@@ -14,7 +14,9 @@ class UTMBuilderTab extends Component {
           query={GET_ASSIGNMENTS_OF_CURRENT_MEMBER_QUERY}
           variables={{ projectId: parseInt(projectId) }}
         >
-          {({ assignments }) => <UTMBuilder assignments={assignments} />}
+          {({ assignments, currentAppliedRule }) => (
+            <UTMBuilder assignments={assignments} currentAppliedRule={currentAppliedRule} />
+          )}
         </MyQuery>
       </React.Fragment>
     );

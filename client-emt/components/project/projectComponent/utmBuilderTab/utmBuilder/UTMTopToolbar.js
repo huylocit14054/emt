@@ -5,6 +5,7 @@ export const UTMTopToolbar = ({
   handleDuplicateRows,
   handleRemoveSelectedRows,
   handleGenerateUrls,
+  datasIsValid,
 }) => (
   <div>
     <Button type="primary" icon="plus" onClick={handleAddRow} style={{ marginRight: 5 }}>
@@ -27,7 +28,13 @@ export const UTMTopToolbar = ({
       </Button>
     </Popconfirm>
 
-    <Button type="primary" icon="link" onClick={handleGenerateUrls} style={{ float: 'right' }}>
+    <Button
+      disabled={!datasIsValid}
+      type="primary"
+      icon="link"
+      onClick={handleGenerateUrls}
+      style={{ float: 'right' }}
+    >
       Generate URL(s)
     </Button>
   </div>

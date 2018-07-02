@@ -176,6 +176,10 @@ query getRulesByProjectId($projectId: ID!){
 }
 
 query getAssignmentsOfCurrentMember($projectId: ID!){
+  currentAppliedRule: currentAppliedRuleOfProject(projectId: $projectId){
+    id
+    ruleStringToDisplay
+  }
   assignments: memberAssignmentsDetails(projectId: $projectId) {
     dimension {
       id
