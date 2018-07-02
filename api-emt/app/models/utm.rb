@@ -8,32 +8,35 @@ class Utm < ApplicationRecord
   # values: {
   #   "rule_id": 1,
   #   "project_member_id": 3,
-  #   "url": "https://google.com.vn",
-  #   "attributes":{
+  #   "attributes":[
+  #   {
+  #    "url": "https://google.com.vn",
   #    "1": "FB",
   #    "2": "Google",
   #    "3": "This is my link",
   #    "4": "",
-  #     "date": "23/1/2017"
-  #   }
+  #     "date": "230118"
+  #    },
+  #   ]
   # }
   # url?x=<<1>>-<2>&b=<<4>>&date=<<date>>
-  def self.generate_url(values:)
-    # get the rule
-    id = values['rule_id']
-    project_member_id = values['project_member_id']
+
+  # generate a utm record(return generated url)
+  def self.generate_utm_record(values:, rule:, project_member_id:)
     url = values['url']
     # delete the last character '/' if it exist
     url[url.rindex('/')] = '' if url.end_with?('/')
-    attributes = values['attributes']
-    rule = Rule.find(id).rule_string
+    # delete url values
+    values.delete('url')
+    attributes = values
     # subtitue values to rule
     rule = subtitute_values_to_rule(attributes: attributes, rule: rule)
     # add url link to the string
-    generated_url = url + '?' + rule
+    generated_url = standardize_landing_page(url: url, rule: rule)
     # remove unused dimension
     generated_url = remove_unused_dimension(rule: generated_url)
-    Utm.create(url: generated_url, project_member_id: project_member_id)
+    utm = Utm.create(url: generated_url, project_member_id: project_member_id)
+    utm.url
   end
 
   # subtitute the value to the code dimension
@@ -48,5 +51,26 @@ class Utm < ApplicationRecord
   # remove un-used dimension code
   def self.remove_unused_dimension(rule:)
     rule.gsub(REGEX_GET_DIMENSION_CODE, '')
+  end
+
+  # standardize url landing pageattributes
+  def self.standardize_landing_page(url:, rule:)
+    url.include?('?') ? url + '&' + rule : url + '?' + rule
+  end
+
+  # generate all utms with received values
+  def self.generate_utms(values:)
+    id = values['rule_id']
+    project_member_id = values['project_member_id']
+    # get the rule
+    rule = Rule.find(id).rule_string
+    url_strings = []
+    # get attributes array and base on each attribute generate a utm recode
+    attributes = values['attributes']
+    attributes.each do |attribute|
+      url = generate_utm_record(values: attribute, rule: rule, project_member_id: project_member_id)
+      url_strings << url
+    end
+    url_strings
   end
 end
