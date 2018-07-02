@@ -22,7 +22,6 @@ class Utm < ApplicationRecord
   # url?x=<<1>>-<2>&b=<<4>>&date=<<date>>
 
   # generate all utms with received values
-  # return all ulr strings
   def self.generate_utms(values:)
     id = values['rule_id']
     project_member_id = values['project_member_id']
