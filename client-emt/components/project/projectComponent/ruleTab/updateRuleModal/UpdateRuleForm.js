@@ -31,7 +31,15 @@ const UpdateRuleForm = class extends React.Component {
   };
 
   render() {
-    const { visible, onCancel, onUpdate, confirmLoading, projectId, ruleId } = this.props;
+    const {
+      visible,
+      onCancel,
+      onUpdate,
+      confirmLoading,
+      projectId,
+      ruleId,
+      prevRuleString,
+    } = this.props;
     const { value } = this.state;
     return (
       <MyQuery query={GET_DIMENSION_SUGGESTIONS_BY_PROJECT_ID} variables={{ projectId }}>
@@ -41,7 +49,10 @@ const UpdateRuleForm = class extends React.Component {
             confirmLoading={confirmLoading}
             visible={visible}
             okText="update"
-            onCancel={onCancel}
+            onCancel={() => {
+              this.setState({ value: prevRuleString });
+              onCancel();
+            }}
             cancelText="cancel"
             onOk={() => onUpdate(projectDimensions, value)}
           >

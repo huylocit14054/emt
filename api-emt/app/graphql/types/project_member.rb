@@ -12,6 +12,7 @@ class Types::ProjectMember < Types::BaseObject
   field :user, Types::User, null: false
   field :authorizations, [Types::Authorization], null: false
   field :authorized_dimensions, [ID], null: false
+  field :utms, [Types::Utm], null: false
 
   def authorized_dimensions
     object.dimensions.ids

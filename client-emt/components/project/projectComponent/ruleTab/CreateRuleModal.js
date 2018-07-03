@@ -30,7 +30,6 @@ class CreateRuleModal extends React.Component {
       rule_string = _.replace(rule_string, new RegExp(dimension.name, 'g'), dimension.id);
     });
 
-    console.log(rule_string);
     createRule({
       variables: {
         input: {

@@ -1,4 +1,5 @@
-import { Button, message, Icon, List, Card } from 'antd';
+import { message, Icon, List, Card } from 'antd';
+import React from 'react';
 import { Mutation } from 'react-apollo';
 import Router from 'next/router';
 import { createProject as CREATE_PROJECT_MUTATION } from '../../../graphql/mutations.gql';
@@ -14,14 +15,17 @@ class CreateProjectModal extends React.Component {
   state = {
     visible: false,
   };
+
   showModal = () => {
     this.setState({ visible: true });
   };
+
   handleCancel = () => {
     this.setState({ visible: false });
   };
+
   handleCreate = createProject => {
-    const form = this.formRef.props.form;
+    const { form } = this.formRef.props;
     form.validateFields((err, values) => {
       if (err) {
         return;
@@ -38,7 +42,7 @@ class CreateProjectModal extends React.Component {
             data: {
               createProject: { createdProject },
             },
-          },
+          }
         ) => {
           const data = store.readQuery({
             query: GET_PROJECTS_OF_CURRENT_USER_QUERY,
@@ -51,15 +55,17 @@ class CreateProjectModal extends React.Component {
           });
           Router.push(
             `/projectMembers?id=${createdProject.id}`,
-            `/project/${createdProject.id}/members`,
+            `/project/${createdProject.id}/members`
           );
         },
       });
     });
   };
+
   saveFormRef = formRef => {
     this.formRef = formRef;
   };
+
   render() {
     return (
       <React.Fragment>
@@ -89,19 +95,19 @@ class CreateProjectModal extends React.Component {
           mutation={CREATE_PROJECT_MUTATION}
           onCompleted={data => {
             console.log(data);
-            const form = this.formRef.props.form;
+            const { form } = this.formRef.props;
             // this.setState({ visible: false });
             message.success('Project Created');
             form.resetFields();
           }}
           onError={error => {
             // If you want to send error to external service?
-            error.graphQLErrors.map(({ message }, i) => {
-              message.error(message, 3);
+            error.graphQLErrors.map(error => {
+              message.error(error.message, 3);
             });
           }}
         >
-          {(createProject, { loading, data, error }) => (
+          {(createProject, { loading }) => (
             <CreateProjectForm
               wrappedComponentRef={this.saveFormRef}
               confirmLoading={loading}

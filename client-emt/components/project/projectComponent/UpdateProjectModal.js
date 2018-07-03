@@ -1,6 +1,6 @@
-import { Button, message, Icon, List, Card } from 'antd';
+import { message, Icon } from 'antd';
+import React from 'react';
 import { Mutation } from 'react-apollo';
-import Router from 'next/router';
 import { updateProject as UPDATE_PROJECT_MUTATION } from '../../../graphql/mutations.gql';
 import UpdateProjectForm from './updateProjectModal/UpdateProjectForm';
 
@@ -8,14 +8,19 @@ class UpdateProjectModal extends React.Component {
   state = {
     visible: false,
   };
+
   showModal = () => {
     this.setState({ visible: true });
   };
+
   handleCancel = () => {
+    const { form } = this.formRef.props;
+    form.resetFields();
     this.setState({ visible: false });
   };
+
   handleUpdate = updateProject => {
-    const form = this.formRef.props.form;
+    const { form } = this.formRef.props;
     form.validateFields((err, values) => {
       if (err) {
         return;
@@ -30,9 +35,11 @@ class UpdateProjectModal extends React.Component {
       });
     });
   };
+
   saveFormRef = formRef => {
     this.formRef = formRef;
   };
+
   render() {
     return (
       <React.Fragment>
@@ -41,19 +48,19 @@ class UpdateProjectModal extends React.Component {
           mutation={UPDATE_PROJECT_MUTATION}
           onCompleted={data => {
             console.log(data);
-            const form = this.formRef.props.form;
+            const { form } = this.formRef.props;
             this.setState({ visible: false });
             message.success('Project Updated');
             form.resetFields();
           }}
           onError={error => {
             // If you want to send error to external service?
-            error.graphQLErrors.map(({ message }, i) => {
-              message.error(message, 3);
+            error.graphQLErrors.map(error => {
+              message.error(error.message, 3);
             });
           }}
         >
-          {(updateProject, { loading, data, error }) => (
+          {(updateProject, { loading }) => (
             <UpdateProjectForm
               wrappedComponentRef={this.saveFormRef}
               confirmLoading={loading}

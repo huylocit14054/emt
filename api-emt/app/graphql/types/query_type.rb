@@ -182,11 +182,19 @@ class Types::QueryType < Types::BaseObject
 
   # return dimension list of a project
   field :member_utm_history, [Types::Utm], null: false do
-    argument :project_member_id, ID, required: true
+    argument :project_id, ID, required: true
   end
 
-  def member_utm_history(project_member_id:)
-    project_member = ::ProjectMember.find(project_member_id)
+  def member_utm_history(project_id:)
+    project_member = ::ProjectMember.find_by(project_id: project_id, user: context[:current_user])
     project_member.utms.order(created_at: :desc)
+  end
+
+  field :utm_analysis, [Types::Utm], null: false do 
+    argument :project_id, ID, required: true
+  end
+
+  def utm_analysis(project_id:)
+    ::Project.find(project_id).utms.order_by(created_at: :desc)
   end
 end

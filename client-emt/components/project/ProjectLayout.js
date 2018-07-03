@@ -7,6 +7,7 @@ import MembersTab from './projectComponent/MembersTab';
 import DimensionsTab from './projectComponent/DimensionsTab';
 import UTMBuilderTab from './projectComponent/UTMBuilderTab';
 import UTMHistoryTab from './projectComponent/UTMHistoryTab';
+import UTMAnalysisTab from './projectComponent/UTMAnalysisTab';
 import { getProjectById as GET_PROJECT_BY_ID } from '../../graphql/queries.gql';
 import UpdateProjectModal from './projectComponent/UpdateProjectModal';
 import AssignmentsTab from './projectComponent/AssignmentsTab';
@@ -22,6 +23,7 @@ class ProjectLayout extends React.Component {
     Router.prefetch(`/projectRules?id=${projectId}`);
     Router.prefetch(`/projectUTMBuilder?id=${projectId}`);
     Router.prefetch(`/projectUTMHistory?id=${projectId}`);
+    Router.prefetch(`/projectUTMAnalysis?id=${projectId}`);
   }
 
   callback = key => {
@@ -33,6 +35,9 @@ class ProjectLayout extends React.Component {
         break;
       case 'utm_history':
         site = 'UTMHistory';
+        break;
+      case 'utm_analysis':
+        site = 'UTMAnalysis';
         break;
       default:
         site = _.capitalize(key);
@@ -71,6 +76,11 @@ class ProjectLayout extends React.Component {
                 <TabPane tab="UTM History" key="utm_history">
                   <UTMHistoryTab />
                 </TabPane>
+                {project.isManagedByCurrentUser && (
+                  <TabPane tab="UTM Analysis" key="utm_analysis">
+                    <UTMAnalysisTab />
+                  </TabPane>
+                )}
                 <TabPane tab="Members" key="members">
                   <MembersTab />
                 </TabPane>

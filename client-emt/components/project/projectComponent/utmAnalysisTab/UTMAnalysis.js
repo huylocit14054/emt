@@ -5,11 +5,16 @@ if (typeof window === 'undefined') {
   module.exports = loading;
 } else {
   const ReactDataGrid = require('react-data-grid');
+
+  const { CLOUD_URL } = require('../../../../constants');
   const { message, Button, Alert } = require('antd');
   const {
     Data: { Selectors },
+    Draggable: { Container: DraggableContainer },
+    Formatters: { ImageFormatter },
   } = require('react-data-grid-addons');
-  const { UTMAnalysisStyle } = require('../utmAnalysisTab/UTMAnalysisStyle');
+  const CustomToolbar = require('./utmAnalysis/CustomToolbar');
+  const { UTMAnalysisStyle } = require('./UTMAnalysisStyle');
   const moment = require('moment');
 
   const copyToClipboard = str => {
@@ -34,26 +39,44 @@ if (typeof window === 'undefined') {
     }
     message.success('Link copied');
   };
-  class UTMHistory extends React.Component {
+  class UTMAnalysis extends React.Component {
     constructor(props, context) {
       super(props, context);
       this._columns = [
         {
+          key: 'avatar',
+          name: 'Avatar',
+          formatter: ImageFormatter,
+          width: 60,
+          draggable: true,
+          resizable: true,
+        },
+        {
+          key: 'username',
+          name: 'Username',
+          filterable: true,
+          draggable: true,
+          resizable: true,
+        },
+        {
           key: 'url',
           name: 'URL',
           filterable: true,
+          draggable: true,
           resizable: true,
         },
         {
           key: 'date',
           name: 'Date',
           filterable: true,
+          draggable: true,
           resizable: true,
         },
         {
           key: 'createdAt',
           name: 'Created at',
           filterable: true,
+          draggable: true,
           resizable: true,
         },
         {
@@ -64,12 +87,17 @@ if (typeof window === 'undefined') {
         },
       ];
 
-      this.state = { rows: this.createRows(props.currentMemberUtmHistory), filters: {} };
+      this.state = {
+        rows: this.createRows(props.utmAnalysis),
+        filters: {},
+        groupBy: [],
+        expandedRows: {},
+      };
     }
 
     componentDidMount() {
       if (this.state.rows.length > 0) {
-        this.gridHistory.onToggleFilter();
+        this.gridAnalysis.onToggleFilter();
       }
     }
 
@@ -78,20 +106,47 @@ if (typeof window === 'undefined') {
       this.setState({ filters: {} });
     };
 
-    getRows = () => Selectors.getRows(this.state);
+    onColumnGroupAdded = colName => {
+      const columnGroups = this.state.groupBy.slice(0);
+      const activeColumn = this._columns.find(c => c.key === colName);
+      const isNotInGroups = columnGroups.find(c => activeColumn.key === c.name) == null;
+      if (isNotInGroups) {
+        columnGroups.push({ key: activeColumn.key, name: activeColumn.name });
+      }
+
+      this.setState({ groupBy: columnGroups });
+    };
+
+    onColumnGroupDeleted = name => {
+      const columnGroups = this.state.groupBy.filter(
+        g => (typeof g === 'string' ? g !== name : g.key !== name)
+      );
+      this.setState({ groupBy: columnGroups });
+    };
+
+    onRowExpandToggle = ({ columnGroupName, name, shouldExpand }) => {
+      const expandedRows = Object.assign({}, this.state.expandedRows);
+      expandedRows[columnGroupName] = Object.assign({}, expandedRows[columnGroupName]);
+      expandedRows[columnGroupName][name] = { isExpanded: shouldExpand };
+      this.setState({ expandedRows });
+    };
+
+    getSize = () => this.getRows().length;
 
     getRandomDate = (start, end) =>
       new Date(
         start.getTime() + Math.random() * (end.getTime() - start.getTime())
       ).toLocaleDateString();
 
-    getSize = () => this.getRows().length;
+    getRows = () => Selectors.getRows(this.state);
 
-    createRows = utmHistory => {
-      const rows = utmHistory.map(utm => ({
+    createRows = utmAnalysis => {
+      const rows = utmAnalysis.map(utm => ({
         ...utm,
+        avatar: `${CLOUD_URL}${utm.projectMember.user.avatar}`,
         date: moment(utm.createdAt).format('DD/MM/YY'),
         createdAt: moment(utm.createdAt).fromNow(),
+        username: utm.projectMember.user.username,
         action: (
           <Button icon="copy" type="dashed" onClick={() => copyToClipboard(utm.url)}>
             Copy URL{' '}
@@ -124,19 +179,30 @@ if (typeof window === 'undefined') {
         return (
           <div>
             <UTMAnalysisStyle />
-            <ReactDataGrid
-              ref={grid => {
-                this.gridHistory = grid;
-              }}
-              columns={this._columns}
-              rowGetter={this.rowGetter}
-              enableCellSelect
-              rowsCount={this.getSize()}
-              minHeight={600}
-              rowHeight={55}
-              onAddFilter={this.handleFilterChange}
-              onClearFilters={this.onClearFilters}
-            />
+            <DraggableContainer>
+              <ReactDataGrid
+                ref={grid => {
+                  this.gridAnalysis = grid;
+                }}
+                columns={this._columns}
+                rowGetter={this.rowGetter}
+                enableCellSelect
+                rowsCount={this.getSize()}
+                minHeight={600}
+                rowHeight={55}
+                onRowExpandToggle={this.onRowExpandToggle}
+                enableDragAndDrop
+                toolbar={
+                  <CustomToolbar
+                    groupBy={this.state.groupBy}
+                    onColumnGroupAdded={this.onColumnGroupAdded}
+                    onColumnGroupDeleted={this.onColumnGroupDeleted}
+                  />
+                }
+                onAddFilter={this.handleFilterChange}
+                onClearFilters={this.onClearFilters}
+              />
+            </DraggableContainer>
           </div>
         );
       return (
@@ -147,5 +213,5 @@ if (typeof window === 'undefined') {
     }
   }
 
-  module.exports = UTMHistory;
+  module.exports = UTMAnalysis;
 }
