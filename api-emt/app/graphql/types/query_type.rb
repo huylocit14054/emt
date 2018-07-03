@@ -179,4 +179,14 @@ class Types::QueryType < Types::BaseObject
     member = ::ProjectMember.find_by(user: context[:current_user], project_id: project_id)
     member.authorizations
   end
+
+  # return dimension list of a project
+  field :member_utm_history, [Types::Utm], null: false do
+    argument :project_member_id, ID, required: true
+  end
+
+  def member_utm_history(project_member_id:)
+    project_member = ::ProjectMember.find(project_member_id)
+    project_member.utms.order(created_at: :desc)
+  end
 end
