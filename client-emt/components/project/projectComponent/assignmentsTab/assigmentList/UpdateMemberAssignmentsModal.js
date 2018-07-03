@@ -2,7 +2,10 @@ import { message } from 'antd';
 import React from 'react';
 import { Mutation } from 'react-apollo';
 import _ from 'lodash';
-import { getAssignmentsByProjectId as GET_ASSIGNMENTS_BY_PROJECT_ID } from '../../../../../graphql/queries.gql';
+import {
+  getAssignmentsByProjectId as GET_ASSIGNMENTS_BY_PROJECT_ID,
+  getAssignmentsByMemberId as GET_ASSIGNMENTS_BY_MEMBER_ID_QUERY,
+} from '../../../../../graphql/queries.gql';
 import { updateMemberAssignments as UPDATE_MEMBER_ASSIGNMENTS_MUTATION } from '../../../../../graphql/mutations.gql';
 import UpdateMemberAssignmentsForm from './updateMemberAssignmentsModal/UpdateMemberAssignmentsForm';
 
@@ -16,6 +19,8 @@ class UpdateMemberAssignmentsModal extends React.Component {
   };
 
   handleCancel = () => {
+    const { form } = this.formRef.props;
+    form.resetFields();
     this.setState({ visible: false });
   };
 
@@ -58,6 +63,14 @@ class UpdateMemberAssignmentsModal extends React.Component {
             data,
           });
         },
+        refetchQueries: [
+          {
+            query: GET_ASSIGNMENTS_BY_MEMBER_ID_QUERY,
+            variables: {
+              memberId: parseInt(this.props.memberId),
+            },
+          },
+        ],
       });
     });
   };
@@ -75,7 +88,6 @@ class UpdateMemberAssignmentsModal extends React.Component {
           mutation={UPDATE_MEMBER_ASSIGNMENTS_MUTATION}
           onCompleted={data => {
             console.log(data);
-
             this.setState({ visible: false });
             message.success('Dimensions Updated');
           }}
