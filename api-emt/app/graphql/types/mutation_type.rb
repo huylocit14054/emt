@@ -19,4 +19,5 @@ class Types::MutationType < Types::BaseObject
   field :activate_rule, mutation: Mutations::ActivateRule
   field :delete_rule, mutation: Mutations::DeleteRule
   field :generate_utms, mutation: Mutations::GenerateUtms
+  field :change_member_access_right, mutation: Mutations::ChangeMemberAccessRight
 end
