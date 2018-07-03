@@ -189,11 +189,9 @@ class Types::QueryType < Types::BaseObject
     project_member = ::ProjectMember.find_by(project_id: project_id, user: context[:current_user])
     project_member.utms.order(created_at: :desc)
   end
-
-  field :utm_analysis, [Types::Utm], null: false do 
+  field :utm_analysis, [Types::Utm], null: false do
     argument :project_id, ID, required: true
   end
-
   def utm_analysis(project_id:)
     ::Project.find(project_id).utms.order_by(created_at: :desc)
   end
