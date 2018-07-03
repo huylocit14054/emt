@@ -16,8 +16,6 @@ class UpdateMemberAssignmentsModal extends React.Component {
   };
 
   handleCancel = () => {
-    const { form } = this.formRef.props;
-    form.resetFields();
     this.setState({ visible: false });
   };
 
@@ -78,7 +76,7 @@ class UpdateMemberAssignmentsModal extends React.Component {
           onCompleted={data => {
             console.log(data);
 
-            // this.setState({ visible: false });
+            this.setState({ visible: false });
             message.success('Dimensions Updated');
           }}
           onError={error => {

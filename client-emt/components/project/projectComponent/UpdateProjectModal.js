@@ -48,10 +48,8 @@ class UpdateProjectModal extends React.Component {
           mutation={UPDATE_PROJECT_MUTATION}
           onCompleted={data => {
             console.log(data);
-            const { form } = this.formRef.props;
             this.setState({ visible: false });
             message.success('Project Updated');
-            form.resetFields();
           }}
           onError={error => {
             // If you want to send error to external service?
