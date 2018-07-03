@@ -1,5 +1,4 @@
 class Dimension < ApplicationRecord
-
   # rubocop:disable Rails/HasManyOrHasOneDependent
   belongs_to :project
   has_many :options, dependent: :destroy
@@ -11,8 +10,8 @@ class Dimension < ApplicationRecord
 
   before_update :check_category_change
 
-  CATEGORY_INPUT = 'input'.freeze
-  CATEGORY_SELECTION = 'selection'.freeze
+  CATEGORY_INPUT = 'input'
+  CATEGORY_SELECTION = 'selection'
 
   private
 

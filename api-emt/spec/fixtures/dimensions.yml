@@ -1,0 +1,14 @@
+utm_source_one:
+  name: utm source one
+  category: selection
+  project: project_one
+
+utm_source_two:
+  name: utm source two
+  category: selection
+  project: project_one
+
+utm_source_three:
+  name: utm source three
+  category: input
+  project: project_one
