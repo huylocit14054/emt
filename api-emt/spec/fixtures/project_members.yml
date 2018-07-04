@@ -1,0 +1,11 @@
+member_project_one_1:
+  user: loc
+  project: project_one
+
+member_project_one_2:
+  user: nhat
+  project: project_one
+
+member_project_one_3:
+  user: phat
+  project: project_one
