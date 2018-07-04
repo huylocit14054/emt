@@ -5,7 +5,9 @@ import { Query } from 'react-apollo';
 import _ from 'lodash';
 import MembersTab from './projectComponent/MembersTab';
 import DimensionsTab from './projectComponent/DimensionsTab';
-import UTMBuildersTab from './projectComponent/UTMBuilderTab';
+import UTMBuilderTab from './projectComponent/UTMBuilderTab';
+import UTMHistoryTab from './projectComponent/UTMHistoryTab';
+import UTMAnalysisTab from './projectComponent/UTMAnalysisTab';
 import { getProjectById as GET_PROJECT_BY_ID } from '../../graphql/queries.gql';
 import UpdateProjectModal from './projectComponent/UpdateProjectModal';
 import AssignmentsTab from './projectComponent/AssignmentsTab';
@@ -19,12 +21,29 @@ class ProjectLayout extends React.Component {
     Router.prefetch(`/projectAssignments?id=${projectId}`);
     Router.prefetch(`/projectMembers?id=${projectId}`);
     Router.prefetch(`/projectRules?id=${projectId}`);
-    Router.prefetch(`/projectBuilders?id=${projectId}`);
+    Router.prefetch(`/projectUTMBuilder?id=${projectId}`);
+    Router.prefetch(`/projectUTMHistory?id=${projectId}`);
+    Router.prefetch(`/projectUTMAnalysis?id=${projectId}`);
   }
 
   callback = key => {
     const projectId = this.props.router.query.id;
-    const site = key === 'utm_builder' ? 'UTMBuilder' : _.capitalize(key);
+    let site = '';
+    switch (key) {
+      case 'utm_builder':
+        site = 'UTMBuilder';
+        break;
+      case 'utm_history':
+        site = 'UTMHistory';
+        break;
+      case 'utm_analysis':
+        site = 'UTMAnalysis';
+        break;
+      default:
+        site = _.capitalize(key);
+        break;
+    }
+
     Router.push(`/project${site}?id=${projectId}`, `/project/${projectId}/${key}`);
   };
 
@@ -52,8 +71,16 @@ class ProjectLayout extends React.Component {
               </div>
               <Tabs activeKey={activeKey} onChange={this.callback} animated={false}>
                 <TabPane tab="UTM Builder" key="utm_builder">
-                  <UTMBuildersTab />
+                  <UTMBuilderTab />
                 </TabPane>
+                <TabPane tab="UTM History" key="utm_history">
+                  <UTMHistoryTab />
+                </TabPane>
+                {project.isManagedByCurrentUser && (
+                  <TabPane tab="UTM Analysis" key="utm_analysis">
+                    <UTMAnalysisTab />
+                  </TabPane>
+                )}
                 <TabPane tab="Members" key="members">
                   <MembersTab />
                 </TabPane>

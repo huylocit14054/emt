@@ -1,28 +1,28 @@
-import { Form, Input, Modal, Rate } from 'antd';
+import { Form, Input, Modal } from 'antd';
+import React from 'react';
 
 const { TextArea } = Input;
 const FormItem = Form.Item;
 
-const CreateProjectForm = Form.create()(class extends React.Component {
-  render() {
-    const {
-      visible, onCancel, onCreate, form, confirmLoading,
-    } = this.props;
+const CreateProjectForm = Form.create()(
+  class extends React.Component {
+    render() {
+      const { visible, onCancel, onCreate, form, confirmLoading } = this.props;
 
-    const { getFieldDecorator } = form;
+      const { getFieldDecorator } = form;
 
-    return (
-      <Modal
-        confirmLoading={confirmLoading}
-        visible={visible}
-        okText="create"
-        onCancel={onCancel}
-        cancelText="cancel"
-        onOk={onCreate}
-      >
-        <Form layout="vertical" onSubmit={onCreate}>
-          <FormItem label="name">
-            {getFieldDecorator('name', {
+      return (
+        <Modal
+          confirmLoading={confirmLoading}
+          visible={visible}
+          okText="create"
+          onCancel={onCancel}
+          cancelText="cancel"
+          onOk={onCreate}
+        >
+          <Form layout="vertical" onSubmit={onCreate}>
+            <FormItem label="name">
+              {getFieldDecorator('name', {
                 rules: [
                   {
                     required: true,
@@ -30,9 +30,9 @@ const CreateProjectForm = Form.create()(class extends React.Component {
                   },
                 ],
               })(<Input />)}
-          </FormItem>
-          <FormItem label="description">
-            {getFieldDecorator('description', {
+            </FormItem>
+            <FormItem label="description">
+              {getFieldDecorator('description', {
                 rules: [
                   {
                     required: true,
@@ -40,11 +40,12 @@ const CreateProjectForm = Form.create()(class extends React.Component {
                   },
                 ],
               })(<TextArea rows={4} />)}
-          </FormItem>
-        </Form>
-      </Modal>
-    );
+            </FormItem>
+          </Form>
+        </Modal>
+      );
+    }
   }
-});
+);
 
 export default CreateProjectForm;

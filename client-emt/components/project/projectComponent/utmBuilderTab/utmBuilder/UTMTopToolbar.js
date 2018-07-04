@@ -8,7 +8,7 @@ export const UTMTopToolbar = ({
   datasIsValid,
   isGenerating,
 }) => (
-  <div>
+  <div style={{ marginBottom: 20 }}>
     <Button type="primary" icon="plus" onClick={handleAddRow} style={{ marginRight: 5 }}>
       Add Row
     </Button>

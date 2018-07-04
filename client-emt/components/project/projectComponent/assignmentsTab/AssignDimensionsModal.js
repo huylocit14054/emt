@@ -1,4 +1,5 @@
-import { Button, message, Icon } from 'antd';
+import { Button, message } from 'antd';
+import React from 'react';
 import { Mutation } from 'react-apollo';
 import { assignDimensionsForMembers as ASSIGN_DIMENSIONS_FOR_MEMBERS_MUTATION } from '../../../../graphql/mutations.gql';
 import { getAssignmentsByProjectId as GET_ASSIGNMENTS_BY_PROJECT_ID_QUERY } from '../../../../graphql/queries.gql';
@@ -8,14 +9,17 @@ class AssignDimensionsModal extends React.Component {
   state = {
     visible: false,
   };
+
   showModal = () => {
     this.setState({ visible: true });
   };
+
   handleCancel = () => {
     this.setState({ visible: false });
   };
+
   handleCreate = assignDimensions => {
-    const form = this.formRef.props.form;
+    const { form } = this.formRef.props;
     form.validateFields((err, values) => {
       if (err) {
         return;
@@ -36,13 +40,14 @@ class AssignDimensionsModal extends React.Component {
             },
           },
         ],
-        
       });
     });
   };
+
   saveFormRef = formRef => {
     this.formRef = formRef;
   };
+
   render() {
     return (
       <React.Fragment>
@@ -62,12 +67,12 @@ class AssignDimensionsModal extends React.Component {
           }}
           onError={error => {
             // If you want to send error to external service?
-            error.graphQLErrors.map(({ message }, i) => {
-              message.error(message, 3);
+            error.graphQLErrors.map(error => {
+              message.error(error.message, 3);
             });
           }}
         >
-          {(assignDimensions, { loading, data, error }) => (
+          {(assignDimensions, { loading }) => (
             <AssignDimensionsForm
               wrappedComponentRef={this.saveFormRef}
               confirmLoading={loading}

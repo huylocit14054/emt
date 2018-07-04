@@ -195,4 +195,26 @@ query getAssignmentsOfCurrentMember($projectId: ID!){
   }
 }
 
+query currentMemberUtmHistory($projectId: ID!){
+  currentMemberUtmHistory: memberUtmHistory(projectId: $projectId){
+    id
+    url
+    createdAt
+  }
+}
 
+query utmAnalysis($projectId: ID!){
+  utmAnalysis(projectId: $projectId) {
+    id
+    url 
+    createdAt
+    projectMember {
+      id
+      user {
+        username
+        id
+        avatar
+      }
+    }
+  }
+}

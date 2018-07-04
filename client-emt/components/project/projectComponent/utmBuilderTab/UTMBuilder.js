@@ -1,7 +1,7 @@
 const React = require('react');
 
 if (typeof window === 'undefined') {
-  const loading = () => <div>loading...</div>;
+  const loading = () => <div>Loading...</div>;
   module.exports = loading;
 } else {
   const { Mutation } = require('react-apollo');
@@ -63,6 +63,7 @@ if (typeof window === 'undefined') {
         {
           key: 'url',
           name: 'Landing Page URL',
+          width: 150,
           resizable: true,
           editable: true,
         }
@@ -156,6 +157,10 @@ if (typeof window === 'undefined') {
           assignment => assignment.dimension.category === 'selection'
         );
 
+        const inputAssignments = this.props.assignments.filter(
+          assignment => assignment.dimension.category === 'input'
+        );
+
         this.state.rows.forEach(row => {
           // Check the validation of url regex
           if (_.has(row, 'url') && row.url !== '') {
@@ -181,6 +186,20 @@ if (typeof window === 'undefined') {
                 `Value "${selectiveValueInRow}" of selective dimension ${dimension.name} at index ${
                   row.id
                 } is not found`
+              );
+              tableIsValid = false;
+            }
+          });
+
+          inputAssignments.forEach(assignment => {
+            const { dimension } = assignment;
+            const inputValueInRow = row[dimension.id];
+
+            if (/[^ -~]+/.test(inputValueInRow)) {
+              errors.push(
+                `Found "${inputValueInRow}" at input dimension ${dimension.name} at index ${
+                  row.id
+                } containing unicode characters (unicode characters are not supported)`
               );
               tableIsValid = false;
             }
@@ -239,7 +258,16 @@ if (typeof window === 'undefined') {
       const rows = _.clone(this.state.rows);
 
       const finalRows = rows.map(row => {
+        // Remove id key inside each row
         const rowModified = _.omit(row, 'id');
+
+        // Remove all spaces inside input fields
+        Object.keys(row).map(key => {
+          console.log(rowModified[key]);
+          if (/\s/.test(rowModified[key])) {
+            rowModified[key] = rowModified[key].replace(/\s/g, '+');
+          }
+        });
         return rowModified;
       });
 
@@ -269,7 +297,7 @@ if (typeof window === 'undefined') {
             <div>
               <Alert
                 style={{ marginBottom: 20 }}
-                message={<b>Current Applied Rule</b>}
+                message="Current Applied Rule"
                 description={
                   <Highlighter
                     highlightClassName="highlight-dimension"
