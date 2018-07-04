@@ -1,7 +1,8 @@
+import React from 'react';
 import ProjectLayout from '../components/project/ProjectLayout';
 import redirect from '../lib/redirect';
 import checkLoggedIn from '../lib/checkLoggedIn';
-import stylesheet from "styles/projectDimensions.less";
+import stylesheet from '../styles/projectDimensions.less';
 
 export default class ProjectDimensions extends React.Component {
   static async getInitialProps(context) {

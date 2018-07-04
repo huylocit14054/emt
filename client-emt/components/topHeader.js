@@ -1,8 +1,9 @@
-import { Layout, Menu, Icon, Dropdown, Avatar, List } from 'antd';
+import { Layout, Menu, Icon, Dropdown, List } from 'antd';
+import React from 'react';
 import { withApollo, Query } from 'react-apollo';
 import Link from 'next/link';
 import { Image } from 'cloudinary-react';
-import stylesheet from 'styles/topHeader.less';
+import stylesheet from '../styles/topHeader.less';
 import ChangeAvatarModal from './topHeader/ChangeAvatarModal';
 import { CLOUD_NAME } from '../constants';
 import { getCurrentUser as GET_CURRENT_USER_QUERY } from '../graphql/queries.gql';
@@ -13,12 +14,12 @@ function getCookie(cname) {
   const name = `${cname}=`;
   const decodedCookie = decodeURIComponent(document.cookie);
   const ca = decodedCookie.split(';');
-  for (let i = 0; i < ca.length; i++) {
+  for (let i = 0; i < ca.length; i += 1) {
     let c = ca[i];
-    while (c.charAt(0) == ' ') {
+    while (c.charAt(0) === ' ') {
       c = c.substring(1);
     }
-    if (c.indexOf(name) == 0) {
+    if (c.indexOf(name) === 0) {
       return c.substring(name.length, c.length);
     }
   }
@@ -52,7 +53,6 @@ class TopHeader extends React.Component {
                       crop="scale"
                       style={{
                         borderRadius: '50%',
-                        border: '1px solid #00b5d0',
                         border: '1px solid #00b5d0',
                       }}
                     />

@@ -32,18 +32,18 @@ export const URLsList = ({ urls }) => (
         className="demo-loadmore-list"
         itemLayout="horizontal"
         dataSource={urls}
-        renderItem={(url, index) => (
+        renderItem={(urlObj, index) => (
           <List.Item
             actions={[
               <Tooltip placement="top" title="Copy Link">
-                <Button shape="circle" icon="copy" onClick={() => copyToClipboard(url)} />
+                <Button shape="circle" icon="copy" onClick={() => copyToClipboard(urlObj.url)} />
               </Tooltip>,
             ]}
           >
             <List.Item.Meta
               title={
                 <React.Fragment>
-                  {index + 1}. <span style={{ color: '#00b5d0' }}>{url}</span>
+                  {index + 1}. <span style={{ color: '#00b5d0' }}>{urlObj.url}</span>
                 </React.Fragment>
               }
             />

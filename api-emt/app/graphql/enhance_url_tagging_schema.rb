@@ -1,9 +1,9 @@
 class EnhanceUrlTaggingSchema < GraphQL::Schema
   use GraphQL::Guard.new(
     policy_object: GraphqlPolicy,
-    not_authorized: -> (type, field) {
+    not_authorized: lambda { |type, _field|
       GraphQL::ExecutionError.new("You are not authorized to access this #{type}")
-    },
+    }
   )
 
   mutation(Types::MutationType)

@@ -36,7 +36,7 @@ class Utm < ApplicationRecord
     # remove unused dimension
     generated_url = remove_unused_dimension(rule: generated_url)
     utm = Utm.create(url: generated_url, project_member_id: project_member_id)
-    utm.url
+    utm
   end
 
   # subtitute the value to the code dimension
@@ -69,8 +69,8 @@ class Utm < ApplicationRecord
     # get attributes array and base on each attribute generate a utm recode
     attributes = values['attributes']
     attributes.each do |attribute|
-      url = generate_utm_record(values: attribute, rule: rule, project_member_id: project_member_id)
-      url_strings << url
+      utm = generate_utm_record(values: attribute, rule: rule, project_member_id: project_member_id)
+      url_strings << utm
     end
     url_strings
   end
