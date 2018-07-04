@@ -1,12 +1,18 @@
 import React from 'react';
 import { withRouter } from 'next/router';
-import { Table, Radio, Tag, notification } from 'antd';
+import { Table, Radio, Tag, notification, Button, Popconfirm, message } from 'antd';
 import { Query, Mutation, ApolloConsumer } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Image } from 'cloudinary-react';
 import { CLOUD_NAME } from '../../../constants';
-import { getMembersByProjectId as GET_MEMBERS_BY_PROJECTS_ID } from '../../../graphql/queries.gql';
-import { updateMemberRoleInProject as UPDATE_MEMBER_ROLE_IN_PROJECT } from '../../../graphql/mutations.gql';
+import {
+  getMembersByProjectId as GET_MEMBERS_BY_PROJECTS_ID,
+  getCurrentUser as GET_CURRENT_USER_QUERY,
+} from '../../../graphql/queries.gql';
+import {
+  updateMemberRoleInProject as UPDATE_MEMBER_ROLE_IN_PROJECT,
+  changeMemberAccessRight as CHANGE_MEMBER_ACCESS_RIGHT_MUTATION,
+} from '../../../graphql/mutations.gql';
 import If from '../../../utils/If';
 import AddMemberForm from './membersTab/AddMemberForm';
 
@@ -74,6 +80,10 @@ class MembersTab extends React.Component {
                     }
                   `,
                 });
+                const { currentUser } = client.readQuery({
+                  query: GET_CURRENT_USER_QUERY,
+                });
+
                 const { isManagedByCurrentUser } = project;
 
                 return (
@@ -89,6 +99,9 @@ class MembersTab extends React.Component {
                       pagination={{ pageSize: 7 }}
                       loading={loading}
                       dataSource={data.projectMembers}
+                      rowClassName={member => {
+                        if (member.status === 'restricted') return 'restricted-member';
+                      }}
                       rowKey="id"
                     >
                       <Column
@@ -131,14 +144,16 @@ class MembersTab extends React.Component {
                               mutation={UPDATE_MEMBER_ROLE_IN_PROJECT}
                               onError={error => {
                                 // If you want to send error to external service?
-                                error.graphQLErrors.map(({ message }) => {
-                                  message.error(message, 3);
+                                error.graphQLErrors.map(error => {
+                                  message.error(error.message, 3);
                                 });
                               }}
                             >
                               {updateMemberRoleInProject => (
                                 <If
-                                  condition={isManagedByCurrentUser}
+                                  condition={
+                                    isManagedByCurrentUser && member.user.id !== currentUser.id
+                                  }
                                   then={
                                     <RadioGroup
                                       onChange={e =>
@@ -168,6 +183,90 @@ class MembersTab extends React.Component {
                           );
                         }}
                       />
+                      {isManagedByCurrentUser && (
+                        <Column
+                          title="Action"
+                          key="action"
+                          align="center"
+                          render={member => {
+                            if (member.user.role === 'root_admin') {
+                              return null;
+                            }
+                            if (
+                              (member.role === 'project_admin' &&
+                                currentUser.role === 'root_admin') ||
+                              member.role === 'member'
+                            ) {
+                              return member.status === 'restricted' ? (
+                                <Mutation
+                                  mutation={CHANGE_MEMBER_ACCESS_RIGHT_MUTATION}
+                                  onError={error => {
+                                    // If you want to send error to external service?
+                                    error.graphQLErrors.map(error => {
+                                      message.error(error.message, 3);
+                                    });
+                                  }}
+                                  variables={{
+                                    input: {
+                                      attributes: JSON.stringify({
+                                        id: member.id,
+                                        status: 'active',
+                                      }),
+                                    },
+                                  }}
+                                >
+                                  {changeMemberAccessRight => (
+                                    <Popconfirm
+                                      placement="top"
+                                      title={`Are you sure unban ${member.user.username}`}
+                                      onConfirm={changeMemberAccessRight}
+                                      okText="Yes"
+                                      cancelText="No"
+                                    >
+                                      <Button type="primary" icon="user-add">
+                                        Unban member
+                                      </Button>
+                                    </Popconfirm>
+                                  )}
+                                </Mutation>
+                              ) : (
+                                <Mutation
+                                  mutation={CHANGE_MEMBER_ACCESS_RIGHT_MUTATION}
+                                  onError={error => {
+                                    // If you want to send error to external service?
+                                    error.graphQLErrors.map(error => {
+                                      message.error(error.message, 3);
+                                    });
+                                  }}
+                                  variables={{
+                                    input: {
+                                      attributes: JSON.stringify({
+                                        id: member.id,
+                                        status: 'restricted',
+                                      }),
+                                    },
+                                  }}
+                                >
+                                  {changeMemberAccessRight => (
+                                    <Popconfirm
+                                      placement="top"
+                                      title={`Are you sure ban ${member.user.username}`}
+                                      onConfirm={changeMemberAccessRight}
+                                      okText="Yes"
+                                      cancelText="No"
+                                    >
+                                      <Button type="danger" icon="user-delete">
+                                        Ban member
+                                      </Button>
+                                    </Popconfirm>
+                                  )}
+                                </Mutation>
+                              );
+                            }
+                            return null;
+                          }}
+                        />
+                      )}
                     </Table>
                   </React.Fragment>
                 );
