@@ -5,6 +5,9 @@ if (typeof window === 'undefined') {
   module.exports = loading;
 } else {
   const { Mutation } = require('react-apollo');
+  const {
+    currentMemberUtmHistory: CURRENT_MEMBER_UTM_HISTORY,
+  } = require('../../../../graphql/queries.gql');
   const { generateUtms: GENERATE_UTMS_MUTATION } = require('../../../../graphql/mutations.gql');
   const _ = require('lodash');
   const Highlighter = require('react-highlight-words');
@@ -62,7 +65,7 @@ if (typeof window === 'undefined') {
         },
         {
           key: 'url',
-          name: 'Landing Page URL',
+          name: '*Landing Page URL',
           width: 150,
           resizable: true,
           editable: true,
@@ -80,6 +83,7 @@ if (typeof window === 'undefined') {
     }
 
     componentWillUnmount() {
+      console.log('unmount');
       // reset uuid when component is unmounted
       uuid = 0;
     }
@@ -289,7 +293,7 @@ if (typeof window === 'undefined') {
 
     render() {
       const { isValid, errors } = this.state;
-      const { currentAppliedRule } = this.props;
+      const { currentAppliedRule, projectId } = this.props;
       // greater than 1 because of the landing page url
       if (this._columns.length > 3) {
         return (
@@ -299,12 +303,18 @@ if (typeof window === 'undefined') {
                 style={{ marginBottom: 20 }}
                 message="Current Applied Rule"
                 description={
-                  <Highlighter
-                    highlightClassName="highlight-dimension"
-                    searchWords={['<<(.*?)>>', 'landing_page_url']}
-                    autoEscape={false}
-                    textToHighlight={`landing_page_url?${currentAppliedRule.ruleStringToDisplay}`}
-                  />
+                  <div>
+                    <Highlighter
+                      highlightClassName="highlight-dimension-utm-builder"
+                      searchWords={['<<(.*?)>>', 'landing_page_url']}
+                      autoEscape={false}
+                      textToHighlight={`landing_page_url?${currentAppliedRule.ruleStringToDisplay}`}
+                    />
+
+                    <div style={{ color: '#ad8b00', marginLeft: 2, marginTop: 15 }}>
+                      <b>Warning! </b>Rules that are not assigned to you will be blank
+                    </div>
+                  </div>
                 }
                 type="info"
                 showIcon
@@ -319,6 +329,14 @@ if (typeof window === 'undefined') {
                   NotiMessage.error(message, 3);
                 });
               }}
+              refetchQueries={[
+                {
+                  query: CURRENT_MEMBER_UTM_HISTORY,
+                  variables: {
+                    projectId: parseInt(projectId),
+                  },
+                },
+              ]}
             >
               {(generateUtms, { loading, data }) => (
                 <React.Fragment>

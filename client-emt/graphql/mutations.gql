@@ -194,6 +194,19 @@ mutation updateRuleString($input: UpdateRuleStringInput!){
 
 mutation generateUtms($input: GenerateUtmsInput!){
   generateUtms(input: $input){
-    urlStrings
+    urlStrings {
+          id
+          url
+          createdAt
+    }
+  }
+}
+
+mutation changeMemberAccessRight($input: ChangeMemberAccessRightInput!){
+  changeMemberAccessRight(input: $input){
+    updatedAccessRight {
+      id
+      status
+    }
   }
 }

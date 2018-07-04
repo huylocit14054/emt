@@ -22,7 +22,14 @@ class RulesList extends Component {
     return (
       <MyQuery query={GET_RULES_BY_PROJECT_ID_QUERY} variables={{ projectId }}>
         {({ projectRules }) => (
-          <Table dataSource={projectRules} rowKey="id" bordered>
+          <Table
+            dataSource={projectRules}
+            rowKey="id"
+            bordered
+            rowClassName={rule => {
+              if (rule.isApplied) return 'rule-is-applied';
+            }}
+          >
             <Column
               width="50%"
               title="Rule"

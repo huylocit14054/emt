@@ -1,5 +1,7 @@
+import React from 'react';
 import ProjectLayout from '../components/project/ProjectLayout';
 import redirect from '../lib/redirect';
+import stylesheet from '../styles/projectMembers.less';
 import checkLoggedIn from '../lib/checkLoggedIn';
 
 export default class ProjectMembers extends React.Component {
@@ -16,6 +18,7 @@ export default class ProjectMembers extends React.Component {
   render() {
     return (
       <React.Fragment>
+        <style dangerouslySetInnerHTML={{ __html: stylesheet }} />
         <ProjectLayout activeKey="members" />
       </React.Fragment>
     );

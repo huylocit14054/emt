@@ -1,7 +1,9 @@
-import redirect from "../lib/redirect";
-import checkLoggedIn from "../lib/checkLoggedIn";
-import ProjectsList from "../components/projects/projectsList";
-import stylesheet from "styles/projects.less";
+import React from 'react';
+import stylesheet from '../styles/projects.less';
+import redirect from '../lib/redirect';
+import checkLoggedIn from '../lib/checkLoggedIn';
+import ProjectsList from '../components/projects/projectsList';
+
 export default class Projects extends React.Component {
   static async getInitialProps(context) {
     const { currentUser } = await checkLoggedIn(context.apolloClient);
@@ -9,7 +11,7 @@ export default class Projects extends React.Component {
     if (!currentUser) {
       // Already signed in? No need to continue.
       // Throw them back to the main page
-      redirect(context, "/login");
+      redirect(context, '/login');
     }
     return { currentUser };
   }

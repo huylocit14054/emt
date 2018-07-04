@@ -27,7 +27,12 @@ class CreateRuleModal extends React.Component {
 
     // Map utm_name to id
     _.forEach(projectDimensions, dimension => {
-      rule_string = _.replace(rule_string, new RegExp(dimension.name, 'g'), dimension.id);
+      const dimension_name_regex = `<<${dimension.name}>>`;
+      rule_string = _.replace(
+        rule_string,
+        new RegExp(dimension_name_regex, 'g'),
+        `<<${dimension.id}>>`
+      );
     });
 
     createRule({

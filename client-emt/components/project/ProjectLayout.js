@@ -1,6 +1,6 @@
 import React from 'react';
 import Router, { withRouter } from 'next/router';
-import { Tabs } from 'antd';
+import { Tabs, Alert } from 'antd';
 import { Query } from 'react-apollo';
 import _ from 'lodash';
 import MembersTab from './projectComponent/MembersTab';
@@ -56,7 +56,17 @@ class ProjectLayout extends React.Component {
       <Query query={GET_PROJECT_BY_ID} variables={{ id: parseInt(this.props.router.query.id) }}>
         {({ loading, error, data }) => {
           if (loading) return 'Loading...';
-          if (error) return `Error! ${error.message}`;
+          if (error)
+            return (
+              <Alert
+                message="Warning"
+                description={error.graphQLErrors.map((error, index) => (
+                  <div key={index}>{error.message}</div>
+                ))}
+                type="warning"
+                showIcon
+              />
+            );
           const { project } = data;
           return (
             <React.Fragment>
