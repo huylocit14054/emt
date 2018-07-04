@@ -76,6 +76,7 @@ class Rule < ApplicationRecord
   def get_invalid_url_charactor(rule_without_code:)
     # get all invalid dimension string
     invalid_dimension = rule_without_code.scan(REGEX_GET_INVALID_DIMENSION_STRING).flatten
+    # the user input <<1>> the invalid_dimension will become [] => error is "cannot get dimensions"
     if invalid_dimension
       error_string = invalid_dimension.count == 1 ? "cannot get dimension #{invalid_dimension.join('')}" : "cannot get dimensions #{invalid_dimension.join(', ')}"
       errors.add(:rule_string, error_string)
