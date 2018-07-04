@@ -164,7 +164,7 @@ class Types::QueryType < Types::BaseObject
   end
 
   # return current applied rule by project id
-  field :current_applied_rule_of_project, Types::Rule, null: false do
+  field :current_applied_rule_of_project, Types::Rule, null: true do
     argument :project_id, ID, required: true
   end
 
