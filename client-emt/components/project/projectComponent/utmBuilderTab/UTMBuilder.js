@@ -390,6 +390,18 @@ if (typeof window === 'undefined') {
           </React.Fragment>
         );
       }
+
+      if (!currentAppliedRule)
+        return (
+          <div>
+            <Alert
+              message="Note"
+              description="No UTM builder rule is currently applied"
+              type="info"
+              showIcon
+            />
+          </div>
+        );
       // If current member currently not assigned any dimensiions
       return (
         <div>
