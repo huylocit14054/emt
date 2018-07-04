@@ -9,8 +9,8 @@ class Rule < ApplicationRecord
   REGEX_GET_DIMENSION_CODE = /(<<\d*?>>)/ # get <<1>>|<<2>>|<<3>>
   REGEX_CHECK_VALIDATE_URL = /([-a-zA-Z0-9@:%_\+.~#?&=]+)/ # valid "url?utm_source=--&utm_camp="
   REGEX_GET_DATE_CODE = /(<<date>>)/ # get code <<date>>
-
   REGEX_GET_INVALID_DIMENSION_STRING = /(<<.*?>>)/ # get <<HEHE>>
+  REGEX_GET_SPACE = /\s/
 
   # activate_rule
   def activate_rule
@@ -75,13 +75,30 @@ class Rule < ApplicationRecord
   # rubocop:disable Metrics/LineLength
   def get_invalid_url_charactor(rule_without_code:)
     # get all invalid dimension string
+    check_invalid_dimension_string(rule_without_code: rule_without_code)
+    # remove all invalid dimension
+    rule_without_code = rule_without_code.gsub(REGEX_GET_INVALID_DIMENSION_STRING, '')
+    # check blank
+    rule_without_code = check_and_remove_blank_in_rule(rule_without_code: rule_without_code)
+    # check invalid url character
+    check_invalid_url_characters(rule_without_code: rule_without_code)
+    return true if errors.full_messages.empty?
+  end
+
+  # get all invalid dimension string
+  def check_invalid_dimension_string(rule_without_code:)
     invalid_dimension = rule_without_code.scan(REGEX_GET_INVALID_DIMENSION_STRING).flatten
     # the user input <<1>> the invalid_dimension will become [] => error is "cannot get dimensions"
-    if invalid_dimension
+    # rubocop:disable Style/GuardClause
+    if invalid_dimension.present?
       error_string = invalid_dimension.count == 1 ? "cannot get dimension #{invalid_dimension.join('')}" : "cannot get dimensions #{invalid_dimension.join(', ')}"
       errors.add(:rule_string, error_string)
     end
-    rule_without_code = rule_without_code.gsub(REGEX_GET_INVALID_DIMENSION_STRING, '')
+    # rubocop:enable Style/GuardClause
+  end
+
+  # get all invalid characters and get error of invalid characters
+  def check_invalid_url_characters(rule_without_code:)
     # get all valid url and split it to array
     rule_valid = !rule_without_code[REGEX_CHECK_VALIDATE_URL].nil? ? rule_without_code[REGEX_CHECK_VALIDATE_URL].split('') : []
     # split the rule to array
@@ -89,6 +106,12 @@ class Rule < ApplicationRecord
     # rule - valid_rule = invalid rule
     invalid_url = (rule_without_code - rule_valid).uniq.join(', ')
     errors.add(:rule_string, "cannot contain #{invalid_url}") if invalid_url.present?
+  end
+
+  # get blank from rule
+  def check_and_remove_blank_in_rule(rule_without_code:)
+    errors.add(:rule_string, 'cannot contain white space') if rule_without_code.match(REGEX_GET_SPACE)
+    rule_without_code.gsub(REGEX_GET_SPACE, '')
   end
   # rubocop:enable Metrics/LineLength
 end

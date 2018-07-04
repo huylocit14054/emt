@@ -73,14 +73,19 @@ RSpec.describe Rule, type: :model do
 
     it 'return error when user only input dimension id' do
       new_rule = Rule.new(rule_string: '<<2>>', project: @project)
-      new_rule.send(:check_rule_string_url)
-      error_string = 'cannot get dimensions '
-      expect(new_rule.errors[:rule_string]).to include(error_string)
+      expect(new_rule.send(:check_rule_string_url)).to be(true)
     end
 
     it 'return true when user rule is valid url without dimension id' do
       new_rule = Rule.new(rule_string: 'hehe=?', project: @project)
       expect(new_rule.send(:check_rule_string_url)).to be(true)
+    end
+
+    it 'return error when user rule have space in the url' do
+      new_rule = Rule.new(rule_string: 'utm_source<<2>>&abc ng', project: @project)
+      new_rule.send(:check_rule_string_url)
+      error_string = 'cannot contain white space'
+      expect(new_rule.errors[:rule_string]).to include(error_string)
     end
   end
 
