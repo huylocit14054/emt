@@ -20,6 +20,7 @@
     "jest": true
   },
   "rules": {
+    "no-multi-assign": 0,
     "global-require": 0,
     "no-return-assign": 0,
     "react/no-access-state-in-setstate": 0,

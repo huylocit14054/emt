@@ -1,4 +1,5 @@
-import { Form, Input, Modal, Rate, Select, Icon, TreeSelect } from 'antd';
+import { Form, Modal, Select, Icon, TreeSelect } from 'antd';
+import React from 'react';
 import Highlighter from 'react-highlight-words';
 import { withApollo, Query } from 'react-apollo';
 import { Image } from 'cloudinary-react';
@@ -8,18 +9,19 @@ import {
   getProjectDimensionsTreeByProjectId as GET_PROJECT_DIMENSIONS_TREE_BY_PROJECT_ID,
 } from '../../../../../graphql/queries.gql';
 
-const { TextArea } = Input;
 const FormItem = Form.Item;
 const { Option } = Select;
-const SHOW_PARENT = TreeSelect.SHOW_PARENT;
+const { SHOW_PARENT } = TreeSelect;
 
-const AssignDimensionsForm = Form.create()(class extends React.Component {
+const AssignDimensionsForm = Form.create()(
+  class extends React.Component {
     state = {
       membersSuggestion: [],
       keyword: '',
       value: [],
       fetching: false,
     };
+
     fetchMemberSuggestion = async value => {
       this.setState({
         keyword: value,
@@ -35,10 +37,9 @@ const AssignDimensionsForm = Form.create()(class extends React.Component {
           },
         });
         const { membersSuggestion } = data;
-  
+
         this.setState({ membersSuggestion, fetching: false });
       }
-     
     };
 
     handleChange = value => {
@@ -49,17 +50,16 @@ const AssignDimensionsForm = Form.create()(class extends React.Component {
         fetching: false,
       });
     };
+
     render() {
-      const { fetching, membersSuggestion, value } = this.state;
-      const {
-        visible, onCancel, onCreate, form, confirmLoading, projectId,
-      } = this.props;
+      const { fetching, membersSuggestion } = this.state;
+      const { visible, onCancel, onCreate, form, confirmLoading, projectId } = this.props;
 
       const { getFieldDecorator } = form;
 
       return (
         <Modal
-        title="Assign dimensions for multiple members"
+          title="Assign dimensions for multiple members"
           confirmLoading={confirmLoading}
           visible={visible}
           closable={false}
@@ -69,7 +69,7 @@ const AssignDimensionsForm = Form.create()(class extends React.Component {
           onOk={onCreate}
         >
           <Form layout="vertical" onSubmit={onCreate}>
-            <FormItem>
+            <FormItem label="Members">
               {getFieldDecorator('members', {
                 rules: [
                   {
@@ -78,45 +78,51 @@ const AssignDimensionsForm = Form.create()(class extends React.Component {
                   },
                 ],
                 initialValue: [],
-              })(<Select
-                mode="multiple"
-                placeholder="Usernames or email addresses"
-                notFoundContent={
+              })(
+                <Select
+                  mode="multiple"
+                  placeholder="Usernames or email addresses"
+                  notFoundContent={
                     fetching ? <Icon type="loading" style={{ fontSize: 24 }} spin /> : null
                   }
-                filterOption={false}
-                defaultActiveFirstOption={false}
-                onSearch={this.fetchMemberSuggestion}
-                onChange={this.handleChange}
-              >
-                {membersSuggestion.map(user => (
-                  <Option key={user.id}>
-                    <Image
-                      cloudName={CLOUD_NAME}
-                      publicId={user.avatar}
-                      width="25"
-                      height="25"
-                      crop="scale"
-                      style={{ borderRadius: '50%', border: "1px solid #00b5d0" , marginRight: 10 }}
-                    />
-                    <Highlighter
-                      highlightClassName="highlight-keyword-username"
-                      searchWords={[this.state.keyword]}
-                      autoEscape
-                      textToHighlight={user.username}
-                    />{' '}
+                  filterOption={false}
+                  defaultActiveFirstOption={false}
+                  onSearch={this.fetchMemberSuggestion}
+                  onChange={this.handleChange}
+                >
+                  {membersSuggestion.map(user => (
+                    <Option key={user.id}>
+                      <Image
+                        cloudName={CLOUD_NAME}
+                        publicId={user.avatar}
+                        width="25"
+                        height="25"
+                        crop="scale"
+                        style={{
+                          borderRadius: '50%',
+                          border: '1px solid #00b5d0',
+                          marginRight: 10,
+                        }}
+                      />
+                      <Highlighter
+                        highlightClassName="highlight-keyword-username"
+                        searchWords={[this.state.keyword]}
+                        autoEscape
+                        textToHighlight={user.username}
+                      />{' '}
                       |
-                    <Highlighter
-                      className="small-email-text"
-                      highlightClassName="highlight-keyword-email"
-                      searchWords={[this.state.keyword]}
-                      autoEscape
-                      textToHighlight={user.email}
-                      style={{ marginLeft: 40 }}
-                    />
-                  </Option>
+                      <Highlighter
+                        className="small-email-text"
+                        highlightClassName="highlight-keyword-email"
+                        searchWords={[this.state.keyword]}
+                        autoEscape
+                        textToHighlight={user.email}
+                        style={{ marginLeft: 40 }}
+                      />
+                    </Option>
                   ))}
-                 </Select>)}
+                </Select>
+              )}
             </FormItem>
             <Query
               query={GET_PROJECT_DIMENSIONS_TREE_BY_PROJECT_ID}
@@ -132,10 +138,10 @@ const AssignDimensionsForm = Form.create()(class extends React.Component {
                   onChange: this.onChange,
                   treeCheckable: true,
                   showCheckedStrategy: SHOW_PARENT,
-                  searchPlaceholder: 'Please select',
+                  searchPlaceholder: 'Please select dimensions(options)',
                 };
                 return (
-                  <FormItem>
+                  <FormItem label="Dimensions and options">
                     {getFieldDecorator('choices', {
                       rules: [
                         {
@@ -144,7 +150,7 @@ const AssignDimensionsForm = Form.create()(class extends React.Component {
                         },
                       ],
                       initialValue: [],
-                    })(<TreeSelect {...tProps}  />)}
+                    })(<TreeSelect {...tProps} />)}
                   </FormItem>
                 );
               }}
@@ -153,6 +159,7 @@ const AssignDimensionsForm = Form.create()(class extends React.Component {
         </Modal>
       );
     }
-});
+  }
+);
 
 export default withApollo(AssignDimensionsForm);

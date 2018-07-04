@@ -1,7 +1,11 @@
-import { message, Icon, Tooltip } from 'antd';
+import { message } from 'antd';
+import React from 'react';
 import { Mutation } from 'react-apollo';
 import _ from 'lodash';
-import { getAssignmentsByProjectId as GET_ASSIGNMENTS_BY_PROJECT_ID } from '../../../../../graphql/queries.gql';
+import {
+  getAssignmentsByProjectId as GET_ASSIGNMENTS_BY_PROJECT_ID,
+  getAssignmentsByMemberId as GET_ASSIGNMENTS_BY_MEMBER_ID_QUERY,
+} from '../../../../../graphql/queries.gql';
 import { updateMemberAssignments as UPDATE_MEMBER_ASSIGNMENTS_MUTATION } from '../../../../../graphql/mutations.gql';
 import UpdateMemberAssignmentsForm from './updateMemberAssignmentsModal/UpdateMemberAssignmentsForm';
 
@@ -15,11 +19,13 @@ class UpdateMemberAssignmentsModal extends React.Component {
   };
 
   handleCancel = () => {
+    const { form } = this.formRef.props;
+    form.resetFields();
     this.setState({ visible: false });
   };
 
   handleCreate = updateMemberAssignments => {
-    const form = this.formRef.props.form;
+    const { form } = this.formRef.props;
     form.validateFields((err, values) => {
       if (err) {
         return;
@@ -57,6 +63,14 @@ class UpdateMemberAssignmentsModal extends React.Component {
             data,
           });
         },
+        refetchQueries: [
+          {
+            query: GET_ASSIGNMENTS_BY_MEMBER_ID_QUERY,
+            variables: {
+              memberId: parseInt(this.props.memberId),
+            },
+          },
+        ],
       });
     });
   };
@@ -66,7 +80,6 @@ class UpdateMemberAssignmentsModal extends React.Component {
   };
 
   render() {
-    const { member } = this.props;
     return (
       <React.Fragment>
         <a onClick={this.showModal}>Edit</a>
@@ -75,18 +88,17 @@ class UpdateMemberAssignmentsModal extends React.Component {
           mutation={UPDATE_MEMBER_ASSIGNMENTS_MUTATION}
           onCompleted={data => {
             console.log(data);
-            const { form } = this.formRef.props;
-            // this.setState({ visible: false });
+            this.setState({ visible: false });
             message.success('Dimensions Updated');
           }}
           onError={error => {
             // If you want to send error to external service?
-            error.graphQLErrors.map(({ message }, i) => {
-              message.error(message, 3);
+            error.graphQLErrors.map(error => {
+              message.error(error.message, 3);
             });
           }}
         >
-          {(updateMemberAssignments, { loading, data, error }) => (
+          {(updateMemberAssignments, { loading }) => (
             <UpdateMemberAssignmentsForm
               wrappedComponentRef={this.saveFormRef}
               confirmLoading={loading}
