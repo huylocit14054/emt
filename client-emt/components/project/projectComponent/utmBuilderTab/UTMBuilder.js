@@ -300,7 +300,7 @@ if (typeof window === 'undefined') {
                 message="Current Applied Rule"
                 description={
                   <Highlighter
-                    highlightClassName="highlight-dimension"
+                    highlightClassName="highlight-dimension-utm-builder"
                     searchWords={['<<(.*?)>>', 'landing_page_url']}
                     autoEscape={false}
                     textToHighlight={`landing_page_url?${currentAppliedRule.ruleStringToDisplay}`}

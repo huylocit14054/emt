@@ -193,6 +193,6 @@ class Types::QueryType < Types::BaseObject
     argument :project_id, ID, required: true
   end
   def utm_analysis(project_id:)
-    ::Project.find(project_id).utms.order_by(created_at: :desc)
+    ::Project.find(project_id).utms.order(created_at: :desc)
   end
 end
