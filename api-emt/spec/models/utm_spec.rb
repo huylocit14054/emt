@@ -10,7 +10,10 @@ RSpec.describe Utm, type: :model do
     end
 
     it 'add url to rule with "&" if the url contains ? character' do
-      url = Utm.standardize_landing_page(url: 'https://redpola.com?search=loc', rule: 'utm_source=facebook&utm_xml=this_is_input')
+      url = Utm.standardize_landing_page(
+        url: 'https://redpola.com?search=loc',
+        rule: 'utm_source=facebook&utm_xml=this_is_input'
+      )
       string = 'https://redpola.com?search=loc&utm_source=facebook&utm_xml=this_is_input'
       expect(url).to eq(string)
     end
