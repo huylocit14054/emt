@@ -1,7 +1,9 @@
-import LoginBox from "../components/login/LoginBox";
-import redirect from "../lib/redirect";
-import checkLoggedIn from "../lib/checkLoggedIn";
-import stylesheet from "styles/login.less";
+import React from 'react';
+import stylesheet from '../styles/login.less';
+import LoginBox from '../components/login/LoginBox';
+import redirect from '../lib/redirect';
+import checkLoggedIn from '../lib/checkLoggedIn';
+
 class Login extends React.Component {
   static async getInitialProps(context) {
     const { currentUser } = await checkLoggedIn(context.apolloClient);
@@ -9,7 +11,7 @@ class Login extends React.Component {
     if (currentUser) {
       // Already signed in? No need to continue.
       // Throw them back to the main page
-      redirect(context, "/");
+      redirect(context, '/');
     }
     return {};
   }

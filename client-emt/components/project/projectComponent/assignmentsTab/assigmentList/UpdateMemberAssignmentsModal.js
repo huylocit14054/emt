@@ -5,6 +5,7 @@ import _ from 'lodash';
 import {
   getAssignmentsByProjectId as GET_ASSIGNMENTS_BY_PROJECT_ID,
   getAssignmentsByMemberId as GET_ASSIGNMENTS_BY_MEMBER_ID_QUERY,
+  getAssignmentsOfCurrentMember as GET_ASSIGNMENTS_OF_CURRENT_MEMBER_QUERY,
 } from '../../../../../graphql/queries.gql';
 import { updateMemberAssignments as UPDATE_MEMBER_ASSIGNMENTS_MUTATION } from '../../../../../graphql/mutations.gql';
 import UpdateMemberAssignmentsForm from './updateMemberAssignmentsModal/UpdateMemberAssignmentsForm';
@@ -68,6 +69,13 @@ class UpdateMemberAssignmentsModal extends React.Component {
             query: GET_ASSIGNMENTS_BY_MEMBER_ID_QUERY,
             variables: {
               memberId: parseInt(this.props.memberId),
+            },
+          },
+          // Update assignments for current member in utm builder tab right away
+          {
+            query: GET_ASSIGNMENTS_OF_CURRENT_MEMBER_QUERY,
+            variables: {
+              projectId: parseInt(this.props.projectId),
             },
           },
         ],
