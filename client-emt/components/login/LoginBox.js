@@ -90,12 +90,12 @@ class NormalLoginForm extends React.Component {
                     )}
                   </FormItem>
                   <FormItem>
-                    {getFieldDecorator('remember', {
-                      valuePropName: 'checked',
-                      initialValue: true,
-                    })(<Checkbox>Remember me</Checkbox>)}
-
-                    <Button type="primary" htmlType="submit" className="login-form-button">
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      className="login-form-button"
+                      style={{ marginTop: 40 }}
+                    >
                       Log in
                     </Button>
                   </FormItem>
