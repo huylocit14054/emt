@@ -1,0 +1,21 @@
+auth_p1_d1_loc:
+  project_member: member_project_one_1
+  dimension: utm_source_one
+auth_p1_d2_loc:
+  project_member: member_project_one_1
+  dimension: utm_source_two
+auth_p1_d3_loc:
+  project_member: member_project_one_1
+  dimension: utm_source_three
+auth_p1_d2_nhat:
+  project_member: member_project_one_2
+  dimension: utm_source_two
+auth_p1_d3_nhat:
+  project_member: member_project_one_2
+  dimension: utm_source_three
+auth_p1_d1_phat:
+  project_member: member_project_one_3
+  dimension: utm_source_one
+auth_p1_d2_phat:
+  project_member: member_project_one_3
+  dimension: utm_source_two
