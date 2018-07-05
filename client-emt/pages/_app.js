@@ -22,9 +22,9 @@ class MyApp extends App {
     const { pathname } = this.props.router;
     return (
       <Container>
-        <ApolloProvider client={apolloClient}>
-          <AntdLayout title={pathname}>
-            <ProgressBar>
+        <ProgressBar>
+          <ApolloProvider client={apolloClient}>
+            <AntdLayout title={pathname}>
               {pathname === '/login' ? (
                 <Component {...pageProps} />
               ) : (
@@ -32,9 +32,9 @@ class MyApp extends App {
                   <Component {...pageProps} />
                 </NavigationLayout>
               )}
-            </ProgressBar>
-          </AntdLayout>
-        </ApolloProvider>
+            </AntdLayout>
+          </ApolloProvider>
+        </ProgressBar>
       </Container>
     );
   }

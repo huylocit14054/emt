@@ -1,4 +1,5 @@
-import { Form, Icon, Input, Button, Checkbox, message, Spin } from 'antd';
+import { Form, Icon, Input, Button, Spin } from 'antd';
+import React from 'react';
 import { Mutation, withApollo } from 'react-apollo';
 import cookie from 'cookie';
 import Link from 'next/link';
@@ -7,7 +8,6 @@ import { loginUser as LOGIN_USER_QUERY } from '../../graphql/mutations.gql';
 
 const FormItem = Form.Item;
 const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
-
 class NormalLoginForm extends React.Component {
   render() {
     const { client } = this.props;
@@ -29,12 +29,12 @@ class NormalLoginForm extends React.Component {
         }}
         onError={error => {
           // If you want to send error to external service?
-          error.graphQLErrors.map(({ message }, i) => {
-            message.error(message, 3);
+          error.graphQLErrors.map(message => {
+            message.error(message.error, 3);
           });
         }}
       >
-        {(loginUser, { data, loading, error }) => (
+        {(loginUser, { loading }) => (
           <div className="form-layout">
             <div className="form-border">
               <Spin indicator={antIcon} spinning={loading} tip="Signing in...">
@@ -89,14 +89,12 @@ class NormalLoginForm extends React.Component {
                     )}
                   </FormItem>
                   <FormItem>
-                    {getFieldDecorator('remember', {
-                      valuePropName: 'checked',
-                      initialValue: true,
-                    })(<Checkbox>Remember me</Checkbox>)}
-                    <a className="login-form-forgot" href="">
-                      Forgot password
-                    </a>
-                    <Button type="primary" htmlType="submit" className="login-form-button">
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      className="login-form-button"
+                      style={{ marginTop: 40 }}
+                    >
                       Log in
                     </Button>
                   </FormItem>
