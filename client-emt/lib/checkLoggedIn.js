@@ -6,9 +6,4 @@ export default apolloClient =>
     .then(({ data }) => ({ currentUser: data.currentUser }))
     .catch(error => {
       return { currentUser: {} };
-    
-    
-    
-    
-    
     });
