@@ -1,4 +1,5 @@
-import { Layout, Menu, Icon, Dropdown, message } from 'antd';
+import { Layout, Menu, Icon } from 'antd';
+import React from 'react';
 import { withRouter } from 'next/router';
 import { Query } from 'react-apollo';
 import Link from 'next/link';
@@ -11,8 +12,8 @@ class NavigationLayout extends React.Component {
   state = {
     collapsed: false,
   };
+
   onCollapse = collapsed => {
-    console.log(collapsed);
     this.setState({ collapsed });
   };
 
@@ -30,10 +31,7 @@ class NavigationLayout extends React.Component {
             if (error) return `Error! ${error.message}`;
             const currentUserSync = data.currentUser;
             return (
-              <Sider
-                collapsed={true}
-                style={{ paddingTop: 0, height: '100vh', position: 'fixed' }}
-              >
+              <Sider collapsed style={{ paddingTop: 0, height: '100vh', position: 'fixed' }}>
                 <Menu mode="inline" theme="dark" selectedKeys={[currentPage]}>
                   <Menu.Item key="projects" style={{ marginTop: 0 }}>
                     <Link prefetch href="/">

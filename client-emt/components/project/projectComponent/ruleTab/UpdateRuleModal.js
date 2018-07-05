@@ -24,9 +24,14 @@ class UpdateRuleModal extends React.Component {
     const { id } = rule;
     let rule_string = ruleString;
 
-    // Map utm_names to ids
+    // Map utm_name to id
     _.forEach(projectDimensions, dimension => {
-      rule_string = _.replace(rule_string, new RegExp(dimension.name, 'g'), dimension.id);
+      const dimension_name_regex = `<<${dimension.name}>>`;
+      rule_string = _.replace(
+        rule_string,
+        new RegExp(dimension_name_regex, 'g'),
+        `<<${dimension.id}>>`
+      );
     });
     updateRule({
       variables: {
@@ -47,8 +52,7 @@ class UpdateRuleModal extends React.Component {
 
         <Mutation
           mutation={UPDATE_RULE_MUTATION}
-          onCompleted={data => {
-            console.log(data);
+          onCompleted={() => {
             this.setState({ visible: false });
             message.success('Rule Updated');
           }}

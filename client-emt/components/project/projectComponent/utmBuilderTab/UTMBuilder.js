@@ -90,7 +90,6 @@ if (typeof window === 'undefined') {
     }
 
     componentWillUnmount() {
-      console.log('unmount');
       const currentUuid = uuid;
       // reset uuid when component is unmounted
       uuid = currentUuid;
@@ -137,18 +136,6 @@ if (typeof window === 'undefined') {
     handleGridRowsUpdated = ({ fromRow, toRow, updated }) => {
       const rows = this.state.rows.slice();
 
-      // const selectiveDimensions = this.props.assignments
-      //   .filter(assignment => assignment.dimension.category === 'selection')
-      //   .map(assignment => assignment.dimension);
-
-      // console.log(selectiveDimensions);
-      // const selectiveDimensionsIdsArray = selectiveDimensions.map(dimension => dimension.id);
-      // console.log(selectiveDimensionsIdsArray);
-      // const rowsEdited = this.state.rows.map(row => {
-      //   selectiveDimensionsIdsArray.forEach(id => {
-
-      //   });
-      // });
       for (let i = fromRow; i <= toRow; i += 1) {
         const rowToUpdate = rows[i];
 
@@ -277,7 +264,6 @@ if (typeof window === 'undefined') {
 
         // Remove all spaces inside input fields
         Object.keys(row).map(key => {
-          console.log(rowModified[key]);
           if (/\s/.test(rowModified[key])) {
             rowModified[key] = rowModified[key].replace(/\s/g, '+');
           }
@@ -291,7 +277,7 @@ if (typeof window === 'undefined') {
         rule_id: currentAppliedRule.id,
         attributes: finalRows,
       };
-      console.log(values);
+
       generate({
         variables: {
           input: {

@@ -1,10 +1,9 @@
 import React from 'react';
-import { Form, Input, Select, Button, Spin, Icon, message } from 'antd';
+import { Form, Select, Button, Icon, message } from 'antd';
 import { withApollo, Mutation } from 'react-apollo';
 import $ from 'jquery';
 import Highlighter from 'react-highlight-words';
 import { Image } from 'cloudinary-react';
-import _ from 'lodash';
 import { CLOUD_NAME } from '../../../../constants';
 import {
   usersSuggestion as USERS_SUGGESTION_QUERY,
@@ -27,7 +26,6 @@ const AddMemberForm = Form.create()(
       e.preventDefault();
       this.props.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values);
           addMemberToProject({
             variables: {
               input: {
@@ -67,13 +65,13 @@ const AddMemberForm = Form.create()(
     };
 
     render() {
-      const { fetching, usersSuggestion, value } = this.state;
+      const { fetching, usersSuggestion } = this.state;
       const { getFieldDecorator } = this.props.form;
 
       return (
         <Mutation
           mutation={ADD_MEMBER_TO_PROJECT_MUTATION}
-          onCompleted={data => {
+          onCompleted={() => {
             const { form } = this.props;
 
             message.success('Member Added');
@@ -82,8 +80,8 @@ const AddMemberForm = Form.create()(
           onError={error => {
             this.props.form.resetFields();
 
-            error.graphQLErrors.map(({ message }, i) => {
-              message.error(message, 3);
+            error.graphQLErrors.map(error => {
+              message.error(error.message, 3);
             });
           }}
         >

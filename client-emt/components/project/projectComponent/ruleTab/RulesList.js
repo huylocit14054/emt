@@ -6,7 +6,10 @@ import { Mutation } from 'react-apollo';
 import { Table, Divider, Icon, message, Popconfirm } from 'antd';
 import _ from 'lodash';
 import UpdateRuleModal from './UpdateRuleModal';
-import { getRulesByProjectId as GET_RULES_BY_PROJECT_ID_QUERY } from '../../../../graphql/queries.gql';
+import {
+  getRulesByProjectId as GET_RULES_BY_PROJECT_ID_QUERY,
+  getAssignmentsOfCurrentMember as GET_ASSIGNMENTS_OF_CURRENT_MEMBER_QUERY,
+} from '../../../../graphql/queries.gql';
 import {
   deleteRule as DELETE_RULE_MUTATION,
   applyRule as APPLY_RULE_MUTATION,
@@ -141,6 +144,14 @@ class RulesList extends Component {
                             message.error(error.message, 3);
                           });
                         }}
+                        refetchQueries={[
+                          {
+                            query: GET_ASSIGNMENTS_OF_CURRENT_MEMBER_QUERY,
+                            variables: {
+                              projectId: parseInt(projectId),
+                            },
+                          },
+                        ]}
                         update={store => {
                           const data = store.readQuery({
                             query: GET_RULES_BY_PROJECT_ID_QUERY,

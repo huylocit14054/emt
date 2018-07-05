@@ -16,7 +16,6 @@ class NormalLoginForm extends React.Component {
       <Mutation
         mutation={LOGIN_USER_QUERY}
         onCompleted={data => {
-          console.log(data);
           // Store the token in cookie
           document.cookie = cookie.serialize('token', data.loginUser.token, {
             maxAge: 30 * 24 * 60 * 60, // 30 days
@@ -53,7 +52,6 @@ class NormalLoginForm extends React.Component {
                     e.preventDefault();
                     this.props.form.validateFields((err, values) => {
                       if (!err) {
-                        console.log('Received values of form: ', values);
                         loginUser({
                           variables: {
                             input: {

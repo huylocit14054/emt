@@ -31,7 +31,7 @@ class UpdateMemberAssignmentsModal extends React.Component {
       if (err) {
         return;
       }
-      console.log(values);
+
       values.memberId = parseInt(this.props.memberId);
       updateMemberAssignments({
         variables: {
@@ -94,8 +94,7 @@ class UpdateMemberAssignmentsModal extends React.Component {
 
         <Mutation
           mutation={UPDATE_MEMBER_ASSIGNMENTS_MUTATION}
-          onCompleted={data => {
-            console.log(data);
+          onCompleted={() => {
             this.setState({ visible: false });
             message.success('Dimensions Updated');
           }}

@@ -18,7 +18,6 @@ if (typeof window === 'undefined') {
   const moment = require('moment');
 
   const copyToClipboard = str => {
-    console.log(str);
     const el = document.createElement('textarea'); // Create a <textarea> element
     el.value = str; // Set its value to the string that you want copied
     el.setAttribute('readonly', ''); // Make it readonly to be tamper-proof
@@ -164,7 +163,7 @@ if (typeof window === 'undefined') {
 
     handleFilterChange = filter => {
       const newFilters = Object.assign({}, this.state.filters);
-      console.log(this.state.filters);
+
       if (filter.filterTerm) {
         newFilters[filter.column.key] = filter;
       } else {

@@ -46,8 +46,7 @@ class UpdateProjectModal extends React.Component {
         <Icon type="edit" onClick={this.showModal} style={{ cursor: 'pointer', marginLeft: 10 }} />
         <Mutation
           mutation={UPDATE_PROJECT_MUTATION}
-          onCompleted={data => {
-            console.log(data);
+          onCompleted={() => {
             this.setState({ visible: false });
             message.success('Project Updated');
           }}

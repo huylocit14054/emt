@@ -25,12 +25,6 @@ const CreateRuleForm = Form.create()(
       this.setState({ value: newValue });
     };
 
-    onBlur = () => (_, clickedOnSuggestion) => {
-      if (!clickedOnSuggestion) {
-        console.log('finished editing');
-      }
-    };
-
     onAdd = () => {
       // Focus cursor to the end of input after adding suggestion
       $('#rule-suggestions').blur();
@@ -59,7 +53,6 @@ const CreateRuleForm = Form.create()(
             >
               <CreateRuleInput
                 onChange={this.onChange}
-                onBlur={this.onBlur}
                 onAdd={this.onAdd}
                 value={value}
                 data={projectDimensions.map(dimension => ({

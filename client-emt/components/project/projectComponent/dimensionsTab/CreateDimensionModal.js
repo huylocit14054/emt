@@ -68,7 +68,7 @@ class CreateDimensionModal extends React.Component {
         <Mutation
           mutation={CREATE_DIMENSION_MUTATION}
           onCompleted={data => {
-            console.log(data);
+
             const { form } = this.formRef.props;
             // this.setState({ visible: false });
             message.success('Dimension Created');

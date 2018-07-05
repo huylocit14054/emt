@@ -64,8 +64,7 @@ class CreateUserModal extends React.Component {
         <br />
         <Mutation
           mutation={CREATE_USER_MUTATION}
-          onCompleted={data => {
-            console.log(data);
+          onCompleted={() => {
             const { form } = this.formRef.props;
             // this.setState({ visible: false });
             message.success('User Created');
