@@ -1,4 +1,4 @@
-import { Form, Icon, Input, Button, Checkbox, Spin } from 'antd';
+import { Form, Icon, Input, Button, Spin } from 'antd';
 import React from 'react';
 import { Mutation, withApollo } from 'react-apollo';
 import cookie from 'cookie';

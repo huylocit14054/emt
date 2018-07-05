@@ -22,6 +22,13 @@ if (typeof window === 'undefined') {
   const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
   let uuid = 0;
+  let initialState = {
+    rows: [],
+    selectedIndexes: [],
+    isValid: false,
+    errors: [],
+    generatedUtms: null,
+  };
   class UTMBuilder extends React.Component {
     constructor(props, context) {
       super(props, context);
@@ -79,13 +86,16 @@ if (typeof window === 'undefined') {
         resizable: true,
       });
 
-      this.state = { rows: [], selectedIndexes: [], isValid: false, errors: [] };
+      this.state = initialState;
     }
 
     componentWillUnmount() {
       console.log('unmount');
+      const currentUuid = uuid;
       // reset uuid when component is unmounted
-      uuid = 0;
+      uuid = currentUuid;
+      // Remember state for the next mount
+      initialState = this.state;
     }
 
     onRowsSelected = rows => {
@@ -292,7 +302,7 @@ if (typeof window === 'undefined') {
     };
 
     render() {
-      const { isValid, errors } = this.state;
+      const { isValid, errors, generatedUtms } = this.state;
       const { currentAppliedRule, projectId } = this.props;
       // greater than 1 because of the landing page url
       if (this._columns.length > 3) {
@@ -337,8 +347,11 @@ if (typeof window === 'undefined') {
                   },
                 },
               ]}
+              onCompleted={data => {
+                this.setState({ generatedUtms: data.generateUtms.urlStrings });
+              }}
             >
-              {(generateUtms, { loading, data }) => (
+              {(generateUtms, { loading }) => (
                 <React.Fragment>
                   <UTMTopToolbar
                     handleAddRow={this.handleAddRow}
@@ -382,7 +395,7 @@ if (typeof window === 'undefined') {
                     />
                   </div>
                   <Spin indicator={antIcon} spinning={loading}>
-                    {data && <URLsList urls={data.generateUtms.urlStrings} />}
+                    {generatedUtms && <URLsList urls={generatedUtms} />}
                   </Spin>
                 </React.Fragment>
               )}

@@ -1,9 +1,9 @@
 import NProgress from 'nprogress';
+import React from 'react';
 import Router from 'next/router';
 import Head from 'next/head';
 
-Router.onRouteChangeStart = url => {
-  
+Router.onRouteChangeStart = () => {
   NProgress.start();
 };
 Router.onRouteChangeComplete = () => NProgress.done();
