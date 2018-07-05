@@ -58,7 +58,6 @@ function onChange(updateMemberRoleInProject, e, memberId, username) {
       openNotification(username, humanizeString(e.target.value));
     },
   });
-  console.log(`radio checked:${e.target.value}`);
 }
 
 class MembersTab extends React.Component {

@@ -24,7 +24,7 @@ class AssignDimensionsModal extends React.Component {
       if (err) {
         return;
       }
-      console.log(values);
+
       values.projectId = parseInt(this.props.projectId);
       assignDimensions({
         variables: {
@@ -58,8 +58,7 @@ class AssignDimensionsModal extends React.Component {
         <br />
         <Mutation
           mutation={ASSIGN_DIMENSIONS_FOR_MEMBERS_MUTATION}
-          onCompleted={data => {
-            console.log(data);
+          onCompleted={() => {
             const { form } = this.formRef.props;
             // this.setState({ visible: false });
             message.success('Dimensions Assigned');

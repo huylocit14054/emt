@@ -12,9 +12,8 @@ const { Header } = Layout;
 
 class TopHeader extends React.Component {
   signout = () => {
-    console.log('begin remove');
     document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-    console.log('remove done');
+
     window.location.replace('/login');
   };
 

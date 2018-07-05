@@ -36,7 +36,7 @@ const CreateOptionForm = Form.create()(class extends React.Component {
       .form
       .validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values);
+
         }
       });
   };

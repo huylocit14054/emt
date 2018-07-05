@@ -93,8 +93,7 @@ class CreateProjectModal extends React.Component {
 
         <Mutation
           mutation={CREATE_PROJECT_MUTATION}
-          onCompleted={data => {
-            console.log(data);
+          onCompleted={() => {
             const { form } = this.formRef.props;
             // this.setState({ visible: false });
             message.success('Project Created');

@@ -90,8 +90,7 @@ class CreateRuleModal extends React.Component {
         <br />
         <Mutation
           mutation={CREATE_RULE_MUTATION}
-          onCompleted={data => {
-            console.log(data);
+          onCompleted={() => {
             this.setState({ visible: false });
             this.child.resetState();
             message.success('Rule Created');

@@ -64,15 +64,13 @@ class ChangeAvatarModal extends React.Component {
     });
   };
 
-  handleOk = e => {
-    console.log(e);
+  handleOk = () => {
     this.setState({
       visible: false,
     });
   };
 
-  handleCancel = e => {
-    console.log(e);
+  handleCancel = () => {
     this.setState({
       visible: false,
     });

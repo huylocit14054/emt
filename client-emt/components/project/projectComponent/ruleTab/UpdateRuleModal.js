@@ -47,8 +47,7 @@ class UpdateRuleModal extends React.Component {
 
         <Mutation
           mutation={UPDATE_RULE_MUTATION}
-          onCompleted={data => {
-            console.log(data);
+          onCompleted={() => {
             this.setState({ visible: false });
             message.success('Rule Updated');
           }}
