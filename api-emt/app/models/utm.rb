@@ -7,7 +7,7 @@ class Utm < ApplicationRecord
   # example hash value:
   # values: {
   #   "rule_id": 1,
-  #   "project_member_id": 3,
+  #   "project_id": 3,
   #   "attributes":[
   #   {
   #    "url": "https://google.com.vn",

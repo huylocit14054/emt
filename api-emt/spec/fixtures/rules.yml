@@ -1,5 +1,5 @@
 rule_one:
-  rule_string: utm_source=<<1>>-<<2>>&utm_camp=<<3>>
+  rule_string: utm_source=<<1>>_<<2>>&utm_camp=<<3>><<4>><<5>>&date=<<date>>
   is_applied: true
   project_id: project_one
 
