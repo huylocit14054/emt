@@ -8,7 +8,6 @@ import { loginUser as LOGIN_USER_QUERY } from '../../graphql/mutations.gql';
 
 const FormItem = Form.Item;
 const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
-
 class NormalLoginForm extends React.Component {
   render() {
     const { client } = this.props;
