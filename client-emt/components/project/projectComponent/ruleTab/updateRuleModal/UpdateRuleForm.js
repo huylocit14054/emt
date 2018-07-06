@@ -50,6 +50,9 @@ const UpdateRuleForm = class extends React.Component {
             cancelText="cancel"
             onOk={() => onUpdate(projectDimensions, value)}
           >
+            <div style={{ marginBottom: 5 }}>
+              <i>landing_page_url?</i>
+            </div>
             <UpdateRuleInput
               ruleId={ruleId}
               onChange={this.onChange}

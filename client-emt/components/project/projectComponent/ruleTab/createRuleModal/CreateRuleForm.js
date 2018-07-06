@@ -51,6 +51,9 @@ const CreateRuleForm = Form.create()(
               cancelText="cancel"
               onOk={() => onCreate(projectDimensions, value)}
             >
+              <div style={{ marginBottom: 5 }}>
+                <i>landing_page_url?</i>
+              </div>
               <CreateRuleInput
                 onChange={this.onChange}
                 onAdd={this.onAdd}
