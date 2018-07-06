@@ -9,3 +9,7 @@ member_project_one_2:
 member_project_one_3:
   user: phat
   project: project_one
+
+member_project_one_4:
+  user: thuy
+  project: project_one
