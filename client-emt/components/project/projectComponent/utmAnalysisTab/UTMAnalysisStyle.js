@@ -6,11 +6,19 @@ export const UTMAnalysisStyle = () => (
     }
 
     .react-grid-Toolbar {
+      height: auto;
       padding: 10px;
     }
 
     .react-grid-Toolbar span {
       padding: 0 5px 0 5px;
+    }
+
+    .react-grid-Toolbar div {
+      padding: 20px;
+      width: 100%;
+      margin: 20px;
+      padding: 10px;
     }
 
     input[type='text'] {
