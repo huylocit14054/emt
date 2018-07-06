@@ -39,7 +39,6 @@ if (typeof window === 'undefined') {
         _.max(props.assignments.map(assignment => assignment.optionAuthorizations.length)),
       ]);
 
-      console.log(this.maxAmountOfOptions);
       this._columns = props.assignments.map(assignment => {
         const { dimension, optionAuthorizations } = assignment;
         const options = optionAuthorizations.map(optionAuth => ({
