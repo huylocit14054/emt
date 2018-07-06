@@ -12,7 +12,14 @@ class Project < ApplicationRecord
   validates :name, length: { minimum: 3 }, allow_blank: true, uniqueness: true
 
   # generate records for assignment view table
-  # return an array
+  # return an array json
+  # [
+  #   {
+  #     member_id,
+  #     member_name,
+  #     (all dimension of the project will be listed and)
+  #     dimension1 => {id, category, options: [{id, authorization_id, option_id},{id, authorization_id, option_id}]}}]
+
   def self.generate_dimensions_assigment_table(project_id:) # rubocop:disable Metrics/MethodLength
     # get the project
     @project = Project.find(project_id)
@@ -58,6 +65,22 @@ class Project < ApplicationRecord
   end
 
   # generate selection tree json for assign dimension
+  # return array
+  # [
+  #   {
+  #     label => dimension.name,
+  #     value => dimension.id,
+  #     key => dimension.id,
+  #     (all dimension option if dimension is input it dose not have children)
+  #     children => [
+  #       {
+  #         label => dimension.name: option.name,
+  #         value => dimension.id-option.id,
+  #         key => dimension.id-option.id
+  #       }
+  #     ]
+  #   }
+  # ]
   def self.generate_dimensions_selection_tree(project_id:)
     # get the project
     @project = Project.find(project_id)
@@ -88,7 +111,7 @@ class Project < ApplicationRecord
     JSON.parse(@selection_tree)
   end
 
-  # update authorization for each user
+  # assign authorization for each user
   def self.assign_dimension_for_members(members:, project_id:, choices:)
     # split array
     choices_array = split_array(choices: choices)
@@ -114,6 +137,7 @@ class Project < ApplicationRecord
   end
 
   # split array by "-"
+  # input ["1","2-1","2-2"] => [["1"],["2","1"],["2","2"]]
   def self.split_array(choices:)
     choices_array = []
     choices.each do |choice|
