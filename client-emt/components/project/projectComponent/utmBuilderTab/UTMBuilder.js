@@ -21,7 +21,7 @@ if (typeof window === 'undefined') {
   const { AutoComplete: AutoCompleteEditor } = Editors;
   const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
-  let projectId = -1;
+  let keepProjectId = -1;
   let uuid = 0;
   let initialState = {
     rows: [],
@@ -95,9 +95,9 @@ if (typeof window === 'undefined') {
       });
 
       // Make sure when user navigate to other projects by client side rendering, the state will be reset
-      if (projectId !== props.projectId) {
+      if (keepProjectId !== props.projectId) {
         const newProjectId = props.projectId;
-        projectId = newProjectId;
+        keepProjectId = newProjectId;
         this.state = {
           rows: [],
           selectedIndexes: [],
