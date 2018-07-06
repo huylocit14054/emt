@@ -18,28 +18,8 @@ class Project < ApplicationRecord
   #     member_id,
   #     member_name,
   #     (all dimension of the project will be listed and)
-  #     dimension1
-  #     {
-  #       id,
-  #       category,
-  #       (all authorization options of the user in project)
-  #       options 
-  #       [
-  #         {
-  #           id
-  #           authorization_id
-  #           option_id
-  #         },
-  #         {
-  #           id
-  #           authorization_id
-  #           option_id
-  #         }
-  #       ]
+  #     dimension1 => {id, category, options: [{id, authorization_id, option_id},{id, authorization_id, option_id}]}}]
 
-  #     }
-  #   }
-  # ]
   def self.generate_dimensions_assigment_table(project_id:) # rubocop:disable Metrics/MethodLength
     # get the project
     @project = Project.find(project_id)
