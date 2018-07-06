@@ -1,4 +1,4 @@
-import { Form, Icon, Input, Button, Spin } from 'antd';
+import { Form, Icon, Input, Button, Spin, message } from 'antd';
 import React from 'react';
 import { Mutation, withApollo } from 'react-apollo';
 import cookie from 'cookie';
@@ -28,8 +28,8 @@ class NormalLoginForm extends React.Component {
         }}
         onError={error => {
           // If you want to send error to external service?
-          error.graphQLErrors.map(message => {
-            message.error(message.error, 3);
+          error.graphQLErrors.map(error => {
+            message.error(error.message, 3);
           });
         }}
       >
