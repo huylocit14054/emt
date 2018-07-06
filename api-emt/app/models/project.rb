@@ -131,7 +131,7 @@ class Project < ApplicationRecord
     JSON.parse(@selection_tree)
   end
 
-  # update authorization for each user
+  # assign authorization for each user
   def self.assign_dimension_for_members(members:, project_id:, choices:)
     # split array
     choices_array = split_array(choices: choices)

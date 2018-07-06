@@ -10,6 +10,8 @@ RSpec.describe Project, type: :model do
   let(:dimension_1) { dimensions(:utm_source_one) }
   let(:dimension_2) { dimensions(:utm_source_two) }
   let(:dimension_3) { dimensions(:utm_source_three) }
+  let(:option_6) { options(:option_6) }
+  let(:option_7) { options(:option_7) }
   let(:project) { projects(:project_one) }
 
   describe '#generate_dimensions_assigment_table' do
@@ -183,8 +185,18 @@ RSpec.describe Project, type: :model do
   end
 
   describe '#split_array' do
-    let(:input_array) { ['1', '2-1', '2-2'] }
-    let(:return_array) { [['1'], ['2', '1'], ['2', '2']] }
+    let(:input_array) do
+      [dimension_1.id.to_s, # all option in demension 1 will be authorization
+       "#{dimension_2.id}-#{option_6.id}", # only option_6 in dimension 2
+       "#{dimension_2.id}-#{option_7.id}", # only option_7 in dimension 2
+       dimension_3.id.to_s] # input dimension 3 only create authorization but not option_authorization
+    end
+    let(:return_array) do
+      [[dimension_1.id.to_s], # all option in demension 1 will be authorization
+       [dimension_2.id.to_s, option_6.id.to_s], # only option_6 in dimension 2
+       [dimension_2.id.to_s, option_7.id.to_s], # only option_7 in dimension 2
+       [dimension_3.id.to_s]] # input dimension 3 only create authorization but not option_authorization
+    end
     it 'split to array of string to the correct format' do
       array = Project.split_array(choices: input_array)
       expect(array).to eq(return_array)
@@ -203,23 +215,102 @@ RSpec.describe Project, type: :model do
 
   describe '#create_authorization_and_option' do
     let(:thuy) { users(:thuy) }
-    let(:option_6) { options(:option_6) }
-    let(:option_7) { options(:option_7) }
     let(:choices) do
       [
-        [dimension_1.id.to_s],
-        [dimension_2.id.to_s, option_6.id.to_s],
-        [dimension_2.id.to_s, option_7.id.to_s],
-        [dimension_3.id.to_s]
+        [dimension_1.id.to_s], # all option in demension 1 will be authorization
+        [dimension_2.id.to_s, option_6.id.to_s], # only option_6 in dimension 2
+        [dimension_2.id.to_s, option_7.id.to_s], # only option_7 in dimension 2
+        [dimension_3.id.to_s] # input dimension 3 only create authorization but not option_authorization
       ]
     end
-    it 'create authorization and option for all the choice' do
+    it 'call authorize_all_option when all option of the selection dimension have been authorize' do
       expect(described_class).to receive(:authorize_all_option).once
       Project.create_authorization_and_option(user_id: thuy.id, project_id: project.id, choices_array: choices)
-      # auth_thuy_d2 = member_thuy.authorizations.find_by(dimension_id: dimension_2.id)
-      # allow(auth_thuy_d2.option_authorizations).to receive(:create!).twice
-      expect(member_thuy.authorizations.count).to eq(3)
-      # expect(auth_thuy_d2).to have_receive(:create!).once
+    end
+
+    it 'create authorization value for all choice dimensions' do
+      auths = member_thuy.authorizations
+      expect(auths.count).to eq(0)
+      Project.create_authorization_and_option(user_id: thuy.id, project_id: project.id, choices_array: choices)
+      expect(auths.count).to eq(3)
+    end
+
+    it 'create all option_authorization for selection dimension with all choices' do
+      Project.create_authorization_and_option(user_id: thuy.id, project_id: project.id, choices_array: choices)
+      auths = member_thuy.authorizations.find_by(dimension_id: dimension_1.id)
+      expect(auths.option_authorizations.count).to eq(5)
+    end
+
+    it 'create only choice options for dimension' do
+      Project.create_authorization_and_option(user_id: thuy.id, project_id: project.id, choices_array: choices)
+      auths = member_thuy.authorizations.find_by(dimension_id: dimension_2.id)
+      expect(auths.option_authorizations.count).to eq(2)
+    end
+
+    it 'create only choice input dimension with no option authorization' do
+      Project.create_authorization_and_option(user_id: thuy.id, project_id: project.id, choices_array: choices)
+      auths = member_thuy.authorizations.find_by(dimension_id: dimension_3.id)
+      expect(auths.option_authorizations.count).to be_zero
+    end
+  end
+
+  describe '#assign_dimension_for_members' do
+    let(:members) { [users(:loc).id.to_s, users(:nhat).id.to_s] }
+    let(:choices) do
+      [dimension_1.id.to_s, # all option in demension 1 will be authorization
+       "#{dimension_2.id}-#{option_6.id}", # only option_6 in dimension 2
+       "#{dimension_2.id}-#{option_7.id}", # only option_7 in dimension 2
+       dimension_3.id.to_s] # input dimension 3 only create authorization but not option_authorization
+    end
+    let(:return_array) do
+      [[dimension_1.id.to_s], # all option in demension 1 will be authorization
+       [dimension_2.id.to_s, option_6.id.to_s], # only option_6 in dimension 2
+       [dimension_2.id.to_s, option_7.id.to_s], # only option_7 in dimension 2
+       [dimension_3.id.to_s]] # input dimension 3 only create authorization but not option_authorization
+    end
+    it 'calls create_authorization_and_option' do
+      expect(described_class).to receive(:split_array).once
+      expect(described_class).to receive(:create_authorization_and_option).twice
+      Project.assign_dimension_for_members(members: members, project_id: project, choices: choices)
+    end
+  end
+
+  describe '#update_member_assignments' do
+    let(:option_6) { options(:option_6) }
+    let(:option_7) { options(:option_7) }
+    let(:choices) { [dimension_1.id.to_s] }
+    it 'remove all assigned authorization' do
+      Project.update_member_assignments(member_id: member_nhat.id, new_assignments: choices)
+      expect(
+        member_nhat.authorizations.find_by(dimension_id: dimension_2.id)
+      ).to be_nil
+      expect(
+        member_nhat.authorizations.find_by(dimension_id: dimension_3.id)
+      ).to be_nil
+    end
+
+    it 'call assign_dimension_for_members' do
+      expect(described_class).to receive(:assign_dimension_for_members).once
+      Project.update_member_assignments(member_id: member_nhat.id, new_assignments: choices)
+    end
+    it 'delete all old authorization and create new authorization' do
+      expect(member_nhat.authorizations.count).to eq(2)
+      Project.update_member_assignments(member_id: member_nhat.id, new_assignments: choices)
+      expect(member_nhat.authorizations.count).to eq(1)
+    end
+
+    it 'assign new dimension for the user' do
+      Project.update_member_assignments(member_id: member_nhat.id, new_assignments: choices)
+      expect(
+        member_nhat.authorizations.find_by(dimension_id: dimension_1.id)
+      ).not_to be_nil
+    end
+
+    it 'create new option_authrization for option' do
+      Project.update_member_assignments(member_id: member_nhat.id, new_assignments: choices)
+      expect(
+        member_nhat.authorizations.find_by(dimension_id: dimension_1.id).option_authorizations.count
+      ).to eq(dimension_1.options.count)
     end
   end
 end
