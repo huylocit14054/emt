@@ -18,14 +18,15 @@ class Types::QueryType < Types::BaseObject
 
   def projects_as_admin_of_current_user
     ::Project.joins(:member_relationships).where(project_members:
-      { role: 'project_admin', user_id: context[:current_user].id }).order(created_at: :desc)
+      { role: 'project_admin', user_id: context[:current_user].id, status:
+        'active' }).order(created_at: :desc)
   end
 
   field :projects_as_member_of_current_user, [Types::Project], null: false
 
   def projects_as_member_of_current_user
     ::Project.joins(:member_relationships).where(project_members:
-      { role: 'member', user_id: context[:current_user].id }).order(created_at: :desc)
+      { role: 'member', user_id: context[:current_user].id, status: 'active' }).order(created_at: :desc)
   end
 
   field :project_member, Types::ProjectMember, null: false, description: 'Project Member' do
@@ -111,7 +112,9 @@ class Types::QueryType < Types::BaseObject
 
   def project_members(project_id:)
     project = ::Project.find(project_id)
-    project.member_relationships.order_as_specified(role: ['project_admin']).order(:created_at)
+    project.member_relationships.order_as_specified(
+      role: ['project_admin']
+    ).order_as_specified(status: ['active']).order(:created_at)
   end
 
   # return dimension list of a project
@@ -161,7 +164,7 @@ class Types::QueryType < Types::BaseObject
   end
 
   # return current applied rule by project id
-  field :current_applied_rule_of_project, Types::Rule, null: false do
+  field :current_applied_rule_of_project, Types::Rule, null: true do
     argument :project_id, ID, required: true
   end
 
@@ -193,6 +196,6 @@ class Types::QueryType < Types::BaseObject
     argument :project_id, ID, required: true
   end
   def utm_analysis(project_id:)
-    ::Project.find(project_id).utms.order_by(created_at: :desc)
+    ::Project.find(project_id).utms.order(created_at: :desc)
   end
 end

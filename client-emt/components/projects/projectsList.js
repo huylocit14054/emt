@@ -16,7 +16,7 @@ class ProjectsList extends React.Component {
             if (loading) return 'Loading...';
             if (error) return `Error! ${error.message}`;
             const { projectsAsAdminOfCurrentUser, projectsAsMemberOfCurrentUser } = data;
-            console.log(projectsAsMemberOfCurrentUser);
+
             return (
               <div>
                 {projectsAsAdminOfCurrentUser.length > 0 && (

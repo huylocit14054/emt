@@ -1,16 +1,18 @@
-import { Modal, Button, Upload, Icon, message, Spin } from 'antd';
+import { Modal, Upload, Icon, message, Spin } from 'antd';
+import React from 'react';
 import { withApollo, ApolloConsumer } from 'react-apollo';
 import { Image } from 'cloudinary-react';
+import stylesheet from '../../styles/updateAvatar.less';
 import { updateAvatar as UPDATE_AVATAR_MUTATION } from '../../graphql/mutations.gql';
 import { getCurrentUser as GET_CURRENT_USER_QUERY } from '../../graphql/queries.gql';
 import { CLOUD_NAME } from '../../constants';
-import stylesheet from 'styles/updateAvatar.less';
 
 class ChangeAvatarModal extends React.Component {
   state = {
     visible: false,
     loading: false,
   };
+
   beforeUpload = file => {
     const isJPG = file.type === 'image/jpeg' || 'image/png';
     if (!isJPG) {
@@ -25,6 +27,7 @@ class ChangeAvatarModal extends React.Component {
     this.startUpload(file);
     return false;
   };
+
   startUpload = async file => {
     this.setState({ loading: true });
 
@@ -54,23 +57,25 @@ class ChangeAvatarModal extends React.Component {
         });
       });
   };
+
   showModal = () => {
     this.setState({
       visible: true,
     });
   };
-  handleOk = e => {
-    console.log(e);
+
+  handleOk = () => {
     this.setState({
       visible: false,
     });
   };
-  handleCancel = e => {
-    console.log(e);
+
+  handleCancel = () => {
     this.setState({
       visible: false,
     });
   };
+
   render() {
     return (
       <React.Fragment>
@@ -111,7 +116,7 @@ class ChangeAvatarModal extends React.Component {
                         width="300"
                         height="300"
                         crop="scale"
-                        style={{ margin: 'auto',  }}
+                        style={{ margin: 'auto' }}
                       />
                     </Spin>
                   </Upload>

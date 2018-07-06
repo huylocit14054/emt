@@ -5,6 +5,7 @@ import _ from 'lodash';
 import {
   getAssignmentsByProjectId as GET_ASSIGNMENTS_BY_PROJECT_ID,
   getAssignmentsByMemberId as GET_ASSIGNMENTS_BY_MEMBER_ID_QUERY,
+  getAssignmentsOfCurrentMember as GET_ASSIGNMENTS_OF_CURRENT_MEMBER_QUERY,
 } from '../../../../../graphql/queries.gql';
 import { updateMemberAssignments as UPDATE_MEMBER_ASSIGNMENTS_MUTATION } from '../../../../../graphql/mutations.gql';
 import UpdateMemberAssignmentsForm from './updateMemberAssignmentsModal/UpdateMemberAssignmentsForm';
@@ -30,7 +31,7 @@ class UpdateMemberAssignmentsModal extends React.Component {
       if (err) {
         return;
       }
-      console.log(values);
+
       values.memberId = parseInt(this.props.memberId);
       updateMemberAssignments({
         variables: {
@@ -70,6 +71,13 @@ class UpdateMemberAssignmentsModal extends React.Component {
               memberId: parseInt(this.props.memberId),
             },
           },
+          // Update assignments for current member in utm builder tab right away
+          {
+            query: GET_ASSIGNMENTS_OF_CURRENT_MEMBER_QUERY,
+            variables: {
+              projectId: parseInt(this.props.projectId),
+            },
+          },
         ],
       });
     });
@@ -86,8 +94,7 @@ class UpdateMemberAssignmentsModal extends React.Component {
 
         <Mutation
           mutation={UPDATE_MEMBER_ASSIGNMENTS_MUTATION}
-          onCompleted={data => {
-            console.log(data);
+          onCompleted={() => {
             this.setState({ visible: false });
             message.success('Dimensions Updated');
           }}

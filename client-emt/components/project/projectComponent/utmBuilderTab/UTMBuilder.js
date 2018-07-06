@@ -5,6 +5,9 @@ if (typeof window === 'undefined') {
   module.exports = loading;
 } else {
   const { Mutation } = require('react-apollo');
+  const {
+    currentMemberUtmHistory: CURRENT_MEMBER_UTM_HISTORY,
+  } = require('../../../../graphql/queries.gql');
   const { generateUtms: GENERATE_UTMS_MUTATION } = require('../../../../graphql/mutations.gql');
   const _ = require('lodash');
   const Highlighter = require('react-highlight-words');
@@ -19,6 +22,13 @@ if (typeof window === 'undefined') {
   const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
   let uuid = 0;
+  let initialState = {
+    rows: [],
+    selectedIndexes: [],
+    isValid: false,
+    errors: [],
+    generatedUtms: null,
+  };
   class UTMBuilder extends React.Component {
     constructor(props, context) {
       super(props, context);
@@ -62,7 +72,7 @@ if (typeof window === 'undefined') {
         },
         {
           key: 'url',
-          name: 'Landing Page URL',
+          name: '*Landing Page URL',
           width: 150,
           resizable: true,
           editable: true,
@@ -76,12 +86,15 @@ if (typeof window === 'undefined') {
         resizable: true,
       });
 
-      this.state = { rows: [], selectedIndexes: [], isValid: false, errors: [] };
+      this.state = initialState;
     }
 
     componentWillUnmount() {
+      const currentUuid = uuid;
       // reset uuid when component is unmounted
-      uuid = 0;
+      uuid = currentUuid;
+      // Remember state for the next mount
+      initialState = this.state;
     }
 
     onRowsSelected = rows => {
@@ -123,18 +136,6 @@ if (typeof window === 'undefined') {
     handleGridRowsUpdated = ({ fromRow, toRow, updated }) => {
       const rows = this.state.rows.slice();
 
-      // const selectiveDimensions = this.props.assignments
-      //   .filter(assignment => assignment.dimension.category === 'selection')
-      //   .map(assignment => assignment.dimension);
-
-      // console.log(selectiveDimensions);
-      // const selectiveDimensionsIdsArray = selectiveDimensions.map(dimension => dimension.id);
-      // console.log(selectiveDimensionsIdsArray);
-      // const rowsEdited = this.state.rows.map(row => {
-      //   selectiveDimensionsIdsArray.forEach(id => {
-
-      //   });
-      // });
       for (let i = fromRow; i <= toRow; i += 1) {
         const rowToUpdate = rows[i];
 
@@ -263,7 +264,6 @@ if (typeof window === 'undefined') {
 
         // Remove all spaces inside input fields
         Object.keys(row).map(key => {
-          console.log(rowModified[key]);
           if (/\s/.test(rowModified[key])) {
             rowModified[key] = rowModified[key].replace(/\s/g, '+');
           }
@@ -277,7 +277,7 @@ if (typeof window === 'undefined') {
         rule_id: currentAppliedRule.id,
         attributes: finalRows,
       };
-      console.log(values);
+
       generate({
         variables: {
           input: {
@@ -288,8 +288,8 @@ if (typeof window === 'undefined') {
     };
 
     render() {
-      const { isValid, errors } = this.state;
-      const { currentAppliedRule } = this.props;
+      const { isValid, errors, generatedUtms } = this.state;
+      const { currentAppliedRule, projectId } = this.props;
       // greater than 1 because of the landing page url
       if (this._columns.length > 3) {
         return (
@@ -299,12 +299,18 @@ if (typeof window === 'undefined') {
                 style={{ marginBottom: 20 }}
                 message="Current Applied Rule"
                 description={
-                  <Highlighter
-                    highlightClassName="highlight-dimension"
-                    searchWords={['<<(.*?)>>', 'landing_page_url']}
-                    autoEscape={false}
-                    textToHighlight={`landing_page_url?${currentAppliedRule.ruleStringToDisplay}`}
-                  />
+                  <div>
+                    <Highlighter
+                      highlightClassName="highlight-dimension-utm-builder"
+                      searchWords={['<<(.*?)>>', 'landing_page_url']}
+                      autoEscape={false}
+                      textToHighlight={`landing_page_url?${currentAppliedRule.ruleStringToDisplay}`}
+                    />
+
+                    <div style={{ color: '#ad8b00', marginLeft: 2, marginTop: 15 }}>
+                      <b>Warning! </b>Rules that are not assigned to you will be blank
+                    </div>
+                  </div>
                 }
                 type="info"
                 showIcon
@@ -319,8 +325,19 @@ if (typeof window === 'undefined') {
                   NotiMessage.error(message, 3);
                 });
               }}
+              refetchQueries={[
+                {
+                  query: CURRENT_MEMBER_UTM_HISTORY,
+                  variables: {
+                    projectId: parseInt(projectId),
+                  },
+                },
+              ]}
+              onCompleted={data => {
+                this.setState({ generatedUtms: data.generateUtms.urlStrings });
+              }}
             >
-              {(generateUtms, { loading, data }) => (
+              {(generateUtms, { loading }) => (
                 <React.Fragment>
                   <UTMTopToolbar
                     handleAddRow={this.handleAddRow}
@@ -364,7 +381,7 @@ if (typeof window === 'undefined') {
                     />
                   </div>
                   <Spin indicator={antIcon} spinning={loading}>
-                    {data && <URLsList urls={data.generateUtms.urlStrings} />}
+                    {generatedUtms && <URLsList urls={generatedUtms} />}
                   </Spin>
                 </React.Fragment>
               )}
@@ -372,6 +389,18 @@ if (typeof window === 'undefined') {
           </React.Fragment>
         );
       }
+
+      if (!currentAppliedRule)
+        return (
+          <div>
+            <Alert
+              message="Note"
+              description="No UTM builder rule is currently applied"
+              type="info"
+              showIcon
+            />
+          </div>
+        );
       // If current member currently not assigned any dimensiions
       return (
         <div>

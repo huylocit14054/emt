@@ -16,12 +16,6 @@ const UpdateRuleForm = class extends React.Component {
     this.setState({ value: newValue });
   };
 
-  onBlur = () => (_, clickedOnSuggestion) => {
-    if (!clickedOnSuggestion) {
-      console.log('finished editing');
-    }
-  };
-
   onAdd = () => {
     const { ruleId } = this.props;
     const ruleName = `#rule-suggestions-update-${ruleId}`;
@@ -59,7 +53,6 @@ const UpdateRuleForm = class extends React.Component {
             <UpdateRuleInput
               ruleId={ruleId}
               onChange={this.onChange}
-              onBlur={this.onBlur}
               onAdd={this.onAdd}
               value={value}
               data={projectDimensions.map(dimension => ({

@@ -81,7 +81,7 @@ const UpdateMemberAssignmentsForm = Form.create()(
                       if (assignmentsData.loading) return 'Loading...';
                       if (assignmentsData.error) return `Error! ${assignmentsData.error.message}`;
                       const previousAssignmentsOfMember = assignmentsData.data.memberAssignments;
-                      console.log(previousAssignmentsOfMember);
+
                       return (
                         <FormItem label="Dimensions and options">
                           {getFieldDecorator('newAssignments', {

@@ -4,7 +4,10 @@ import { withRouter } from 'next/router';
 import React from 'react';
 import _ from 'lodash';
 import { createRule as CREATE_RULE_MUTATION } from '../../../../graphql/mutations.gql';
-import { getRulesByProjectId as GET_RULES_BY_PROJECT_ID_QUERY } from '../../../../graphql/queries.gql';
+import {
+  getRulesByProjectId as GET_RULES_BY_PROJECT_ID_QUERY,
+  getAssignmentsOfCurrentMember as GET_ASSIGNMENTS_OF_CURRENT_MEMBER_QUERY,
+} from '../../../../graphql/queries.gql';
 import CreateRuleForm from './createRuleModal/CreateRuleForm';
 
 class CreateRuleModal extends React.Component {
@@ -27,7 +30,12 @@ class CreateRuleModal extends React.Component {
 
     // Map utm_name to id
     _.forEach(projectDimensions, dimension => {
-      rule_string = _.replace(rule_string, new RegExp(dimension.name, 'g'), dimension.id);
+      const dimension_name_regex = `<<${dimension.name}>>`;
+      rule_string = _.replace(
+        rule_string,
+        new RegExp(dimension_name_regex, 'g'),
+        `<<${dimension.id}>>`
+      );
     });
 
     createRule({
@@ -69,6 +77,15 @@ class CreateRuleModal extends React.Component {
           data,
         });
       },
+      // Refetch current applied rule in UTM tab when create new rule
+      refetchQueries: [
+        {
+          query: GET_ASSIGNMENTS_OF_CURRENT_MEMBER_QUERY,
+          variables: {
+            projectId: parseInt(project_id),
+          },
+        },
+      ],
     });
   };
 
@@ -85,8 +102,7 @@ class CreateRuleModal extends React.Component {
         <br />
         <Mutation
           mutation={CREATE_RULE_MUTATION}
-          onCompleted={data => {
-            console.log(data);
+          onCompleted={() => {
             this.setState({ visible: false });
             this.child.resetState();
             message.success('Rule Created');
