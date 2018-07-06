@@ -47,7 +47,6 @@ if (typeof window === 'undefined') {
           name: 'Avatar',
           formatter: ImageFormatter,
           width: 60,
-          draggable: true,
           resizable: true,
         },
         {
@@ -147,7 +146,7 @@ if (typeof window === 'undefined') {
         createdAt: moment(utm.createdAt).fromNow(),
         username: utm.projectMember.user.username,
         action: (
-          <Button icon="copy" type="dashed" onClick={() => copyToClipboard(utm.url)}>
+          <Button icon="copy" size="small" type="dashed" onClick={() => copyToClipboard(utm.url)}>
             Copy URL{' '}
           </Button>
         ),
@@ -188,7 +187,7 @@ if (typeof window === 'undefined') {
                 enableCellSelect
                 rowsCount={this.getSize()}
                 minHeight={600}
-                rowHeight={55}
+                rowHeight={30}
                 onRowExpandToggle={this.onRowExpandToggle}
                 enableDragAndDrop
                 toolbar={

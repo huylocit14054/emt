@@ -21,6 +21,7 @@ if (typeof window === 'undefined') {
   const { AutoComplete: AutoCompleteEditor } = Editors;
   const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
+  let keepProjectId = -1;
   let uuid = 0;
   let initialState = {
     rows: [],
@@ -32,6 +33,12 @@ if (typeof window === 'undefined') {
   class UTMBuilder extends React.Component {
     constructor(props, context) {
       super(props, context);
+      // Find max amount of options inside assignments, then find min with 7 (autocomplete show maximum 7 elements)
+      this.maxAmountOfOptions = _.min([
+        7,
+        _.max(props.assignments.map(assignment => assignment.optionAuthorizations.length)),
+      ]);
+
       this._columns = props.assignments.map(assignment => {
         const { dimension, optionAuthorizations } = assignment;
         const options = optionAuthorizations.map(optionAuth => ({
@@ -86,7 +93,27 @@ if (typeof window === 'undefined') {
         resizable: true,
       });
 
-      this.state = initialState;
+      // Make sure when user navigate to other projects by client side rendering, the state will be reset
+      if (keepProjectId !== props.projectId) {
+        const newProjectId = props.projectId;
+        keepProjectId = newProjectId;
+        this.state = {
+          rows: [],
+          selectedIndexes: [],
+          isValid: false,
+          errors: [],
+          generatedUtms: null,
+        };
+        uuid = 0;
+      } else {
+        this.state = initialState;
+      }
+    }
+
+    componentDidMount() {
+      if (uuid === 0) {
+        this.handleAddRow();
+      }
     }
 
     componentWillUnmount() {
@@ -288,7 +315,7 @@ if (typeof window === 'undefined') {
     };
 
     render() {
-      const { isValid, errors, generatedUtms } = this.state;
+      const { isValid, errors, generatedUtms, rows } = this.state;
       const { currentAppliedRule, projectId } = this.props;
       // greater than 1 because of the landing page url
       if (this._columns.length > 3) {
@@ -375,11 +402,20 @@ if (typeof window === 'undefined') {
                           indexes: this.state.selectedIndexes,
                         },
                       }}
-                      rowHeight={40}
-                      minHeight={300}
+                      minHeight={rows.length * 30 + this.maxAmountOfOptions * 35}
+                      rowHeight={30}
                       rowScrollTimeout={200}
                     />
                   </div>
+                  <UTMTopToolbar
+                    handleAddRow={this.handleAddRow}
+                    handleDuplicateRows={this.handleDuplicateRows}
+                    handleRemoveSelectedRows={this.handleRemoveSelectedRows}
+                    handleGenerateUrls={() => this.generateUtms(generateUtms)}
+                    isGenerating={loading}
+                    datasIsValid={isValid}
+                  />
+
                   <Spin indicator={antIcon} spinning={loading}>
                     {generatedUtms && <URLsList urls={generatedUtms} />}
                   </Spin>

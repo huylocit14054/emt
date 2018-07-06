@@ -42,9 +42,9 @@ class RulesList extends Component {
                   {' '}
                   <Highlighter
                     highlightClassName="highlight-dimension"
-                    searchWords={['<<(.*?)>>']}
+                    searchWords={['<<(.*?)>>', 'landing_page_url']}
                     autoEscape={false}
-                    textToHighlight={rule.ruleStringToDisplay}
+                    textToHighlight={`landing_page_url?${rule.ruleStringToDisplay}`}
                   />
                 </code>
               )}

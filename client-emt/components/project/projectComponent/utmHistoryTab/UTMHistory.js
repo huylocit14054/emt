@@ -92,7 +92,7 @@ if (typeof window === 'undefined') {
         date: moment(utm.createdAt).format('DD/MM/YY'),
         createdAt: moment(utm.createdAt).fromNow(),
         action: (
-          <Button icon="copy" type="dashed" onClick={() => copyToClipboard(utm.url)}>
+          <Button icon="copy" size="small" type="dashed" onClick={() => copyToClipboard(utm.url)}>
             Copy URL{' '}
           </Button>
         ),
@@ -132,7 +132,7 @@ if (typeof window === 'undefined') {
               enableCellSelect
               rowsCount={this.getSize()}
               minHeight={600}
-              rowHeight={55}
+              rowHeight={30}
               onAddFilter={this.handleFilterChange}
               onClearFilters={this.onClearFilters}
             />
