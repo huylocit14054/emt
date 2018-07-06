@@ -1,0 +1,39 @@
+auth1_op1:
+  authorization: auth_p1_d1_loc
+  option: option_1
+auth1_op2:
+  authorization: auth_p1_d1_loc
+  option: option_2
+auth1_op3:
+  authorization: auth_p1_d1_loc
+  option: option_3
+auth1_op6:
+  authorization: auth_p1_d2_loc
+  option: option_6
+auth1_op10:
+  authorization: auth_p1_d2_loc
+  option: option_10
+auth2_op6:
+  authorization: auth_p1_d2_nhat
+  option: option_6
+auth2_op7:
+  authorization: auth_p1_d2_nhat
+  option: option_7
+auth2_op8: 
+  authorization: auth_p1_d2_nhat
+  option: option_8
+auth2_op9:
+  authorization: auth_p1_d2_nhat
+  option: option_9
+auth2_op10:
+  authorization: auth_p1_d2_nhat
+  option: option_10
+auth3_op4:
+  authorization: auth_p1_d1_phat
+  option: option_4
+auth3_op5:
+  authorization: auth_p1_d1_phat
+  option: option_5
+auth3_op9:
+  authorization: auth_p1_d2_phat
+  option: option_9
