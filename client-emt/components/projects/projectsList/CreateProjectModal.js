@@ -54,8 +54,8 @@ class CreateProjectModal extends React.Component {
             data,
           });
           Router.push(
-            `/projectMembers?id=${createdProject.id}`,
-            `/project/${createdProject.id}/members`
+            `/projectDimensions?id=${createdProject.id}`,
+            `/project/${createdProject.id}/dimensions`
           );
         },
       });

@@ -19,7 +19,7 @@ export default class RuleInput extends React.Component {
         displayTransform={display => `<<${display}>>`}
       >
         <Mention
-          trigger={/(<<(.*))$/}
+          trigger={/(\[\[(.*))$/}
           data={search =>
             data.filter(dimension => dimension.display.toLowerCase().includes(search.toLowerCase()))
           }

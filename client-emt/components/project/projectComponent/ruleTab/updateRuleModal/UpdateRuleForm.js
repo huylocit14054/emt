@@ -39,6 +39,7 @@ const UpdateRuleForm = class extends React.Component {
       <MyQuery query={GET_DIMENSION_SUGGESTIONS_BY_PROJECT_ID} variables={{ projectId }}>
         {({ projectDimensions }) => (
           <Modal
+            maskClosable={false}
             title="Update Project UTM Rule"
             confirmLoading={confirmLoading}
             visible={visible}
