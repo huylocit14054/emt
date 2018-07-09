@@ -101,7 +101,7 @@ class ChangeAvatarModal extends React.Component {
   };
 
   cancelUpdateAvatar = () => {
-    this.setState({ file: null });
+    this.setState({ file: null, scale: 1 });
   };
 
   render() {
