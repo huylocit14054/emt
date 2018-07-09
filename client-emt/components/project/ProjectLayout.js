@@ -91,9 +91,6 @@ class ProjectLayout extends React.Component {
                     <UTMAnalysisTab />
                   </TabPane>
                 )}
-                <TabPane tab="Members" key="members">
-                  <MembersTab />
-                </TabPane>
 
                 {project.isManagedByCurrentUser && (
                   <TabPane tab="Dimensions" key="dimensions">
@@ -101,13 +98,17 @@ class ProjectLayout extends React.Component {
                   </TabPane>
                 )}
                 {project.isManagedByCurrentUser && (
-                  <TabPane tab="Assignments" key="assignments">
-                    <AssignmentsTab />
-                  </TabPane>
-                )}
-                {project.isManagedByCurrentUser && (
                   <TabPane tab="Rules" key="rules">
                     <RulesTab />
+                  </TabPane>
+                )}
+                <TabPane tab="Members" key="members">
+                  <MembersTab />
+                </TabPane>
+
+                {project.isManagedByCurrentUser && (
+                  <TabPane tab="Assignments" key="assignments">
+                    <AssignmentsTab />
                   </TabPane>
                 )}
               </Tabs>

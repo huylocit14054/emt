@@ -34,6 +34,7 @@ const UpdateMemberAssignmentsForm = Form.create()(
 
       return (
         <Modal
+          maskClosable={false}
           confirmLoading={confirmLoading}
           title={
             <React.Fragment>

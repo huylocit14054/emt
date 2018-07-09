@@ -112,6 +112,7 @@ class ChangeAvatarModal extends React.Component {
           Change Avatar
         </a>
         <Modal
+          maskClosable={false}
           title="Change Picture"
           visible={this.state.visible}
           footer={null}

@@ -317,6 +317,17 @@ if (typeof window === 'undefined') {
     render() {
       const { isValid, errors, generatedUtms, rows } = this.state;
       const { currentAppliedRule, projectId } = this.props;
+      if (!currentAppliedRule)
+        return (
+          <div>
+            <Alert
+              message="Note"
+              description="No UTM builder rule is currently applied"
+              type="info"
+              showIcon
+            />
+          </div>
+        );
       // greater than 1 because of the landing page url
       if (this._columns.length > 3) {
         return (
@@ -426,17 +437,6 @@ if (typeof window === 'undefined') {
         );
       }
 
-      if (!currentAppliedRule)
-        return (
-          <div>
-            <Alert
-              message="Note"
-              description="No UTM builder rule is currently applied"
-              type="info"
-              showIcon
-            />
-          </div>
-        );
       // If current member currently not assigned any dimensiions
       return (
         <div>
