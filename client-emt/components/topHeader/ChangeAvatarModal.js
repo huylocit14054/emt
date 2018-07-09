@@ -1,6 +1,7 @@
-import { Modal, Upload, Icon, message, Spin } from 'antd';
+import { Modal, Upload, Icon, message, Spin, Button, Slider } from 'antd';
 import React from 'react';
 import { withApollo, ApolloConsumer } from 'react-apollo';
+import AvatarEditor from 'react-avatar-editor';
 import { Image } from 'cloudinary-react';
 import stylesheet from '../../styles/updateAvatar.less';
 import { updateAvatar as UPDATE_AVATAR_MUTATION } from '../../graphql/mutations.gql';
@@ -11,7 +12,26 @@ class ChangeAvatarModal extends React.Component {
   state = {
     visible: false,
     loading: false,
+    file: null,
+    scale: 1,
   };
+
+  onClickSave = () => {
+    if (this.editor) {
+      // This returns a HTMLCanvasElement, it can be made into a data URL or a blob,
+      // drawn on another canvas, or added to the DOM.
+      const canvas = this.editor.getImage();
+      canvas.toBlob(blob => this.startUpload(blob));
+      // If you want the image resized to the canvas size (also a HTMLCanvasElement)
+      // const canvasScaled = this.editor.getImageScaledToCanvas();
+    }
+  };
+
+  onScale = scale => {
+    this.setState({ scale });
+  };
+
+  setEditorRef = editor => (this.editor = editor);
 
   beforeUpload = file => {
     const isJPG = file.type === 'image/jpeg' || 'image/png';
@@ -24,7 +44,8 @@ class ChangeAvatarModal extends React.Component {
       message.error('Image must smaller than 2MB!');
       return false;
     }
-    this.startUpload(file);
+    this.setState({ file });
+
     return false;
   };
 
@@ -54,6 +75,8 @@ class ChangeAvatarModal extends React.Component {
 
         this.setState({
           loading: false,
+          file: null,
+          scale: 0,
         });
       });
   };
@@ -71,12 +94,18 @@ class ChangeAvatarModal extends React.Component {
   };
 
   handleCancel = () => {
+    this.cancelUpdateAvatar();
     this.setState({
       visible: false,
     });
   };
 
+  cancelUpdateAvatar = () => {
+    this.setState({ file: null, scale: 1 });
+  };
+
   render() {
+    const { file, scale } = this.state;
     return (
       <React.Fragment>
         <a onClick={this.showModal} className="change-avatar-link">
@@ -96,20 +125,41 @@ class ChangeAvatarModal extends React.Component {
               const { currentUser } = data;
               return (
                 <div className="upload-avatar-layout">
-                  <Upload
-                    name="avatar"
-                    listType="picture-card"
-                    className="avatar-uploader"
-                    showUploadList={false}
-                    beforeUpload={this.beforeUpload}
-                  >
-                    <style dangerouslySetInnerHTML={{ __html: stylesheet }} />
-                    <Spin
-                      tip="Uploading..."
-                      spinning={this.state.loading}
-                      style={{ right: '0%' }}
-                      indicator={<Icon type="loading" style={{ fontSize: 24 }} spin />}
+                  <style dangerouslySetInnerHTML={{ __html: stylesheet }} />
+                  {!file && (
+                    <Upload
+                      name="avatar"
+                      className="avatar-uploader"
+                      showUploadList={false}
+                      beforeUpload={this.beforeUpload}
                     >
+                      <Button>
+                        <Icon type="upload" /> Click to Upload
+                      </Button>
+                    </Upload>
+                  )}
+                  <br />
+                  <br />
+
+                  <Spin
+                    tip="Uploading..."
+                    spinning={this.state.loading}
+                    style={{ right: '0%' }}
+                    indicator={<Icon type="loading" style={{ fontSize: 24 }} spin />}
+                  >
+                    {file ? (
+                      <React.Fragment>
+                        <AvatarEditor
+                          ref={this.setEditorRef}
+                          image={file}
+                          width={300}
+                          height={300}
+                          border={50}
+                          scale={scale}
+                        />
+                        <Slider value={scale} onChange={this.onScale} min={1} max={5} step={0.1} />
+                      </React.Fragment>
+                    ) : (
                       <Image
                         cloudName={CLOUD_NAME}
                         publicId={currentUser.avatar}
@@ -118,8 +168,18 @@ class ChangeAvatarModal extends React.Component {
                         crop="scale"
                         style={{ margin: 'auto' }}
                       />
-                    </Spin>
-                  </Upload>
+                    )}
+                  </Spin>
+
+                  {file && (
+                    <React.Fragment>
+                      <Button type="primary" onClick={this.onClickSave}>
+                        Save
+                      </Button>
+                      {'  '}
+                      <Button onClick={this.cancelUpdateAvatar}>Cancel</Button>
+                    </React.Fragment>
+                  )}
                 </div>
               );
             }}
