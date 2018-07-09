@@ -74,9 +74,13 @@ jobs:
       - run:
           name: "before_test: setup db"
           command: docker-compose run api rails db:create db:migrate
-      # - run:
-      #     name: test
-      #     command: docker-compose run api rails test
+      - run:
+          name: test
+          command: docker-compose run api rspec
+      - store_artifacts:
+          path: ~/project/api-emt/coverage
+      - store_test_results:
+          path: ~/project/api-emt/coverage
       - run:
           name: docker-compose down
           command: docker-compose down
