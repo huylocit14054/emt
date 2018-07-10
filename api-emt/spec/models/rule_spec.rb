@@ -5,13 +5,13 @@ RSpec.describe Rule, type: :model do
   let(:ids) { @project.dimensions.ids }
   let(:new_first_rule) do
     Rule.new(
-      rule_string: "utm_source=<<#{ids.first}>>-<<#{ids.first}>>&utm_camp=<<#{ids.second}>>&date=<<date>>",
+      rule_string: "utm_source={{#{ids.first}}}-{{#{ids.first}}}&utm_camp={{#{ids.second}}}&date={{date}}",
       project: @project
     )
   end
   let(:new_second_rule) do
     Rule.new(
-      rule_string: "utm_source=<<#{ids.second}>>-<<#{ids.first}>>&utm_camp=<<#{ids.last}>>&date=<<date>>",
+      rule_string: "utm_source={{#{ids.second}}}-{{#{ids.first}}}&utm_camp={{#{ids.last}}}&date={{date}}",
       project: @project
     )
   end
@@ -21,7 +21,7 @@ RSpec.describe Rule, type: :model do
   end
   describe '#check_rule_string_url' do
     it 'return true when the rule string has valid url format' do
-      new_rule = Rule.new(rule_string: 'utm_source=<<3>>-<<1>>&utm_camp=<<2>>&date=<<date>>', project: @project)
+      new_rule = Rule.new(rule_string: 'utm_source={{3}}-{{1}}&utm_camp={{2}}&date={{date}}', project: @project)
       expect(new_rule.send(:check_rule_string_url)).to be(true)
     end
 
@@ -39,21 +39,21 @@ RSpec.describe Rule, type: :model do
 
     it 'return error when rule include an invalid dimension name' do
       new_rule = Rule.new(
-        rule_string: 'utm_source=<<3>>-<<1>>&utm_camp=<<2>>-<<invalid_dimension_1>>',
+        rule_string: 'utm_source={{3}}-{{1}}&utm_camp={{2}}-{{invalid_dimension_1}}',
         project: @project
       )
       new_rule.send(:check_rule_string_url)
-      error_string = 'cannot get dimension <<invalid_dimension_1>>'
+      error_string = 'cannot get dimension {{invalid_dimension_1}}'
       expect(new_rule.errors[:rule_string]).to include(error_string)
     end
 
     it 'return error when rule include invalid dimensions name' do
       new_rule = Rule.new(
-        rule_string: 'utm_camp=<<2>>-<<invalid_dimension_1>>_<<invalid_dimension_2>>',
+        rule_string: 'utm_camp={{2}}-{{invalid_dimension_1}}_{{invalid_dimension_2}}',
         project: @project
       )
       new_rule.send(:check_rule_string_url)
-      error_string = 'cannot get dimensions <<invalid_dimension_1>>, <<invalid_dimension_2>>'
+      error_string = 'cannot get dimensions {{invalid_dimension_1}}, {{invalid_dimension_2}}'
       expect(new_rule.errors[:rule_string]).to include(error_string)
     end
 
@@ -65,14 +65,14 @@ RSpec.describe Rule, type: :model do
     end
 
     it 'return error when rule include invalid url format' do
-      new_rule = Rule.new(rule_string: 'utm_camp=<<2>>&xtm={}<>{}<>', project: @project)
+      new_rule = Rule.new(rule_string: 'utm_camp={{2}}&xtm={}<>{}<>', project: @project)
       new_rule.send(:check_rule_string_url)
       error_string = 'cannot contain {, }, <, >'
       expect(new_rule.errors[:rule_string]).to include(error_string)
     end
 
     it 'return error when user only input dimension id' do
-      new_rule = Rule.new(rule_string: '<<2>>', project: @project)
+      new_rule = Rule.new(rule_string: '{{2}}', project: @project)
       expect(new_rule.send(:check_rule_string_url)).to be(true)
     end
 
@@ -82,7 +82,7 @@ RSpec.describe Rule, type: :model do
     end
 
     it 'return error when user rule have space in the url' do
-      new_rule = Rule.new(rule_string: 'utm_source<<2>>&abc ng', project: @project)
+      new_rule = Rule.new(rule_string: 'utm_source{{2}}&abc ng', project: @project)
       new_rule.send(:check_rule_string_url)
       error_string = 'cannot contain white space'
       expect(new_rule.errors[:rule_string]).to include(error_string)
@@ -92,7 +92,7 @@ RSpec.describe Rule, type: :model do
   describe '#check_dimension_in_rule' do
     it 'return dimension that dose not in the project' do
       ids = @project.dimensions.ids
-      new_rule = Rule.new(rule_string: "utm_camp=<<#{ids.first}>>_<<1>>", project: @project)
+      new_rule = Rule.new(rule_string: "utm_camp={{#{ids.first}}}_{{1}}", project: @project)
       new_rule.send(:check_dimension_in_rule)
       error_string = 'does not include dimensions with id: 1'
       expect(new_rule.errors[:rule_string]).to include(error_string)
@@ -137,7 +137,7 @@ RSpec.describe Rule, type: :model do
   describe '.display_name' do
     it 'return display name for the rule in the database' do
       rule = new_first_rule.display_name
-      display_name = 'utm_source=<<utm source one>>-<<utm source one>>&utm_camp=<<utm source two>>&date=<<date>>'
+      display_name = 'utm_source={{utm source one}}-{{utm source one}}&utm_camp={{utm source two}}&date={{date}}'
       expect(rule).to eq(display_name)
     end
   end
