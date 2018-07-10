@@ -134,6 +134,10 @@ jobs:
           name: Ensure the application starts up successfully
           command: wget --retry-connrefused --no-check-certificate -T 60 http://redpola-emt.southeastasia.cloudapp.azure.com/
 
+      - run:
+          name: Restart streaming log service
+          command: ssh ubuntu@redpola-emt.southeastasia.cloudapp.azure.com "/emt/scripts/restart_streaming_log.sh"
+
 workflows:
   version: 2
   release:
