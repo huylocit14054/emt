@@ -1,7 +1,7 @@
 class Utm < ApplicationRecord
   belongs_to :project_member
 
-  REGEX_GET_DIMENSION_CODE = /(<<\d*?>>)/ # get <<1>>|<<2>>|<<3>>
+  REGEX_GET_DIMENSION_CODE = /({{\d*?}})/ # get {{1}}|{{2}}|{{3}}
   # REGEX_CHECK_VALID_URL = %r/^((https?):\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/
   # base on the values the user return generate new link base on the apllied rule
   # example hash value:
@@ -19,7 +19,7 @@ class Utm < ApplicationRecord
   #    },
   #   ]
   # }
-  # url?x=<<1>>-<2>&b=<<4>>&date=<<date>>
+  # url?x={{1}}-<2>&b={{4}}&date={{date}}
 
   # generate a utm record(return generated url)
   def self.generate_utm_record(values:, rule:, project_member_id:)
@@ -42,7 +42,7 @@ class Utm < ApplicationRecord
   # subtitute the value to the code dimension
   def self.subtitute_values_to_rule(attributes:, rule:)
     attributes.each do |key, value|
-      key = '<<' + key + '>>'
+      key = '{{' + key + '}}'
       rule = rule.gsub(key, value)
     end
     rule

@@ -5,11 +5,11 @@ class Rule < ApplicationRecord
   before_create :deactivate_current_rule
   validate :check_rule_string_url, :check_dimension_in_rule
   validates :rule_string, uniqueness: true
-  REGEX_GET_DIMENSION_IDS = /<<(\d*?)>>/ # get 1|2|3
-  REGEX_GET_DIMENSION_CODE = /(<<\d*?>>)/ # get <<1>>|<<2>>|<<3>>
+  REGEX_GET_DIMENSION_IDS = /{{(\d*?)}}/ # get 1|2|3
+  REGEX_GET_DIMENSION_CODE = /({{\d*?}})/ # get {{1}}|{{2}}|{{3}}
   REGEX_CHECK_VALIDATE_URL = /([-a-zA-Z0-9@:%_\+.~#?&=]+)/ # valid "url?utm_source=--&utm_camp="
-  REGEX_GET_DATE_CODE = /(<<date>>)/ # get code <<date>>
-  REGEX_GET_INVALID_DIMENSION_STRING = /(<<.*?>>)/ # get <<HEHE>>
+  REGEX_GET_DATE_CODE = /({{date}})/ # get code {{date}}
+  REGEX_GET_INVALID_DIMENSION_STRING = /({{.*?}})/ # get {{HEHE}}
   REGEX_GET_SPACE = /\s/
 
   # activate_rule
@@ -88,7 +88,7 @@ class Rule < ApplicationRecord
   # get all invalid dimension string
   def check_invalid_dimension_string(rule_without_code:)
     invalid_dimension = rule_without_code.scan(REGEX_GET_INVALID_DIMENSION_STRING).flatten
-    # the user input <<1>> the invalid_dimension will become [] => error is "cannot get dimensions"
+    # the user input {{1}} the invalid_dimension will become [] => error is "cannot get dimensions"
     # rubocop:disable Style/GuardClause
     if invalid_dimension.present?
       error_string = invalid_dimension.count == 1 ? "cannot get dimension #{invalid_dimension.join('')}" : "cannot get dimensions #{invalid_dimension.join(', ')}"
