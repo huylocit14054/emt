@@ -28,7 +28,8 @@ class CreateRuleModal extends React.Component {
     const project_id = router.query.id;
     let rule_string = ruleString;
 
-    // Map utm_name to id
+    console.log(rule_string);
+    // Map utm_name to id with 2 difference regex (handle paste scenario)
     _.forEach(projectDimensions, dimension => {
       const dimension_name_regex = `<<${dimension.name}>>`;
       rule_string = _.replace(
@@ -37,6 +38,8 @@ class CreateRuleModal extends React.Component {
         `<<${dimension.id}>>`
       );
     });
+
+    console.log(rule_string);
 
     createRule({
       variables: {

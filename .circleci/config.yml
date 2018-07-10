@@ -74,9 +74,13 @@ jobs:
       - run:
           name: "before_test: setup db"
           command: docker-compose run api rails db:create db:migrate
-      # - run:
-      #     name: test
-      #     command: docker-compose run api rails test
+      - run:
+          name: test
+          command: docker-compose run api rspec
+      - store_artifacts:
+          path: ~/project/api-emt/coverage
+      - store_test_results:
+          path: ~/project/api-emt/coverage
       - run:
           name: docker-compose down
           command: docker-compose down
@@ -129,6 +133,10 @@ jobs:
       - run:
           name: Ensure the application starts up successfully
           command: wget --retry-connrefused --no-check-certificate -T 60 http://redpola-emt.southeastasia.cloudapp.azure.com/
+
+      - run:
+          name: Restart streaming log service
+          command: ssh ubuntu@redpola-emt.southeastasia.cloudapp.azure.com "/emt/scripts/restart_streaming_log.sh"
 
 workflows:
   version: 2

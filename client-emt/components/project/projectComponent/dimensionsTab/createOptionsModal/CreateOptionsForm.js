@@ -77,6 +77,7 @@ const CreateOptionForm = Form.create()(
       ));
       return (
         <Modal
+          maskClosable={false}
           title={`${this.props.dimensionName} dimension`}
           confirmLoading={confirmLoading}
           visible={visible}

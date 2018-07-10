@@ -43,6 +43,7 @@ const CreateRuleForm = Form.create()(
         <MyQuery query={GET_DIMENSION_SUGGESTIONS_BY_PROJECT_ID} variables={{ projectId }}>
           {({ projectDimensions }) => (
             <Modal
+              maskClosable={false}
               title="Create Project UTM Rule"
               confirmLoading={confirmLoading}
               visible={visible}
