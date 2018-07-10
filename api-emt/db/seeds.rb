@@ -1,17 +1,17 @@
 # Seed 50 users
 User.create(username: 'quangnhat', email: 'quangnhat@gmail.com', role: User::ROLE_ROOT_ADMIN, password: 'quangnhat')
 500.times do |i|
-  puts username: "#{Faker::Internet.user_name(6..255)} #{i}"
-  puts email: "#{Faker::Internet.email(6..255)}#{i}"
-  User.create!(username: "#{Faker::Internet.user_name(6..255)} #{i}", email: "taolanguoidung#{i}@gmail.com", password: '123456')
+  User.create!(
+    username: "#{Faker::Internet.user_name(6..255)} #{i}",
+    email: "taolanguoidung#{i}@gmail.com",
+    password: '123456'
+  )
 end
-puts User.count
 
 # Seed projects
 # rubocop:disable Metrics/BlockLength
 100.times do |i|
-  project = Project.create(name: Faker::RickAndMorty.location+i.to_s, description: Faker::RickAndMorty.quote)
-  puts "Create project #{project.name}"
+  project = Project.create(name: Faker::RickAndMorty.location + i.to_s, description: Faker::RickAndMorty.quote)
   ProjectMember.create(user_id: 1, project_id: project.id, role: 'project_admin')
   ProjectMember.create(user_id: rand(2..501), project_id: project.id, role: 'project_admin')
   # Seed selection dimension
