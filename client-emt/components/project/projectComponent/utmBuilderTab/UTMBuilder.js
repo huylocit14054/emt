@@ -33,12 +33,6 @@ if (typeof window === 'undefined') {
   class UTMBuilder extends React.Component {
     constructor(props, context) {
       super(props, context);
-      // Find max amount of options inside assignments, then find min with 7 (autocomplete show maximum 7 elements)
-      this.maxAmountOfOptions = _.min([
-        7,
-        _.max(props.assignments.map(assignment => assignment.optionAuthorizations.length)),
-      ]);
-
       this._columns = props.assignments.map(assignment => {
         const { dimension, optionAuthorizations } = assignment;
         const options = optionAuthorizations.map(optionAuth => ({
@@ -340,7 +334,7 @@ if (typeof window === 'undefined') {
                   <div>
                     <Highlighter
                       highlightClassName="highlight-dimension-utm-builder"
-                      searchWords={['<<(.*?)>>', 'landing_page_url']}
+                      searchWords={['{{(.*?)}}', 'landing_page_url']}
                       autoEscape={false}
                       textToHighlight={`landing_page_url?${currentAppliedRule.ruleStringToDisplay}`}
                     />
@@ -413,7 +407,7 @@ if (typeof window === 'undefined') {
                           indexes: this.state.selectedIndexes,
                         },
                       }}
-                      minHeight={rows.length * 30 + this.maxAmountOfOptions * 35}
+                      minHeight={rows.length * 30 + 8 * 35}
                       rowHeight={30}
                       rowScrollTimeout={200}
                     />

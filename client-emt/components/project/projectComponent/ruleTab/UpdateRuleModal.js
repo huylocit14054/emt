@@ -26,11 +26,11 @@ class UpdateRuleModal extends React.Component {
 
     // Map utm_name to id
     _.forEach(projectDimensions, dimension => {
-      const dimension_name_regex = `<<${dimension.name}>>`;
+      const dimension_name_regex = `{{${dimension.name}}}`;
       rule_string = _.replace(
         rule_string,
         new RegExp(dimension_name_regex, 'g'),
-        `<<${dimension.id}>>`
+        `{{${dimension.id}}}`
       );
     });
     updateRule({
