@@ -59,6 +59,7 @@ const AssignDimensionsForm = Form.create()(
 
       return (
         <Modal
+          maskClosable={false}
           title="Assign dimensions for multiple members"
           confirmLoading={confirmLoading}
           visible={visible}
