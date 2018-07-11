@@ -14,9 +14,9 @@ export default class RuleInput extends React.Component {
         value={value}
         onChange={onChange}
         onBlur={onBlur}
-        markup="<<__display__>>"
+        markup="{{__display__}}"
         style={defaultStyle}
-        displayTransform={display => `<<${display}>>`}
+        displayTransform={display => `{{${display}}}`}
       >
         <Mention
           trigger={/(\[\[(.*))$/}

@@ -31,11 +31,11 @@ class CreateRuleModal extends React.Component {
     console.log(rule_string);
     // Map utm_name to id with 2 difference regex (handle paste scenario)
     _.forEach(projectDimensions, dimension => {
-      const dimension_name_regex = `<<${dimension.name}>>`;
+      const dimension_name_regex = `{{${dimension.name}}}`;
       rule_string = _.replace(
         rule_string,
         new RegExp(dimension_name_regex, 'g'),
-        `<<${dimension.id}>>`
+        `{{${dimension.id}}}`
       );
     });
 
