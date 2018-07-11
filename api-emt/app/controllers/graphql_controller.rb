@@ -4,7 +4,7 @@ class GraphqlController < ApplicationController
     query = params[:query]
     operation_name = params[:operationName]
     context = {
-      current_user: current_user,
+      current_user: current_user
     }
     result = EnhanceUrlTaggingSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
@@ -33,11 +33,9 @@ class GraphqlController < ApplicationController
   def current_user
     authorization = request.headers['Authorization']
     puts "authorize: #{authorization}"
-    if !authorization.blank?
-        token = authorization.sub! 'Bearer ', ''
-        AuthToken.verify(token)
-    else
-      nil
+    if authorization.present?
+      token = authorization.sub! 'Bearer ', ''
+      AuthToken.verify(token)
     end
   end
 end
