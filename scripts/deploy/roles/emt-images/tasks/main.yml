@@ -1,0 +1,7 @@
+---
+
+- name: Build Docker image for emt-api
+  shell: "cd /home/circleci/project/api-emt && sudo docker build -t emt-api-{{ emt_apps.api.environment }} . && sudo docker save -o /home/circleci/project/emt-api.tar emt-api-{{ emt_apps.api.environment }} && sudo chmod 777 /home/circleci/project/emt-api.tar"
+
+- name: Build Docker image for emt-client
+  shell: "cd /home/circleci/project/client-emt && sudo docker build -t emt-client-{{ emt_apps.ui.environment }} -f Dockerfile.{{ emt_apps.api.environment }} . && sudo docker save -o /home/circleci/project/emt-client.tar emt-client-{{ emt_apps.ui.environment }} && sudo chmod 777 /home/circleci/project/emt-client.tar"

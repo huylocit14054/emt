@@ -1,0 +1,24 @@
+version: '3.1'
+
+services:
+  api:
+    image: emt-api-{{ emt_apps.api.environment }}
+    environment:
+      - RAILS_ENV={{ emt_apps.api.environment }}
+      - RAILS_LOG_TO_STDOUT=true
+      - DATABASE_URL=$EMT_{{ emt_apps.api.environment | upper }}_DATABASE_URL
+      - SECRET_KEY_BASE=$EMT_{{ emt_apps.api.environment | upper }}_SECRET_KEY_BASE
+    ports:
+      - '{{ emt_apps.api.server_port }}:{{ emt_apps.api.container_port }}'
+
+  ui:
+    image: emt-client-{{ emt_apps.api.environment }}
+    environment:
+      - PORT=80
+      - NODE_ENV={{ emt_apps.ui.environment }}
+      - API_URL={{ emt_apps.ui.api_url }}
+      - CLIENT_URL={{ emt_apps.ui.client_url }}
+    ports:
+      - '{{ emt_apps.ui.server_port }}:{{ emt_apps.ui.container_port }}'
+    depends_on:
+      - api
