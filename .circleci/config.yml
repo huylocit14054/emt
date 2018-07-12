@@ -131,7 +131,7 @@ workflows:
             - build
           filters:
             tags:
-              only: /.*/
+              ignore: /^v.*/
             branches:
               only: master
       - deploy-production:
