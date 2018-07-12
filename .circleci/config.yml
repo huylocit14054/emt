@@ -122,18 +122,23 @@ workflows:
   release:
     jobs:
       - lint
-      - build
+      - build:
+          filters: # The build job must also have a filters tags section, as it is a transient dependency of the deploy job
+            tags:
+              only: /.*/
       - deploy-staging:
           requires:
             - build
           filters:
+            tags:
+              only: /.*/
             branches:
               only: master
       - deploy-production:
           requires:
             - build
           filters:
-            branches:
-              ignore: /.*/
             tags:
               only: /^v.*/
+            branches:
+              ignore: /.*/
