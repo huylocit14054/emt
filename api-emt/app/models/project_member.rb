@@ -9,6 +9,12 @@ class ProjectMember < ApplicationRecord
   DIMENSION_CATEGORY_SELECTION = 'selection'
   DIMENSION_CATEGORY_INPUT = 'input'
 
+  PROJECT_STATUS_ACTIVE = 'active'
+  PROJECT_STATUS_RESTRICTED = 'restricted'
+
+  PROJECT_ADMIN = 'project_admin'
+  PROJECT_MEMBER = 'member'
+
   # get the authorization dimensions as well as authorization option of a user in project
   # return a array format ["authorization.dimesion_id", "authorization.dimesion_id-option_authorization.option_id"]
   def self.get_authorize_array(project_member_id:)

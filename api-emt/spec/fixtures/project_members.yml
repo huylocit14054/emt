@@ -2,18 +2,22 @@ member_project_one_1:
   user: loc
   project: project_one
   role: project_admin
+  status: active
 member_project_one_2:
   user: nhat
   project: project_one
   role: member
+  status: active
 member_project_one_3:
   user: phat
   project: project_one
   role: member
+  status: active
 member_project_one_4:
   user: thuy
   project: project_one
   role: member
+  status: restricted
 
 member_project_two_1:
   user: loc
@@ -57,10 +61,10 @@ member_project_four_2:
   user: nhat
   project: project_four
   role: project_admin
-member_project_four_3:
-  user: phat
-  project: project_four
-  role: member
+# member_project_four_3:
+#   user: phat
+#   project: project_four
+#   role: member
 member_project_four_4:
   user: thuy
   project: project_four
