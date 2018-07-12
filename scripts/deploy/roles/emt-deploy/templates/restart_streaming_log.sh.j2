@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+sudo kill -9 $(sudo lsof -t -i:{{ emt_apps.api.streaming_log_port }})
+emt_api_container=`docker container ls --filter ancestor='emt-api-{{ emt_apps.api.environment }}' --no-trunc | tail -n +2 | awk '{print $1}'`
+sudo frontail -d -p {{ emt_apps.api.streaming_log_port }} /var/lib/docker/containers/$emt_api_container/$emt_api_container-json.log;
+
+sudo kill -9 $(sudo lsof -t -i:{{ emt_apps.ui.streaming_log_port }})
+emt_ui_container=`docker container ls --filter ancestor='emt-client-{{ emt_apps.ui.environment }}' --no-trunc | tail -n +2 | awk '{print $1}'`
+sudo frontail -d -p {{ emt_apps.ui.streaming_log_port }} /var/lib/docker/containers/$emt_ui_container/$emt_ui_container-json.log;

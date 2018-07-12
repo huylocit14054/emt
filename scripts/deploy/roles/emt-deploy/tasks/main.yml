@@ -1,0 +1,56 @@
+---
+
+- name: Push built images to server
+  copy:
+    src: "/home/circleci/project/{{ item }}.tar"
+    dest: "{{ emt_workspace }}/{{ item }}-{{ emt_apps.api.environment }}.tar"
+    owner: ubuntu
+    group: ubuntu
+    mode: 0755
+  with_items:
+    - emt-api
+    - emt-client
+
+- name: Push running files to server
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ emt_workspace }}/{{ item }}"
+    owner: ubuntu
+    group: ubuntu
+    mode: 0755
+  with_items:
+    - "docker-compose.yml"
+    - "restart_streaming_log.sh"
+
+- name: Load images to Docker on production server
+  shell: "docker load -i {{ emt_workspace }}/{{ item }}-{{ emt_apps.api.environment }}.tar"
+  with_items:
+    - emt-api
+    - emt-client
+
+- name: Stop EMT application
+  shell: "cd {{ emt_workspace }} && docker-compose down"
+
+- name: Create and Migrate database
+  shell: "cd {{ emt_workspace }} && docker-compose run api rake db:create && docker-compose run api rake db:migrate"
+
+- name: Start EMT application
+  shell: "cd {{ emt_workspace }} && docker-compose up -d"
+
+# Check that a page returns a status 200 and fail if the word 'Log in' is not in the page contents.
+# Maximum waiting time is: 12 * 10 = 120s = 2 minutes
+- name: Ensure the application starts up successfully
+  uri:
+    url: "{{ emt_apps.ui.client_url }}"
+    status_code: 200
+    return_content: yes
+  register: smoke_test_result
+  until: smoke_test_result is succeeded and 'Log in' in smoke_test_result.content
+  retries: 12
+  delay: 10
+
+- name: Restart streaming log
+  shell: "{{ emt_workspace }}/restart_streaming_log.sh"
+
+- name: Remove unusual images
+  shell: docker rmi $(docker image ls --filter="dangling=true" -q)
