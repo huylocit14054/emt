@@ -36,7 +36,7 @@ RSpec.describe EnhanceUrlTaggingSchema do
       message
     end
     let(:error) { 'Invalid Username/Password' }
-    let(:return_result) {result['data']['loginUser']}
+    let(:return_result) { result['data']['loginUser'] }
     context 'when input wrong user name' do
       let(:variables) do
         {
@@ -50,7 +50,7 @@ RSpec.describe EnhanceUrlTaggingSchema do
     end
 
     before(:example) do
-      users(:loc).update(username: 'locusername',password: '123456')
+      users(:loc).update(username: 'locusername', password: '123456')
     end
     context 'when input wrong password' do
       let(:variables) do
