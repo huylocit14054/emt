@@ -32,10 +32,6 @@ class GraphqlController < ApplicationController
 
   def current_user
     authorization = request.headers['Authorization']
-    puts "authorize: #{authorization}"
-    if authorization.present?
-      token = authorization.sub! 'Bearer ', ''
-      AuthToken.verify(token)
-    end
+    AuthToken.verify(authorization.sub!('Bearer ', '')) if authorization.present?
   end
 end
