@@ -1,0 +1,15 @@
+emt_workspace: "/emt-staging"
+
+emt_apps:
+  api:
+    environment: staging
+    container_port: 3000
+    server_port: 3004
+    streaming_log_port: 9004
+  ui:
+    environment: staging
+    container_port: 80
+    server_port: 3003
+    streaming_log_port: 9003
+    api_url: http://redpola-emt.southeastasia.cloudapp.azure.com:3004
+    client_url: http://redpola-emt.southeastasia.cloudapp.azure.com:3003

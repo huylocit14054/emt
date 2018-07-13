@@ -85,68 +85,60 @@ jobs:
           name: docker-compose down
           command: docker-compose down
 
-  # Build production image and deploy
-  deploy:
+  # Deploy Staging
+  deploy-staging:
     machine:
       image: circleci/classic:edge
     steps:
       - checkout
-
       - run:
-          name: Build Docker image for emt-api
-          command: cd ~/project/api-emt && docker build -t emt-api . && docker save -o ~/project/emt-api.tar emt-api
-
-      - run:
-          name: Build Docker image for emt-client
-          command: cd ~/project/client-emt && docker build -t emt-client -f Dockerfile.prod . && docker save -o ~/project/emt-client.tar emt-client
-
-      - run:
-          name: Push images to production server
+          name: Install Ansible
           command: |
-            scp ~/project/emt-api.tar ubuntu@redpola-emt.southeastasia.cloudapp.azure.com:/emt/emt-api.tar
-            scp ~/project/emt-client.tar ubuntu@redpola-emt.southeastasia.cloudapp.azure.com:/emt/emt-client.tar
-
+            sudo apt-get update && sudo apt-get install software-properties-common
+            sudo apt-add-repository ppa:ansible/ansible
+            sudo apt-get update && sudo apt-get install ansible
       - run:
-          name: Push docker-compose file to production server
-          command: scp ~/project/docker-compose.prod.yml ubuntu@redpola-emt.southeastasia.cloudapp.azure.com:/emt/docker-compose.yml
+          name: Deploy if tests pass and branch is Staging
+          command: cd ~/project/scripts/deploy && ansible-playbook deploy.yml -i inventory/staging/hosts 
 
+  # Deploy Production
+  deploy-production:
+    machine:
+      image: circleci/classic:edge
+    steps:
+      - checkout
       - run:
-          name: Load images to Docker on production server
+          name: Install Ansible
           command: |
-            ssh ubuntu@redpola-emt.southeastasia.cloudapp.azure.com "docker load -i /emt/emt-api.tar"
-            ssh ubuntu@redpola-emt.southeastasia.cloudapp.azure.com "docker load -i /emt/emt-client.tar"
-
+            sudo apt-get update && sudo apt-get install software-properties-common
+            sudo apt-add-repository ppa:ansible/ansible
+            sudo apt-get update && sudo apt-get install ansible
       - run:
-          name: Stop EMT applciation
-          command: ssh ubuntu@redpola-emt.southeastasia.cloudapp.azure.com "cd /emt && docker-compose down"
-
-      - run:
-          name: Create and Migrate database
-          command: |
-            ssh ubuntu@redpola-emt.southeastasia.cloudapp.azure.com "cd /emt && docker-compose run api rake db:create"
-            ssh ubuntu@redpola-emt.southeastasia.cloudapp.azure.com "cd /emt && docker-compose run api rake db:migrate"
-
-      - run:
-          name: Start EMT applciation
-          command: ssh ubuntu@redpola-emt.southeastasia.cloudapp.azure.com "cd /emt && docker-compose up -d"
-
-      - run:
-          name: Ensure the application starts up successfully
-          command: wget --retry-connrefused --no-check-certificate -T 60 http://redpola-emt.southeastasia.cloudapp.azure.com/
-
-      - run:
-          name: Restart streaming log service
-          command: ssh ubuntu@redpola-emt.southeastasia.cloudapp.azure.com "/emt/scripts/restart_streaming_log.sh"
-
+          name: Deploy if tests pass and tag is version format v.*
+          command: cd ~/project/scripts/deploy && ansible-playbook deploy.yml -i inventory/production/hosts
+  
 workflows:
   version: 2
   release:
     jobs:
       - lint
-      - build
-      - deploy:
+      - build:
+          filters: # The build job must also have a filters tags section, as it is a transient dependency of the deploy job
+            tags:
+              only: /.*/
+      - deploy-staging:
           requires:
             - build
           filters:
+            tags:
+              ignore: /^v.*/
             branches:
               only: master
+      - deploy-production:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/

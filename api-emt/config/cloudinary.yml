@@ -5,6 +5,12 @@ development:
   api_secret: w5GkZsZJVGTKxAKDvWnGeezEuQY
   enhance_image_tag: true
   static_image_support: false
+staging:
+  cloud_name: ezgamio
+  api_key: '149129836562312'
+  api_secret: w5GkZsZJVGTKxAKDvWnGeezEuQY
+  enhance_image_tag: true
+  static_image_support: true
 production:
   cloud_name: ezgamio
   api_key: '149129836562312'
