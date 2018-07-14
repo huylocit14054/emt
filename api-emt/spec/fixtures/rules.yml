@@ -1,9 +1,14 @@
 rule_one:
   rule_string: utm_source={{1}}_{{2}}&utm_camp={{3}}{{4}}{{5}}&date={{date}}
   is_applied: true
-  project_id: project_one
+  project: project_one
 
 rule_two:
   rule_string: utm_source={{2}}-{{1}}&utm_camp={{3}}
+  is_applied: false
+  project: project_one
+
+rule_three:
+  rule_string: utm_source={{1}}-{{1}}&utm_camp={{3}}
   is_applied: false
   project: project_one
