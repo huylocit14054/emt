@@ -5,7 +5,7 @@ WORKDIR /client-emt
 COPY package*.json .
 COPY yarn.lock .
 
-RUN yarn install
+RUN yarn --pure-lockfile
 
 COPY . .
 

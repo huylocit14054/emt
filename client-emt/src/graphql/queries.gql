@@ -1,0 +1,230 @@
+#import "./fragments/BasicRuleInfo.gql"
+
+query getCurrentUser {
+  currentUser {
+    id
+    username
+    role
+    avatar
+  }
+}
+
+query getClientCurrentUser {
+  currentUser @client{
+    id
+    username
+    role
+    avatar
+  }
+}
+
+query usersSuggestion($query: String!) {
+  usersSuggestion(query: $query) {
+    id
+    username
+    email
+    avatar
+  }
+}
+
+query membersSuggestion($query: String!, $projectId: ID!) {
+  membersSuggestion(query: $query, projectId: $projectId) {
+    id
+    username
+    email
+    avatar
+  }
+}
+
+query getCurrentUserProfile {
+  profile: currentUser {
+    id
+    username
+    email
+    role
+    avatar
+  }
+}
+
+query getCurrentUserOnClient {
+  currentUser @client {
+    id
+    username
+    role
+    avatar
+  }
+}
+
+query getAllUsers {
+  users {
+    avatar
+    id
+    username
+    email
+    createdAt
+  }
+}
+
+query getProjectOfCurrentUser {
+  projectsAsMemberOfCurrentUser {
+    id
+    name
+    description
+    shortenMembers {
+      id
+      avatar
+    }
+    memberCount
+  }
+  projectsAsAdminOfCurrentUser {
+    id
+    name
+    description
+    shortenMembers {
+      id
+      avatar
+    }
+    memberCount
+  }
+}
+
+query getMembersByProjectId($projectId: ID!) {
+  projectMembers(projectId: $projectId) {
+    id
+    role
+    status
+    user {
+      id
+      email
+      username
+      role
+      avatar
+    }
+  }
+}
+
+query getAssignmentsByProjectId($projectId: ID!) {
+  assignments: projectMembers(projectId: $projectId){
+    id
+    user {
+      id
+      username
+      avatar
+    }
+    authorizedDimensions
+    authorizations {
+      dimension {
+        id
+      }
+      optionAuthorizations {
+        option {
+          id
+          name
+          dimension {
+            id
+          }
+        }
+      }
+    }
+  }
+  projectDimensions(projectId: $projectId) {
+    id
+    name
+    category
+  }
+}
+
+query getDimensionsByProjectId($projectId: ID!) {
+  projectDimensions(projectId: $projectId) {
+    id
+    name
+    category
+    createdAt
+    options {
+      id
+      name
+    }
+  }
+}
+
+query getDimensionSuggestionsByProjectId($projectId: ID!) {
+  projectDimensions(projectId: $projectId) {
+    id
+    name
+  }
+}
+
+query getProjectDimensionsTreeByProjectId($projectId: ID!){
+  projectDimensionsTree(projectId: $projectId)
+}
+
+
+query getOptionsByDimensionId($dimensionId: ID!) {
+  dimensionOptions(dimensionId: $dimensionId) {
+    id
+    name
+  }
+}
+
+query getProjectById($id: ID!) {
+  project(id: $id) {
+    id
+    name
+    description
+    isManagedByCurrentUser
+  }
+}
+
+query getAssignmentsByMemberId($memberId: ID!){
+  memberAssignments(memberId: $memberId)
+}
+
+query getRulesByProjectId($projectId: ID!){
+  projectRules(projectId: $projectId){
+    ...BasicRuleInfo
+  }
+}
+
+query getAssignmentsOfCurrentMember($projectId: ID!){
+  currentAppliedRule: currentAppliedRuleOfProject(projectId: $projectId){
+    id
+    ruleStringToDisplay
+  }
+  assignments: memberAssignmentsDetails(projectId: $projectId) {
+    dimension {
+      id
+      name
+      category
+    }
+    optionAuthorizations {
+      option {
+        id
+        name
+      }
+    }
+  }
+}
+
+query currentMemberUtmHistory($projectId: ID!){
+  currentMemberUtmHistory: memberUtmHistory(projectId: $projectId){
+    id
+    url
+    createdAt
+  }
+}
+
+query utmAnalysis($projectId: ID!){
+  utmAnalysis(projectId: $projectId) {
+    id
+    url 
+    createdAt
+    projectMember {
+      id
+      user {
+        username
+        id
+        avatar
+      }
+    }
+  }
+}
