@@ -24,10 +24,11 @@ export default class AssignmentsList extends React.Component {
               rowKey="id"
               bordered
               scroll={{
-                x: true,
+                x: 1500,
               }}
             >
               <Column
+                width={250}
                 title="Username"
                 key="username"
                 render={member => (
@@ -100,10 +101,11 @@ export default class AssignmentsList extends React.Component {
               )}
 
               <Column
+                width={150}
                 title="Action"
                 key="action"
                 align="center"
-                render={(text, member) => (
+                render={(__, member) => (
                   <UpdateMemberAssignmentsModal
                     memberId={member.id}
                     projectId={this.props.projectId}

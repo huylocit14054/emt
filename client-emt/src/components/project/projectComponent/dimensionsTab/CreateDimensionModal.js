@@ -2,7 +2,10 @@ import { Button, message } from 'antd';
 import React from 'react';
 import { Mutation } from 'react-apollo';
 import { createDimension as CREATE_DIMENSION_MUTATION } from '../../../../graphql/mutations.gql';
-import { getDimensionsByProjectId as GET_DIMENSIONS_BY_PROJECT_ID_QUERY } from '../../../../graphql/queries.gql';
+import {
+  getProjectDimensionsTreeByProjectId as GET_PROJECT_DIMENSIONS_TREE_BY_PROJECT_ID,
+  getDimensionsByProjectId as GET_DIMENSIONS_BY_PROJECT_ID_QUERY,
+} from '../../../../graphql/queries.gql';
 import CreateDimensionForm from './createDimensionModal/CreateDimensionForm';
 
 class CreateDimensionModal extends React.Component {
@@ -55,6 +58,14 @@ class CreateDimensionModal extends React.Component {
             data,
           });
         },
+        refetchQueries: [
+          {
+            query: GET_PROJECT_DIMENSIONS_TREE_BY_PROJECT_ID,
+            variables: {
+              projectId: parseInt(this.props.projectId),
+            },
+          },
+        ],
       });
     });
   };

@@ -28,7 +28,6 @@ class CreateRuleModal extends React.Component {
     const project_id = match.params.projectId;
     let rule_string = ruleString;
 
-    console.log(rule_string);
     // Map utm_name to id with 2 difference regex (handle paste scenario)
     _.forEach(projectDimensions, dimension => {
       const dimension_name_regex = `{{${dimension.name}}}`;
@@ -38,8 +37,6 @@ class CreateRuleModal extends React.Component {
         `{{${dimension.id}}}`
       );
     });
-
-    console.log(rule_string);
 
     createRule({
       variables: {
