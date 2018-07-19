@@ -2,7 +2,10 @@ import { Button, message } from 'antd';
 import React from 'react';
 import { Mutation } from 'react-apollo';
 import { assignDimensionsForMembers as ASSIGN_DIMENSIONS_FOR_MEMBERS_MUTATION } from '../../../../graphql/mutations.gql';
-import { getAssignmentsByProjectId as GET_ASSIGNMENTS_BY_PROJECT_ID_QUERY } from '../../../../graphql/queries.gql';
+import {
+  getAssignmentsByProjectId as GET_ASSIGNMENTS_BY_PROJECT_ID_QUERY,
+  getAssignmentsOfCurrentMember as GET_ASSIGNMENTS_OF_CURRENT_MEMBER_QUERY,
+} from '../../../../graphql/queries.gql';
 import AssignDimensionsForm from './assignDimensionsModal/AssignDimensionsForm';
 
 class AssignDimensionsModal extends React.Component {
@@ -37,6 +40,12 @@ class AssignDimensionsModal extends React.Component {
             query: GET_ASSIGNMENTS_BY_PROJECT_ID_QUERY,
             variables: {
               projectId: this.props.projectId,
+            },
+          },
+          {
+            query: GET_ASSIGNMENTS_OF_CURRENT_MEMBER_QUERY,
+            variables: {
+              projectId: parseInt(this.props.projectId),
             },
           },
         ],

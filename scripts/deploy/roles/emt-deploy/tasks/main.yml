@@ -46,7 +46,7 @@
     return_content: yes
   register: smoke_test_result
   until: smoke_test_result is succeeded and 'Log in' in smoke_test_result.content
-  retries: 12
+  retries: 30
   delay: 10
 
 - name: Restart streaming log
