@@ -3,11 +3,9 @@ class User < ApplicationRecord
   ROLE_USER = 'user'
 
   # rubocop:disable Rails/HasManyOrHasOneDependent
-  has_many :project_relationships,
-           class_name: 'ProjectMember',
-           foreign_key: 'user_id',
-           inverse_of: :user
   has_many :projects, through: :project_relationships
+  has_many :company_members, inverse_of: :user
+  has_many :companies, through: :company_members
   # rubocop:enable Rails/HasManyOrHasOneDependent
 
   has_secure_password

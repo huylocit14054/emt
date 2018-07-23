@@ -1,6 +1,6 @@
 class ProjectMember < ApplicationRecord
   extend OrderAsSpecified
-  belongs_to :user, inverse_of: :project_relationships
+  belongs_to :company_member, inverse_of: :project_relationships
   belongs_to :project, counter_cache: :member_count, inverse_of: :member_relationships
   has_many :authorizations, dependent: :destroy
   has_many :dimensions, through: :authorizations

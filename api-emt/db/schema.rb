@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180703041424) do
+ActiveRecord::Schema.define(version: 20180723074532) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,29 @@ ActiveRecord::Schema.define(version: 20180703041424) do
     t.index ["dimension_id"], name: "index_authorizations_on_dimension_id"
     t.index ["project_member_id", "dimension_id"], name: "authorization_key", unique: true
     t.index ["project_member_id"], name: "index_authorizations_on_project_member_id"
+  end
+
+  create_table "companies", force: :cascade do |t|
+    t.string "name"
+    t.string "address"
+    t.string "logo"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "phone_number"
+    t.string "email"
+    t.integer "company_member_count"
+  end
+
+  create_table "company_members", force: :cascade do |t|
+    t.bigint "company_id"
+    t.bigint "user_id"
+    t.string "roles", default: [], array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id", "user_id"], name: "index_company_members_on_company_id_and_user_id", unique: true
+    t.index ["company_id"], name: "index_company_members_on_company_id"
+    t.index ["user_id"], name: "index_company_members_on_user_id"
   end
 
   create_table "dimensions", force: :cascade do |t|
@@ -57,13 +80,13 @@ ActiveRecord::Schema.define(version: 20180703041424) do
   create_table "project_members", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "user_id"
     t.bigint "project_id"
     t.string "role"
     t.string "status", default: "active"
+    t.bigint "company_member_id"
+    t.index ["company_member_id"], name: "index_project_members_on_company_member_id"
+    t.index ["project_id", "company_member_id"], name: "index_project_members_on_project_id_and_company_member_id", unique: true
     t.index ["project_id"], name: "index_project_members_on_project_id"
-    t.index ["user_id", "project_id"], name: "project member index", unique: true
-    t.index ["user_id"], name: "index_project_members_on_user_id"
   end
 
   create_table "projects", force: :cascade do |t|
@@ -72,7 +95,9 @@ ActiveRecord::Schema.define(version: 20180703041424) do
     t.integer "member_count"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_projects_on_name", unique: true
+    t.bigint "company_id"
+    t.index ["company_id"], name: "index_projects_on_company_id"
+    t.index ["name", "company_id"], name: "index_projects_on_name_and_company_id", unique: true
   end
 
   create_table "rules", force: :cascade do |t|
@@ -93,6 +118,7 @@ ActiveRecord::Schema.define(version: 20180703041424) do
     t.datetime "updated_at", null: false
     t.string "email"
     t.string "avatar", default: "default-avatar_wbcfln.png"
+    t.string "full_name"
     t.index ["email"], name: "index_users_on_email"
     t.index ["username"], name: "index_users_on_username", unique: true
   end
@@ -107,12 +133,15 @@ ActiveRecord::Schema.define(version: 20180703041424) do
 
   add_foreign_key "authorizations", "dimensions"
   add_foreign_key "authorizations", "project_members"
+  add_foreign_key "company_members", "companies"
+  add_foreign_key "company_members", "users"
   add_foreign_key "dimensions", "projects"
   add_foreign_key "option_authorizations", "authorizations"
   add_foreign_key "option_authorizations", "options"
   add_foreign_key "options", "dimensions"
+  add_foreign_key "project_members", "company_members"
   add_foreign_key "project_members", "projects"
-  add_foreign_key "project_members", "users"
+  add_foreign_key "projects", "companies"
   add_foreign_key "rules", "projects"
   add_foreign_key "utms", "project_members"
 end

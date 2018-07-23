@@ -8,8 +8,9 @@ class Project < ApplicationRecord
   has_many :dimensions, dependent: :destroy
   has_many :rules, dependent: :destroy
   has_many :utms, through: :member_relationships
+  belongs_to :company, inverse_of: :projects
 
-  validates :name, length: { minimum: 3 }, allow_blank: true, uniqueness: true
+  validates :name, length: { minimum: 3 }, allow_blank: true, uniqueness: { scope: :company_id }
 
   # generate records for assignment view table
   # return an array json
