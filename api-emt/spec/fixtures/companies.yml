@@ -1,0 +1,9 @@
+company_one:
+  name: company_one
+  plan: plan_one
+company_two:
+  name: company_two
+  plan: plan_two
+company_three:
+  name: company_three
+  plan: plan_three

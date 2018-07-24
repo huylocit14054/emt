@@ -14,19 +14,22 @@ class Types::QueryType < Types::BaseObject
     ::User.where.not(id: context[:current_user].id).order(created_at: :desc)
   end
 
-  field :projects_as_admin_of_current_user, [Types::Project], null: false
+  field :projects_as_admin_of_current_user, [Types::Project], null: false do
+    argument :company_id, ID, required: true
+  end
 
-  def projects_as_admin_of_current_user
+  def projects_as_admin_of_current_user(company_id:)
+    company_member = CompanyMember.find_by(company_id: company_id, user_id: context[:current_user].id)
     ::Project.joins(:member_relationships).where(project_members:
-      { role: 'project_admin', user_id: context[:current_user].id, status:
-        'active' }).order(created_at: :desc)
+      { role: 'project_admin', company_member_id: company_member.id, status:
+        ProjectMember::PROJECT_STATUS_ACTIVE }).order(created_at: :desc)
   end
 
   field :projects_as_member_of_current_user, [Types::Project], null: false
 
   def projects_as_member_of_current_user
     ::Project.joins(:member_relationships).where(project_members:
-      { role: 'member', user_id: context[:current_user].id, status: 'active' }).order(created_at: :desc)
+      { role: 'member', company_member_id: context[:current_user].id, status: 'active' }).order(created_at: :desc)
   end
 
   field :project_member, Types::ProjectMember, null: false, description: 'Project Member' do

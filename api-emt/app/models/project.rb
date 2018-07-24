@@ -4,7 +4,7 @@ class Project < ApplicationRecord
            foreign_key: 'project_id',
            dependent: :destroy,
            inverse_of: :project
-  has_many :members, through: :member_relationships, source: :user
+  has_many :members, through: :member_relationships, source: :company_member
   has_many :dimensions, dependent: :destroy
   has_many :rules, dependent: :destroy
   has_many :utms, through: :member_relationships
@@ -31,7 +31,7 @@ class Project < ApplicationRecord
     records = Jbuilder.encode do |json|
       json.array! @member_relationships do |relationship|
         # in each relationship get the user
-        @user = relationship.user
+        @user = relationship.company_member.user
         json.member_id relationship.id
         json.member_name @user.username
         # each user will have the information of each dimension
@@ -43,14 +43,14 @@ class Project < ApplicationRecord
             @authorization_dimension = relationship.authorizations.find_by(dimension_id: dimension.id)
             case dimension.category
             # when the dimension is input type the json will return assigned: boolean
-            when 'input'
+            when Dimension::CATEGORY_INPUT
               if @authorization_dimension
                 json.assigned true
               else
                 json.assigned false
               end
               # when the dimension is selection type the option authorization of the dimension will be load and put to the record
-            when 'selection'
+            when Dimension::CATEGORY_SELECTION
               if @authorization_dimension
                 @options = @authorization_dimension.option_authorizations
                 json.options @options
@@ -113,12 +113,12 @@ class Project < ApplicationRecord
   end
 
   # assign authorization for each user
-  def self.assign_dimension_for_members(members:, project_id:, choices:)
+  def self.assign_dimension_for_members(company_members:, project_id:, choices:)
     # split array
     choices_array = split_array(choices: choices)
-    members.each do |user_id|
+    company_members.each do |company_member_id|
       create_authorization_and_option(
-        user_id: user_id,
+        company_member_id: company_member_id,
         project_id: project_id,
         choices_array: choices_array
       )
@@ -131,7 +131,7 @@ class Project < ApplicationRecord
     # destroy all the authorization
     @member.authorizations.destroy_all
     assign_dimension_for_members(
-      members: [@member.user_id.to_s],
+      company_members: [@member.company_member_id.to_s],
       project_id: @member.project_id,
       choices: new_assignments
     )
@@ -149,8 +149,8 @@ class Project < ApplicationRecord
   end
 
   # create authorization and option authorization for each user
-  def self.create_authorization_and_option(user_id:, project_id:, choices_array:)
-    member = ProjectMember.find_by(user_id: user_id, project_id: project_id)
+  def self.create_authorization_and_option(company_member_id:, project_id:, choices_array:)
+    member = ProjectMember.find_by(company_member_id: company_member_id, project_id: project_id)
     choices_array.each do |c|
       dimension_id = c[0]
       begin
@@ -166,7 +166,7 @@ class Project < ApplicationRecord
           rescue StandardError
             next
           end
-        elsif Dimension.find(dimension_id).category.eql? 'selection'
+        elsif Dimension.find(dimension_id).category.eql? Dimension::CATEGORY_SELECTION
           authorize_all_option(dimension_id: dimension_id, auth: auth)
         end
       end

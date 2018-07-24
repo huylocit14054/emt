@@ -6,14 +6,11 @@ class ProjectMember < ApplicationRecord
   has_many :dimensions, through: :authorizations
   has_many :utms, dependent: :destroy
 
-  DIMENSION_CATEGORY_SELECTION = 'selection'
-  DIMENSION_CATEGORY_INPUT = 'input'
-
   PROJECT_STATUS_ACTIVE = 'active'
   PROJECT_STATUS_RESTRICTED = 'restricted'
 
-  PROJECT_ADMIN = 'project_admin'
-  PROJECT_MEMBER = 'member'
+  ROLE_PROJECT_ADMIN = 'project_admin'
+  ROLE_PROJECT_MEMBER = 'member'
 
   # get the authorization dimensions as well as authorization option of a user in project
   # return a array format ["authorization.dimesion_id", "authorization.dimesion_id-option_authorization.option_id"]
@@ -26,7 +23,7 @@ class ProjectMember < ApplicationRecord
     @authorizations.each do |authorization|
       @dimension = authorization.dimension
       # check the dimension is input
-      if @dimension.category == DIMENSION_CATEGORY_INPUT
+      if @dimension.category == Dimension::CATEGORY_INPUT
         # push the dimesion id as string to the member_assignment array
         @member_assignment.push(@dimension.id.to_s)
       # the dimension is selection

@@ -60,7 +60,18 @@ RSpec.describe EnhanceUrlTaggingSchema do
 
   # test query to get all the projects which have the PA is the current user
   describe 'projectsAsAdminOfCurrentUser' do
-    let(:query_string) { %(query { projectsAsAdminOfCurrentUser { id name }}) }
+    let(:query_string) do
+      %|
+        query($companyId: ID!) {
+          projectsAsAdminOfCurrentUser(companyId: $companyId)
+          {
+            id
+            name
+          }
+        }
+      |
+    end
+    let(:variables) { { 'companyId' => companies(:company_one).id.to_s } }
     let(:result_names) do
       result_names = []
       result['data']['projectsAsAdminOfCurrentUser'].each { |project| result_names << project['name'] }
@@ -76,7 +87,7 @@ RSpec.describe EnhanceUrlTaggingSchema do
     let(:expected_project_ids) do
       result_ids = []
       ProjectMember.where(
-        user_id: users(:loc).id,
+        company_member_id: company_members(:c1_member_loc).id,
         role: 'project_admin'
       ).order(created_at: :desc).each { |record| result_ids << record.project_id }
       result_ids
@@ -108,7 +119,7 @@ RSpec.describe EnhanceUrlTaggingSchema do
     let(:expected_project_ids) do
       result_ids = []
       ProjectMember.where(
-        user_id: users(:loc).id,
+        company_member_id: company_members(:c1_member_loc).id,
         role: 'member'
       ).order(created_at: :desc).each { |record| result_ids << record.project_id }
       result_ids
@@ -188,7 +199,7 @@ RSpec.describe EnhanceUrlTaggingSchema do
       first_admin = {
         'user' => { 'username' => users(:loc).username },
         'status' => ProjectMember::PROJECT_STATUS_ACTIVE,
-        'role' => ProjectMember::PROJECT_ADMIN
+        'role' => ProjectMember::ROLE_PROJECT_ADMIN
       }
       expect(return_result.first).to eq(first_admin)
     end

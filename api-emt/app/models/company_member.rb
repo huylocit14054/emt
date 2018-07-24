@@ -7,4 +7,11 @@ class CompanyMember < ApplicationRecord
            foreign_key: 'company_member_id',
            inverse_of: :company_member
   # rubocop:enable Rails/HasManyOrHasOneDependent
+
+  ROLE_COMPANY_ADMIN = 'company_admin'
+  ROLE_COMPANY_MEMBER = 'company_member'
+  ROLE_OMS_MANAGER = 'oms_manager'
+  ROLE_UTM_MANAGER = 'utm_manager'
+  ROLE_OMS_MEMBER = 'oms_member'
+  ROLE_UTM_MEMBER = 'utm_member'
 end
