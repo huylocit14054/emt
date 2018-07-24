@@ -1,15 +1,19 @@
 project_one:
   name: First project
   description: this is the first project
+  company: company_one
 
 project_two:
   name: Second project
   description: this is the second project
+  company: company_one
 
 project_three:
   name: Third project
   description: this is the third project
+  company: company_one
 
 project_four:
   name: Fourth project
   description: this is the fourth project
+  company: company_one

@@ -4,7 +4,13 @@ class GraphqlPolicy
       '*': lambda { |project, _args, ctx|
         ProjectPolicy.new(ctx[:current_user], project).show?
       }
+    },
+    Types::Company.to_graphql.to_s => {
+      '*': lambda { |company, _args, ctx|
+        CompanyPolicy.new(ctx[:current_user], company).show?
+      }
     }
+
   }
 
   def self.guard(type, field)

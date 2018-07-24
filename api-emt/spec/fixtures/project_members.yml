@@ -1,71 +1,71 @@
 member_project_one_1:
-  user: loc
+  company_member: c1_member_loc
   project: project_one
   role: project_admin
   status: active
 member_project_one_2:
-  user: nhat
+  company_member: c1_member_nhat
   project: project_one
   role: member
   status: active
 member_project_one_3:
-  user: phat
+  company_member: c1_member_phat
   project: project_one
   role: member
   status: active
 member_project_one_4:
-  user: thuy
+  company_member: c1_member_thuy
   project: project_one
   role: member
   status: restricted
 
 member_project_two_1:
-  user: loc
+  company_member: c1_member_loc
   project: project_two
   role: project_admin
 member_project_two_2:
-  user: nhat
+  company_member: c1_member_nhat
   project: project_two
   role: member
 member_project_two_3:
-  user: phat
+  company_member: c1_member_phat
   project: project_two
   role: member
 member_project_two_4:
-  user: thuy
+  company_member: c1_member_thuy
   project: project_two
   role: member
 
 member_project_three_1:
-  user: loc
+  company_member: c1_member_loc
   project: project_three
   role: member
 member_project_three_2:
-  user: nhat
+  company_member: c1_member_nhat
   project: project_three
   role: project_admin
 member_project_three_3:
-  user: phat
+  company_member: c1_member_phat
   project: project_three
   role: member
 member_project_three_4:
-  user: thuy
+  company_member: c1_member_thuy
   project: project_three
   role: member
 
 member_project_four_1:
-  user: loc
+  company_member: c1_member_loc
   project: project_four
   role: member
 member_project_four_2:
-  user: nhat
+  company_member: c1_member_nhat
   project: project_four
   role: project_admin
 # member_project_four_3:
-#   user: phat
+#   company_member: c1_member_phat
 #   project: project_four
 #   role: member
 member_project_four_4:
-  user: thuy
+  company_member: c1_member_thuy
   project: project_four
   role: member

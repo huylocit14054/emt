@@ -1,0 +1,6 @@
+plan_one:
+  name: Standard UTM
+plan_two:
+  name: Standard OMS
+plan_three:
+  name: Premium

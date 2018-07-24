@@ -1,19 +1,16 @@
 class ProjectMember < ApplicationRecord
   extend OrderAsSpecified
-  belongs_to :user, inverse_of: :project_relationships
+  belongs_to :company_member, inverse_of: :project_relationships
   belongs_to :project, counter_cache: :member_count, inverse_of: :member_relationships
   has_many :authorizations, dependent: :destroy
   has_many :dimensions, through: :authorizations
   has_many :utms, dependent: :destroy
 
-  DIMENSION_CATEGORY_SELECTION = 'selection'
-  DIMENSION_CATEGORY_INPUT = 'input'
-
   PROJECT_STATUS_ACTIVE = 'active'
   PROJECT_STATUS_RESTRICTED = 'restricted'
 
-  PROJECT_ADMIN = 'project_admin'
-  PROJECT_MEMBER = 'member'
+  ROLE_PROJECT_ADMIN = 'project_admin'
+  ROLE_PROJECT_MEMBER = 'member'
 
   # get the authorization dimensions as well as authorization option of a user in project
   # return a array format ["authorization.dimesion_id", "authorization.dimesion_id-option_authorization.option_id"]
@@ -26,7 +23,7 @@ class ProjectMember < ApplicationRecord
     @authorizations.each do |authorization|
       @dimension = authorization.dimension
       # check the dimension is input
-      if @dimension.category == DIMENSION_CATEGORY_INPUT
+      if @dimension.category == Dimension::CATEGORY_INPUT
         # push the dimesion id as string to the member_assignment array
         @member_assignment.push(@dimension.id.to_s)
       # the dimension is selection

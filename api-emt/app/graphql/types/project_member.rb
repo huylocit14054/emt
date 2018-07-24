@@ -9,7 +9,7 @@ class Types::ProjectMember < Types::BaseObject
 
   # Relationships
   field :project, Types::Project, null: false
-  field :user, Types::User, null: false
+  field :company_member, Types::CompanyMember, null: false
   field :authorizations, [Types::Authorization], null: false
   field :authorized_dimensions, [ID], null: false
   field :utms, [Types::Utm], null: false

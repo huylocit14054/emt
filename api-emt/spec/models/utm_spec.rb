@@ -155,13 +155,13 @@ RSpec.describe Utm, type: :model do
     end
 
     it 'create new utm records and return array of new created utms' do
-      utms = Utm.generate_utms(values: @values, current_user_id: users(:loc).id)
+      utms = Utm.generate_utms(values: @values, company_member_id: company_members(:c1_member_loc).id)
       expect(utms.count).to eq(3)
       Utm.delete_all
     end
 
     it 'create new utm records and return array of new created utms' do
-      utms = Utm.generate_utms(values: @values, current_user_id: users(:loc).id)
+      utms = Utm.generate_utms(values: @values, company_member_id: company_members(:c1_member_loc).id)
       utm_strings = []
       utms.each { |utm| utm_strings << utm.url }
       expect(utm_strings.count).to eq(3)

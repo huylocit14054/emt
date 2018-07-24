@@ -1,0 +1,12 @@
+plan_one_utm:
+  plan: plan_one
+  service: utm
+plan_two_oms:
+  plan: plan_two
+  service: oms
+plan_three_utm:
+  plan: plan_three
+  service: utm
+plan_three_oms:
+  plan: plan_three
+  service: oms
