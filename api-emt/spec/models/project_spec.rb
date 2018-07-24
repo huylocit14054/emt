@@ -54,77 +54,77 @@ RSpec.describe Project, type: :model do
       [
         {
           'member_id' => member_loc.id,
-          'member_name' => member_loc.user.username,
+          'member_name' => member_loc.company_member.user.username,
           'utm source one' => {
             'id' => dimension_1.id,
-            'category' => 'selection',
+            'category' => Dimension::CATEGORY_SELECTION,
             'options' => options_l1
           },
           'utm source two' => {
             'id' => dimension_2.id,
-            'category' => 'selection',
+            'category' => Dimension::CATEGORY_SELECTION,
             'options' => options_l2
           },
           'utm source three' => {
             'id' => dimension_3.id,
-            'category' => 'input',
+            'category' => Dimension::CATEGORY_INPUT,
             'assigned' => true
           }
         },
         {
           'member_id' => member_nhat.id,
-          'member_name' => member_nhat.user.username,
+          'member_name' => member_nhat.company_member.user.username,
           'utm source one' => {
             'id' => dimension_1.id,
-            'category' => 'selection',
+            'category' => Dimension::CATEGORY_SELECTION,
             'options' => []
           },
           'utm source two' => {
             'id' => dimension_2.id,
-            'category' => 'selection',
+            'category' => Dimension::CATEGORY_SELECTION,
             'options' => options_n2
           },
           'utm source three' => {
             'id' => dimension_3.id,
-            'category' => 'input',
+            'category' => Dimension::CATEGORY_INPUT,
             'assigned' => true
           }
         },
         {
           'member_id' => member_phat.id,
-          'member_name' => member_phat.user.username,
+          'member_name' => member_phat.company_member.user.username,
           'utm source one' => {
             'id' => dimension_1.id,
-            'category' => 'selection',
+            'category' => Dimension::CATEGORY_SELECTION,
             'options' => options_p1
           },
           'utm source two' => {
             'id' => dimension_2.id,
-            'category' => 'selection',
+            'category' => Dimension::CATEGORY_SELECTION,
             'options' => options_p2
           },
           'utm source three' => {
             'id' => dimension_3.id,
-            'category' => 'input',
+            'category' => Dimension::CATEGORY_INPUT,
             'assigned' => false
           }
         },
         {
           'member_id' => member_thuy.id,
-          'member_name' => member_thuy.user.username,
+          'member_name' => member_thuy.company_member.user.username,
           'utm source one' => {
             'id' => dimension_1.id,
-            'category' => 'selection',
+            'category' => Dimension::CATEGORY_SELECTION,
             'options' => []
           },
           'utm source two' => {
             'id' => dimension_2.id,
-            'category' => 'selection',
+            'category' => Dimension::CATEGORY_SELECTION,
             'options' => []
           },
           'utm source three' => {
             'id' => dimension_3.id,
-            'category' => 'input',
+            'category' => Dimension::CATEGORY_INPUT,
             'assigned' => false
           }
         }
@@ -214,7 +214,7 @@ RSpec.describe Project, type: :model do
   end
 
   describe '#create_authorization_and_option' do
-    let(:thuy) { users(:thuy) }
+    let(:thuy) { company_members(:c1_member_thuy) }
     let(:choices) do
       [
         [dimension_1.id.to_s], # all option in demension 1 will be authorization
@@ -225,37 +225,57 @@ RSpec.describe Project, type: :model do
     end
     it 'call authorize_all_option when all option of the selection dimension have been authorize' do
       expect(described_class).to receive(:authorize_all_option).once
-      Project.create_authorization_and_option(user_id: thuy.id, project_id: project.id, choices_array: choices)
+      Project.create_authorization_and_option(
+        company_member_id: thuy.id,
+        project_id: project.id,
+        choices_array: choices
+      )
     end
 
     it 'create authorization value for all choice dimensions' do
       auths = member_thuy.authorizations
       expect(auths.count).to eq(0)
-      Project.create_authorization_and_option(user_id: thuy.id, project_id: project.id, choices_array: choices)
+      Project.create_authorization_and_option(
+        company_member_id: thuy.id,
+        project_id: project.id,
+        choices_array: choices
+      )
       expect(auths.count).to eq(3)
     end
 
     it 'create all option_authorization for selection dimension with all choices' do
-      Project.create_authorization_and_option(user_id: thuy.id, project_id: project.id, choices_array: choices)
+      Project.create_authorization_and_option(
+        company_member_id: thuy.id,
+        project_id: project.id,
+        choices_array: choices
+      )
       auths = member_thuy.authorizations.find_by(dimension_id: dimension_1.id)
       expect(auths.option_authorizations.count).to eq(5)
     end
 
     it 'create only choice options for dimension' do
-      Project.create_authorization_and_option(user_id: thuy.id, project_id: project.id, choices_array: choices)
+      Project.create_authorization_and_option(
+        company_member_id: thuy.id,
+        project_id: project.id,
+        choices_array: choices
+      )
       auths = member_thuy.authorizations.find_by(dimension_id: dimension_2.id)
       expect(auths.option_authorizations.count).to eq(2)
     end
 
     it 'create only choice input dimension with no option authorization' do
-      Project.create_authorization_and_option(user_id: thuy.id, project_id: project.id, choices_array: choices)
+      Project.create_authorization_and_option(
+        company_member_id: thuy.id,
+        project_id: project.id,
+        choices_array: choices
+      )
       auths = member_thuy.authorizations.find_by(dimension_id: dimension_3.id)
       expect(auths.option_authorizations.count).to be_zero
     end
   end
 
   describe '#assign_dimension_for_members' do
-    let(:members) { [users(:loc).id.to_s, users(:nhat).id.to_s] }
+    let(:members) { [company_members(:c1_member_loc).id.to_s, company_members(:c1_member_nhat).id.to_s] }
     let(:choices) do
       [dimension_1.id.to_s, # all option in demension 1 will be authorization
        "#{dimension_2.id}-#{option_6.id}", # only option_6 in dimension 2
@@ -271,7 +291,7 @@ RSpec.describe Project, type: :model do
     it 'calls create_authorization_and_option' do
       expect(described_class).to receive(:split_array).once
       expect(described_class).to receive(:create_authorization_and_option).twice
-      Project.assign_dimension_for_members(members: members, project_id: project, choices: choices)
+      Project.assign_dimension_for_members(company_members: members, project_id: project, choices: choices)
     end
   end
 

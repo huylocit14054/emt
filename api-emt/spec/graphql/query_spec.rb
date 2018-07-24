@@ -188,7 +188,7 @@ RSpec.describe EnhanceUrlTaggingSchema do
       first_admin = {
         'user' => { 'username' => users(:loc).username },
         'status' => ProjectMember::PROJECT_STATUS_ACTIVE,
-        'role' => ProjectMember::PROJECT_ADMIN
+        'role' => ProjectMember::ROLE_PROJECT_ADMIN
       }
       expect(return_result.first).to eq(first_admin)
     end

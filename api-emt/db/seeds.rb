@@ -1,4 +1,4 @@
-# Seed 30 users
+# Seed 3 users
 User.create(username: 'quangnhat', email: 'quangnhat@gmail.com', role: User::ROLE_ROOT_ADMIN, password: 'quangnhat')
 2.times do |i|
   User.create!(
@@ -34,35 +34,53 @@ Plan.all.each do |p|
     plan: p,
     description: Faker::RickAndMorty.quote
   )
+
+  # create company admin
+  company.company_members.create!(
+    user_id: 1,
+    roles: [CompanyMember::ROLE_COMPANY_ADMIN, CompanyMember::ROLE_COMPANY_MEMBER]
+  )
   # create UTM manager
   company.company_members.create!(
     user_id: 2,
-    roles: ['UTM_manager']
+    roles: [CompanyMember::ROLE_UTM_MANAGER, CompanyMember::ROLE_COMPANY_MEMBER]
   )
   # create OMS manager
   company.company_members.create!(
     user_id: 3,
-    roles: ['OMS_manager']
+    roles: [CompanyMember::ROLE_OMS_MANAGER, CompanyMember::ROLE_COMPANY_MEMBER]
   )
   # create 10 company members
   10.times do |i|
-    company.users.create!(
+    user = company.users.create!(
       username: "#{Faker::Internet.user_name(6..255)}#{i + 3 + (company.id - 1) * 10}",
       email: "taolanguoidung#{i + 3 + (company.id - 1) * 10}@gmail.com",
       password: '123456'
     )
+    CompanyMember.find_by(
+      company_id: company.id,
+      user_id: user.id
+    ).update(roles: [
+               CompanyMember::ROLE_COMPANY_MEMBER,
+               CompanyMember::ROLE_OMS_MEMBER,
+               CompanyMember::ROLE_UTM_MEMBER
+             ])
   end
   # get all created company member ids
   user_ids = company.company_members.ids
   # Seed 3 projects
   3.times do |i|
     project = company.projects.create(name: Faker::RickAndMorty.location + i.to_s, description: Faker::RickAndMorty.quote)
-    ProjectMember.create(company_member_id: 2, project_id: project.id, role: 'project_admin')
-    ProjectMember.create(company_member_id: 3, project_id: project.id, role: 'project_admin')
+    ProjectMember.create(company_member_id: 2, project_id: project.id, role: ProjectMember::ROLE_PROJECT_ADMIN)
+    ProjectMember.create(company_member_id: 3, project_id: project.id, role: ProjectMember::ROLE_PROJECT_ADMIN)
     # Seed 7 selection dimension
     7.times do
       begin
-        dimension = Dimension.create(name: 'UTM_' + Faker::Hacker.abbreviation, category: 'selection', project: project)
+        dimension = Dimension.create(
+          name: 'UTM_' + Faker::Hacker.abbreviation,
+          category: Dimension::CATEGORY_SELECTION,
+          project: project
+        )
         raise unless dimension.save
       rescue StandardError
         retry
@@ -81,7 +99,11 @@ Plan.all.each do |p|
     # Seed 3 input dimension
     3.times do
       begin
-        dimension = Dimension.create(name: 'UTM_' + Faker::Hacker.abbreviation, category: 'input', project: project)
+        dimension = Dimension.create(
+          name: 'UTM_' + Faker::Hacker.abbreviation,
+          category: Dimension::CATEGORY_INPUT,
+          project: project
+        )
         raise unless dimension.save
       rescue StandardError
         retry
@@ -92,7 +114,10 @@ Plan.all.each do |p|
     # Seed project member
     5.times do
       begin
-        member = ProjectMember.create(company_member_id: user_ids.sample, project: project, role: 'member')
+        member = ProjectMember.create(
+          company_member_id: user_ids.sample,
+          project: project,
+          role: ProjectMember::ROLE_PROJECT_MEMBER)
         raise unless member.save
       rescue StandardError
         retry
@@ -107,7 +132,7 @@ Plan.all.each do |p|
         rescue StandardError
           retry
         end
-        next unless dimension.category == 'selection'
+        next unless dimension.category == Dimension::CATEGORY_SELECTION
         options = dimension.options
         # Seed option authorization
         5.times do
