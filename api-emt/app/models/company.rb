@@ -5,5 +5,5 @@ class Company < ApplicationRecord
   has_many :projects, inverse_of: :company
   belongs_to :plan, inverse_of: :companies
   has_many :services, through: :plan
-  # rubocop:ensable Rails/HasManyOrHasOneDependent
+  # rubocop:enable Rails/HasManyOrHasOneDependent
 end

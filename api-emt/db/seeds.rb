@@ -70,7 +70,10 @@ Plan.all.each do |p|
   user_ids = company.company_members.ids
   # Seed 3 projects
   3.times do |i|
-    project = company.projects.create(name: Faker::RickAndMorty.location + i.to_s, description: Faker::RickAndMorty.quote)
+    project = company.projects.create(
+      name: Faker::RickAndMorty.location + i.to_s,
+      description: Faker::RickAndMorty.quote
+    )
     ProjectMember.create(company_member_id: 2, project_id: project.id, role: ProjectMember::ROLE_PROJECT_ADMIN)
     ProjectMember.create(company_member_id: 3, project_id: project.id, role: ProjectMember::ROLE_PROJECT_ADMIN)
     # Seed 7 selection dimension
@@ -117,7 +120,8 @@ Plan.all.each do |p|
         member = ProjectMember.create(
           company_member_id: user_ids.sample,
           project: project,
-          role: ProjectMember::ROLE_PROJECT_MEMBER)
+          role: ProjectMember::ROLE_PROJECT_MEMBER
+        )
         raise unless member.save
       rescue StandardError
         retry
