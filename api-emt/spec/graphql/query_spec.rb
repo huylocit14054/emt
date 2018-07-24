@@ -88,7 +88,7 @@ RSpec.describe EnhanceUrlTaggingSchema do
       result_ids = []
       ProjectMember.where(
         company_member_id: company_members(:c1_member_loc).id,
-        role: 'project_admin'
+        role: ProjectMember::ROLE_PROJECT_ADMIN
       ).order(created_at: :desc).each { |record| result_ids << record.project_id }
       result_ids
     end
@@ -103,7 +103,17 @@ RSpec.describe EnhanceUrlTaggingSchema do
 
   # test query to get all the projects which have a member is the current user
   describe 'projectsAsMemberOfCurrentUser' do
-    let(:query_string) { %(query { projectsAsMemberOfCurrentUser { id name }}) }
+    let(:query_string) do
+      %|query($companyId: ID!)
+        { projectsAsMemberOfCurrentUser(companyId: $companyId)
+          {
+            id
+            name
+          }
+        }
+      |
+    end
+    let(:variables) { { 'companyId' => companies(:company_one).id.to_s } }
     let(:result_names) do
       result_names = []
       result['data']['projectsAsMemberOfCurrentUser'].each { |project| result_names << project['name'] }
@@ -120,7 +130,7 @@ RSpec.describe EnhanceUrlTaggingSchema do
       result_ids = []
       ProjectMember.where(
         company_member_id: company_members(:c1_member_loc).id,
-        role: 'member'
+        role: ProjectMember::ROLE_PROJECT_MEMBER
       ).order(created_at: :desc).each { |record| result_ids << record.project_id }
       result_ids
     end
@@ -136,15 +146,15 @@ RSpec.describe EnhanceUrlTaggingSchema do
   describe 'usersSuggestion' do
     let(:query_string) do
       %|
-        query($query : String!) {
-          usersSuggestion(query: $query){
+        query($companyId: ID!, $query : String!) {
+          usersSuggestion(companyId: $companyId, query: $query){
             username
             email
           }
         }
       |
     end
-    let(:variables) { { 'query' => 'hat' } }
+    let(:variables) { { 'companyId' => companies(:company_one).id.to_s, 'query' => 'hat' } }
     let(:expected_users) do
       [{ 'username' => 'phat', 'email' => 'phat@gmail.com' },
        { 'username' => 'nhat', 'email' => 'nhat@gmail.com' }]
@@ -181,8 +191,10 @@ RSpec.describe EnhanceUrlTaggingSchema do
       %|
         query($projectId: ID!){
           projectMembers(projectId: $projectId){
-            user{
-              username
+            companyMember{
+              user{
+                username
+              }
             }
             status
             role
@@ -197,7 +209,9 @@ RSpec.describe EnhanceUrlTaggingSchema do
     end
     it 'return the array with activated admin at the first order' do
       first_admin = {
-        'user' => { 'username' => users(:loc).username },
+        'companyMember' => {
+          'user' => { 'username' => users(:loc).username }
+        },
         'status' => ProjectMember::PROJECT_STATUS_ACTIVE,
         'role' => ProjectMember::ROLE_PROJECT_ADMIN
       }

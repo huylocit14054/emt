@@ -20,16 +20,21 @@ class Types::QueryType < Types::BaseObject
 
   def projects_as_admin_of_current_user(company_id:)
     company_member = CompanyMember.find_by(company_id: company_id, user_id: context[:current_user].id)
-    ::Project.joins(:member_relationships).where(project_members:
-      { role: 'project_admin', company_member_id: company_member.id, status:
+    Project.joins(:member_relationships).where(project_members:
+      { role: ProjectMember::ROLE_PROJECT_ADMIN, company_member_id: company_member.id, status:
         ProjectMember::PROJECT_STATUS_ACTIVE }).order(created_at: :desc)
   end
 
-  field :projects_as_member_of_current_user, [Types::Project], null: false
+  field :projects_as_member_of_current_user, [Types::Project], null: false do
+    argument :company_id, ID, required: true
+  end
 
-  def projects_as_member_of_current_user
+  def projects_as_member_of_current_user(company_id:)
+    company_member = CompanyMember.find_by(company_id: company_id, user_id: context[:current_user].id)
     ::Project.joins(:member_relationships).where(project_members:
-      { role: 'member', company_member_id: context[:current_user].id, status: 'active' }).order(created_at: :desc)
+      { role: ProjectMember::ROLE_PROJECT_MEMBER,
+        company_member_id: company_member.id,
+        status: ProjectMember::PROJECT_STATUS_ACTIVE }).order(created_at: :desc)
   end
 
   field :project_member, Types::ProjectMember, null: false, description: 'Project Member' do
@@ -91,10 +96,12 @@ class Types::QueryType < Types::BaseObject
   # suggestions on typing in adding members into project
   field :users_suggestion, [Types::User, null: true], null: false do
     argument :query, String, required: true
+    argument :company_id, ID, required: true
   end
 
-  def users_suggestion(query:)
-    ::User.where('username LIKE ? OR email LIKE ?', "%#{query}%", "%#{query}%")
+  def users_suggestion(company_id:, query:)
+    company = ::Company.find(company_id)
+    company.users.where('username LIKE ? OR email LIKE ?', "%#{query}%", "%#{query}%")
   end
 
   # suggestions on typing in dimensions assignment
@@ -105,7 +112,9 @@ class Types::QueryType < Types::BaseObject
 
   def members_suggestion(project_id:, query:)
     project = ::Project.find(project_id)
-    project.members.where('username LIKE ? OR email LIKE ?', "%#{query}%", "%#{query}%")
+    project.members.joins(:user).where(
+      'users.username LIKE ? OR users.email LIKE ?', "%#{query}%", "%#{query}%"
+    ).map(&:user)
   end
 
   # return member list of a project
@@ -182,7 +191,9 @@ class Types::QueryType < Types::BaseObject
   end
 
   def member_assignments_details(project_id:)
-    member = ::ProjectMember.find_by(user: context[:current_user], project_id: project_id)
+    project = Project.find(project_id)
+    company_member = CompanyMember.find_by(user: context[:current_user], company_id: project.company_id)
+    member = ::ProjectMember.find_by(company_member: company_member, project_id: project_id)
     member.authorizations
   end
 
@@ -192,7 +203,9 @@ class Types::QueryType < Types::BaseObject
   end
 
   def member_utm_history(project_id:)
-    project_member = ::ProjectMember.find_by(project_id: project_id, user: context[:current_user])
+    project = Project.find(project_id)
+    company_member = CompanyMember.find_by(user: context[:current_user], company_id: project.company_id)
+    project_member = ::ProjectMember.find_by(project_id: project_id, company_member: company_member)
     project_member.utms.order(created_at: :desc)
   end
   field :utm_analysis, [Types::Utm], null: false do

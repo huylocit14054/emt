@@ -12,6 +12,7 @@ class Types::Project < Types::BaseObject
   field :dimensions, [Types::Dimension], null: true
   field :members, [Types::User], null: true
   field :shorten_members, [Types::User], null: true
+  field :company, [Types::Company], null: false
 
   def shorten_members
     object.members.sample(5)

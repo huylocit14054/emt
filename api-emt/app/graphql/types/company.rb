@@ -3,11 +3,11 @@ class Types::Company < Types::BaseObject
 
   field :id, ID, null: false
   field :name, String, null: false
-  field :address, String
-  field :logo, String
-  field :description, String
+  field :address, String, null: true
+  field :logo, String, null: true
+  field :description, String, null: true
   field :email, String, null: false
-  field :phone_number, String
+  field :phone_number, String, null: true
   field :company_member_count, Int, null: false
   field :created_at, Types::DateTime, null: false
   field :updated_at, Types::DateTime, null: false

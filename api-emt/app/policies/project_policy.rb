@@ -1,8 +1,8 @@
 class ProjectPolicy < ApplicationPolicy
   def show?
     company_member = CompanyMember.find_by(
-      company_id: record.company_id,
-      user_id: context[:current_user].id
+      company_id: record.company.id,
+      user_id: user.id
     )
     project_member = ProjectMember.find_by(
       project_id: record.id,
