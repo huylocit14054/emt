@@ -132,7 +132,7 @@ describe('(Component) LoginBox', () => {
     expect(wrapper.find('Spin').prop('spinning')).toBe(false);
 
     // find the button and simulate click
-    wrapper.find('button').simulate('submit');
+    wrapper.find('Button').simulate('submit');
 
     // After clicking submit button, the prop spinning now set to true
     expect(wrapper.find('Spin').prop('spinning')).toBe(true);

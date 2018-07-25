@@ -8,9 +8,28 @@ import ChangeAvatarModal from './topHeader/ChangeAvatarModal';
 import '../styles/topHeader.less';
 import { CLOUD_NAME, AUTH_TOKEN } from '../constants';
 import { getClientCurrentUser as GET_CURRENT_USER_QUERY } from '../graphql/queries.gql';
+import CloudImage from './CloudImage';
 
 const { Header } = Layout;
 
+const companies = [
+  {
+    name: 'Company A',
+    logo: 'default-avatar_wbcfln',
+  },
+  {
+    name: 'Company B',
+    logo: 'default-avatar_wbcfln',
+  },
+  {
+    name: 'Company C',
+    logo: 'default-avatar_wbcfln',
+  },
+  {
+    name: 'Company D',
+    logo: 'default-avatar_wbcfln',
+  },
+];
 class TopHeader extends React.Component {
   signout = () => {
     localStorage.removeItem(AUTH_TOKEN);
@@ -22,6 +41,8 @@ class TopHeader extends React.Component {
   };
 
   render() {
+    const { location } = this.props;
+    const { pathname } = location;
     return (
       <Query query={GET_CURRENT_USER_QUERY}>
         {({ data }) => {
@@ -47,6 +68,32 @@ class TopHeader extends React.Component {
                   description={<ChangeAvatarModal currentUserId={currentUserSync.id} />}
                 />
               </Menu.Item>
+              <Menu.Divider />
+
+              <Menu.Item key="profile">
+                <Link to="/me/profile">
+                  <Icon type="dashboard" /> Root Admin Dashboard
+                </Link>
+              </Menu.Item>
+              <Menu.Divider />
+              <div style={{ marginLeft: 10, marginTop: 10, fontSize: 12, color: 'gray' }}>
+                Your Companies
+              </div>
+              {companies.map(company => (
+                <Menu.Item key="profile">
+                  <Link to="/me/profile">
+                    <CloudImage
+                      publicId={company.logo}
+                      width={18}
+                      height={18}
+                      style={{ marginRight: 7 }}
+                    >
+                      {company.name}
+                    </CloudImage>
+                  </Link>
+                </Menu.Item>
+              ))}
+
               <Menu.Divider />
               <Menu.Item key="profile">
                 <Link to="/me/profile">
