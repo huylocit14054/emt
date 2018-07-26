@@ -42,19 +42,25 @@ RSpec.describe EnhanceUrlTaggingSchema do
   # test query users
   describe 'users' do
     let(:query_string) { %(query { users { username }}) }
-    let(:result_name) do
+    let(:result_names) do
       result_name = []
       result['data']['users'].each { |name| result_name << name['username'] }
       result_name
     end
+    let(:expected_names) do
+      expected_names = []
+      User.where.not(
+        id: users(:loc).id
+      ).order(created_at: :desc).each { |user| expected_names << user.username }
+      expected_names
+    end
 
     it 'return all the users without the current user' do
-      expected_name = ['nhat', 'phat', 'thuy']
-      expect(result_name).to match_array(expected_name)
+      expect(result_names).to match_array(expected_names)
     end
 
     it 'does not include the current user in the return' do
-      expect(result_name).not_to include('loc')
+      expect(result_names).not_to include('loc')
     end
   end
 
@@ -154,12 +160,12 @@ RSpec.describe EnhanceUrlTaggingSchema do
         }
       |
     end
-    let(:variables) { { 'companyId' => companies(:company_one).id.to_s, 'query' => 'hat' } }
+    let(:variables) { { 'companyId' => companies(:company_one).id.to_s, 'query' => 'ha' } }
     let(:expected_users) do
       [{ 'username' => 'phat', 'email' => 'phat@gmail.com' },
        { 'username' => 'nhat', 'email' => 'nhat@gmail.com' }]
     end
-    it 'return the two users string \"hat\"' do
+    it 'return the two users string \"ha\"' do
       expect(result['data']['usersSuggestion']).to match_array(expected_users)
     end
   end
