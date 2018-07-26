@@ -1,7 +1,7 @@
 import { Mutation, withApollo } from 'react-apollo';
 import { Form, Input, Spin, Icon, message, Button } from 'antd';
 import React from 'react';
-import { updatePassword as UPDATE_PASSWORD_MUTATION } from '../../../graphql/mutations.gql';
+import { updatePassword as UPDATE_PASSWORD_MUTATION } from '../../../../graphql/mutations.gql';
 
 const FormItem = Form.Item;
 const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
@@ -33,7 +33,7 @@ const UpdatePasswordForm = Form.create({})(
       const formItemLayout = {
         labelCol: {
           xs: { span: 24 },
-          sm: { span: 2 },
+          sm: { span: 4 },
         },
         wrapperCol: {
           xs: { span: 24 },
@@ -44,11 +44,11 @@ const UpdatePasswordForm = Form.create({})(
         wrapperCol: {
           xs: {
             span: 24,
-            offset: 0,
+            offset: 12,
           },
           sm: {
-            span: 8,
-            offset: 2,
+            span: 4,
+            offset: 4,
           },
         },
       };
@@ -80,7 +80,7 @@ const UpdatePasswordForm = Form.create({})(
                         message: 'Please input your old password!',
                       },
                     ],
-                  })(<Input type="password" />)}
+                  })(<Input style={{ marginLeft: 10 }} type="password" />)}
                 </FormItem>
 
                 <FormItem {...formItemLayout} label="New Password">
@@ -91,10 +91,15 @@ const UpdatePasswordForm = Form.create({})(
                         message: 'Please input your new password!',
                       },
                     ],
-                  })(<Input type="password" />)}
+                  })(<Input style={{ marginLeft: 10 }} type="password" />)}
                 </FormItem>
                 <FormItem {...tailFormItemLayout}>
-                  <Button type="primary" htmlType="submit" loading={loading}>
+                  <Button
+                    style={{ marginLeft: 10 }}
+                    type="primary"
+                    htmlType="submit"
+                    loading={loading}
+                  >
                     Save
                   </Button>
                 </FormItem>

@@ -9,6 +9,7 @@ import '../styles/topHeader.less';
 import { CLOUD_NAME, AUTH_TOKEN } from '../constants';
 import { getClientCurrentUser as GET_CURRENT_USER_QUERY } from '../graphql/queries.gql';
 import CloudImage from './CloudImage';
+import UserProfileDrawer from './topHeader/UserProfileDrawer';
 
 const { Header } = Layout;
 
@@ -41,8 +42,6 @@ class TopHeader extends React.Component {
   };
 
   render() {
-    const { location } = this.props;
-    const { pathname } = location;
     return (
       <Query query={GET_CURRENT_USER_QUERY}>
         {({ data }) => {
@@ -95,11 +94,10 @@ class TopHeader extends React.Component {
               ))}
 
               <Menu.Divider />
-              <Menu.Item key="profile">
-                <Link to="/me/profile">
-                  <Icon type="profile" /> Profile
-                </Link>
+              <Menu.Item key="logout">
+                <UserProfileDrawer />
               </Menu.Item>
+
               <Menu.Item key="logout">
                 <a onClick={this.signout}>
                   <Icon type="logout" /> Sign out
@@ -128,7 +126,7 @@ class TopHeader extends React.Component {
                   />
                 </div>
               </Dropdown>
-              <div>
+              {/* <div>
                 <Link to="/">
                   <img
                     alt="logo"
@@ -136,7 +134,7 @@ class TopHeader extends React.Component {
                     className="company-logo"
                   />
                 </Link>
-              </div>
+              </div> */}
             </Header>
           );
         }}

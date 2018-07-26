@@ -2,13 +2,11 @@ import React from 'react';
 import './App.less';
 import { Switch, Route } from 'react-router-dom';
 import { Query } from 'react-apollo';
-import PrivateRoute from './components/PrivateRoute';
 import UnauthRoute from './components/UnauthRoute';
 import AdminRoute from './components/AdminRoute';
 import CompanyRoute from './components/CompanyRoute';
 import Projects from './pages/Projects';
 import Login from './pages/Login';
-import Profile from './pages/Profile';
 import Users from './pages/Users';
 import ProjectUTMBuilder from './pages/ProjectUTMBuilder';
 import ProjectUTMHistory from './pages/ProjectUTMHistory';
@@ -38,7 +36,6 @@ const App = () => (
             <AdminRoute exact path={Routes.admin.companyMangement} component={CompanyManagement} />
             <CompanyRoute exact path={Routes.company.utm.projects} component={Projects} />
             <CompanyRoute exact path="/users" component={Users} />
-            <PrivateRoute exact path={Routes.user.profile} component={Profile} />
             <CompanyRoute
               exact
               path={Routes.company.utm.utmBuilder}

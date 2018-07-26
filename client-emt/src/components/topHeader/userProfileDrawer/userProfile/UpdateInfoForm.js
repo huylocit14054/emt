@@ -1,8 +1,8 @@
 import React from 'react';
 import { Mutation, Query, withApollo } from 'react-apollo';
 import { Form, Input, Spin, Icon, message, Button } from 'antd';
-import { updateUserInfo as UPDATE_USER_INFO } from '../../../graphql/mutations.gql';
-import { getCurrentUserProfile as GET_CURRENT_USER_PROFILE_QUERY } from '../../../graphql/queries.gql';
+import { updateUserInfo as UPDATE_USER_INFO } from '../../../../graphql/mutations.gql';
+import { getCurrentUserProfile as GET_CURRENT_USER_PROFILE_QUERY } from '../../../../graphql/queries.gql';
 
 const FormItem = Form.Item;
 
