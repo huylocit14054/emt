@@ -15,7 +15,7 @@ const { Header } = Layout;
 
 const companies = [
   {
-    name: 'Company A',
+    name: 'Moi nguoi em ve truoc Moi nguoi em ve truoc Moi nguoi em ve truoc Company A',
     logo: 'default-avatar_wbcfln',
   },
   {

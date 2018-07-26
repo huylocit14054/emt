@@ -18,7 +18,7 @@ const AdminMenu = ({ match, location: { pathname } }) => {
     <Query query={GET_CURRENT_USER_QUERY}>
       {({ data: { currentUser } }) => (
         <React.Fragment>
-          <CompanyName />
+          <CompanyName companyId={parseInt(companyId)} />
 
           <Menu
             mode="inline"
