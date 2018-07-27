@@ -541,12 +541,8 @@ RSpec.describe EnhanceUrlTaggingSchema do
       end
 
       it 'successfully added' do
-        expect(result).to eq("oh yeah")
+        expect(result).to eq('oh yeah')
       end
-      
     end
-    
   end
-  
-
 end

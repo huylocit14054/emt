@@ -17,5 +17,5 @@ class CompanyMember < ApplicationRecord
   STATUS_ACTIVE = 'active'
   STATUS_RESTRICTED = 'restricted'
 
-  enum status: {active: STATUS_ACTIVE, restricted: STATUS_RESTRICTED}
+  enum status: { active: STATUS_ACTIVE, restricted: STATUS_RESTRICTED }
 end
