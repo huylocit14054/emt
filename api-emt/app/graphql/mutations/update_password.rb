@@ -6,13 +6,15 @@ class Mutations::UpdatePassword < Mutations::BaseMutation
 
   def resolve(old_password:, new_password:)
     current_user = context[:current_user]
+    # rubocop:disable Style/GuardClause Style/RaiseArgs
     if !current_user || !current_user.authenticate(old_password)
-      raise GraphQL::ExecutionError.new(" Your old password was incorrect. Please try again.")
+      raise GraphQL::ExecutionError, 'Your old password was incorrect. Please try again.'
     else
-      current_user.update_attribute(:password, new_password)
+      current_user.update(:password, new_password)
     end
     {
-      password_is_updated: true,
+      password_is_updated: true
     }
+    # rubocop:enable Style/GuardClause Style/RaiseArgs
   end
 end

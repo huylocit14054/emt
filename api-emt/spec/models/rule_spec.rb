@@ -88,7 +88,7 @@ RSpec.describe Rule, type: :model do
   end
 
   describe '.check_dimension_in_rule' do
-    it 'return dimension that dose not in the project' do
+    it 'return dimension that does not in the project' do
       ids = project.dimensions.ids
       new_rule = Rule.new(rule_string: "utm_camp={{#{ids.first}}}_{{1}}", project: project)
       new_rule.send(:check_dimension_in_rule)

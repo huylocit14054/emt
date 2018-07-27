@@ -12,3 +12,6 @@ rule_three:
   rule_string: utm_source={{1}}-{{1}}&utm_camp={{3}}
   is_applied: false
   project: project_one
+
+
+  

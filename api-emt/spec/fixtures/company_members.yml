@@ -2,15 +2,24 @@ c1_member_loc:
   user: loc
   company: company_one
   roles: ['company_admin', 'utm_manager', 'staff']
+  status: 'active'
 c1_member_nhat:
   user: nhat
   company: company_one
-  roles: ['staff']
+  roles: ['staff','utm_member']
+  status: 'active'
 c1_member_phat:
   user: phat
   company: company_one
-  roles: ['staff']
+  roles: ['staff','utm_member']
+  status: 'active'
 c1_member_thuy:
   user: thuy
   company: company_one
   roles: ['staff']
+  status: 'active'
+c1_member_phuc:
+  user: phuc
+  company: company_one
+  roles: ['staff']
+  status: 'restricted'
