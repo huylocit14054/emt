@@ -6,9 +6,9 @@ RSpec.describe Company, type: :model do
   describe '.company_member_sugestion' do
     let(:company_id) { companies(:company_one).id }
     let(:query) { 'ha' }
-    let(:expected_users) {[users(:phat), users(:nhat)]}
-    let(:unexpected_user) {users(:khanh)}
-    let!(:suggested_users) { Company.company_member_sugestion(company_id: company_id, query: query)}
+    let(:expected_users) { [users(:phat), users(:nhat)] }
+    let(:unexpected_user) { users(:khanh) }
+    let!(:suggested_users) { Company.company_member_sugestion(company_id: company_id, query: query) }
 
     it 'return user with correct query' do
       expect(suggested_users).to match_array(expected_users)
