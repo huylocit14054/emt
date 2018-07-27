@@ -100,8 +100,7 @@ class Types::QueryType < Types::BaseObject
   end
 
   def users_suggestion(company_id:, query:)
-    company = ::Company.find(company_id)
-    company.users.where('username LIKE ? OR email LIKE ?', "%#{query}%", "%#{query}%")
+    ::Company.company_member_sugestion(company_id: company_id, query: query)
   end
 
   # suggestions on typing in dimensions assignment
