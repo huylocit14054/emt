@@ -8,6 +8,7 @@ const AdminMenu = ({ location: { pathname } }) => {
   const currentKey = pathname.replace('/', '');
 
   return (
+    // Get current user for further authorization
     <Query query={GET_CURRENT_USER_QUERY}>
       {() => (
         <Menu mode="inline" theme="dark" selectedKeys={[currentKey]}>

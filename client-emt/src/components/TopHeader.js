@@ -15,7 +15,7 @@ const { Header } = Layout;
 
 const companies = [
   {
-    name: 'Moi nguoi em ve truoc Moi nguoi em ve truoc Moi nguoi em ve truoc Company A',
+    name: 'Company A',
     logo: 'default-avatar_wbcfln',
   },
   {
@@ -39,6 +39,10 @@ class TopHeader extends React.Component {
       // Redirect to a more useful page when signed out
       this.props.history.replace(`/login`);
     });
+  };
+
+  showProfileDrawer = () => {
+    this.profileDrawer.showDrawer();
   };
 
   render() {
@@ -69,7 +73,7 @@ class TopHeader extends React.Component {
               </Menu.Item>
               <Menu.Divider />
 
-              <Menu.Item key="profile">
+              <Menu.Item key="company-dashboard">
                 <Link to="/me/profile">
                   <Icon type="dashboard" /> Root Admin Dashboard
                 </Link>
@@ -79,7 +83,7 @@ class TopHeader extends React.Component {
                 Your Companies
               </div>
               {companies.map(company => (
-                <Menu.Item key="profile">
+                <Menu.Item key={`company-${company.id}`}>
                   <Link to="/me/profile">
                     <CloudImage
                       publicId={company.logo}
@@ -94,14 +98,13 @@ class TopHeader extends React.Component {
               ))}
 
               <Menu.Divider />
-              <Menu.Item key="logout">
-                <UserProfileDrawer />
+              <UserProfileDrawer ref={ref => (this.profileDrawer = ref)} />
+              <Menu.Item key="profile" onClick={this.showProfileDrawer}>
+                <Icon type="profile" /> Profile
               </Menu.Item>
 
-              <Menu.Item key="logout">
-                <a onClick={this.signout}>
-                  <Icon type="logout" /> Sign out
-                </a>
+              <Menu.Item key="logout" onClick={this.signout}>
+                <Icon type="logout" /> Sign out
               </Menu.Item>
             </Menu>
           );
@@ -114,7 +117,7 @@ class TopHeader extends React.Component {
               }}
               className="topHeader"
             >
-              <Dropdown overlay={menu}>
+              <Dropdown overlay={menu} trigger={['click']}>
                 <div className="ant-dropdown-link user-dropdown" href="#">
                   <Image
                     cloudName={CLOUD_NAME}

@@ -32,6 +32,7 @@ describe('(Component) UsersList', () => {
         <ListOfUsers />
       </MockedProvider>
     );
+
     expect(wrapper).to.have.length(1);
   });
 
@@ -61,17 +62,7 @@ describe('(Component) UsersList', () => {
           query: GET_ALL_USERS_QUERY,
         },
         result: {
-          data: {
-            users: [
-              {
-                avatar: 'default-avatar_wbcfln.png',
-                id: '52',
-                username: 'hahahahahah',
-                email: 'hahha@gmail.com',
-                createdAt: '2018-07-18T08:01:30Z',
-              },
-            ],
-          },
+          data: null,
         },
         error: new Error('aw fuck!'),
       },

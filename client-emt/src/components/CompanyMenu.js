@@ -1,7 +1,7 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import { Link, withRouter } from 'react-router-dom';
-import { Menu, Icon, Divider } from 'antd';
+import { Menu, Icon } from 'antd';
 
 import { getClientCurrentUser as GET_CURRENT_USER_QUERY } from '../graphql/queries.gql';
 import { Routes, UTM_SERVICE, OMS_SERVICE } from '../constants';

@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import MyQuery from '../MyQuery';
+import { Query } from 'react-apollo';
 import CloudImage from '../CloudImage';
 import { getCompanyById as GET_COMPANY_BY_ID } from '../../graphql/queries.gql';
 
 const CompanyName = ({ companyId }) => (
-  <MyQuery query={GET_COMPANY_BY_ID} variables={{ companyId }}>
-    {({ company }) => (
+  <Query query={GET_COMPANY_BY_ID} variables={{ companyId }}>
+    {({ data: { company } }) => (
       <div
         style={{
           color: 'white',
@@ -28,7 +28,7 @@ const CompanyName = ({ companyId }) => (
         {company.name}
       </div>
     )}
-  </MyQuery>
+  </Query>
 );
 
 CompanyName.propTypes = {

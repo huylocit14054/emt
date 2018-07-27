@@ -69,7 +69,6 @@ module.exports = {
         "react/display-name": 0,
         "react/no-array-index-key": 0,
         "react/react-in-jsx-scope": 0,
-        "react/forbid-prop-types": 0,
         "react/no-unescaped-entities": 0,
         "jsx-a11y/accessible-emoji": 0,
         "jsx-a11y/click-events-have-key-events": 0,

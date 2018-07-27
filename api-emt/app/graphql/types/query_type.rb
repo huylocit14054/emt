@@ -214,7 +214,7 @@ class Types::QueryType < Types::BaseObject
     ::Project.find(project_id).utms.order(created_at: :desc)
   end
 
-  field :company, Types::Company, null: false do
+  field :company, Types::Company, null: true do
     argument :company_id, ID, required: true
   end
 
