@@ -188,7 +188,9 @@ RSpec.describe EnhanceUrlTaggingSchema do
       end
 
       it 'raise error' do
-        expect(return_error).to eq("#{company_members(:c1_member_thuy).user.username} doesn't has access in UTM Builder service.")
+        expect(return_error).to eq(
+          "#{company_members(:c1_member_thuy).user.username} doesn't has access in UTM Builder service."
+        )
       end
     end
 
@@ -490,9 +492,10 @@ RSpec.describe EnhanceUrlTaggingSchema do
                                     rule_string: "source={{#{dimensions(:utm_source_one).id}}}")
         }
       end
-
       it 'successfully created' do
-        expect(result['data']['createRule']['createdRule']['ruleString']).to eq("source={{#{dimensions(:utm_source_one).id}}}")
+        expect(result['data']['createRule']['createdRule']['ruleString']).to eq(
+          "source={{#{dimensions(:utm_source_one).id}}}"
+        )
       end
     end
 
