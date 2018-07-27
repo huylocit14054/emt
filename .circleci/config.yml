@@ -79,7 +79,7 @@ jobs:
           command: docker-compose run api rspec
       - run:
           name: test ui
-          command: docker-compose run ui yarn test --forceExit
+          command: docker-compose run ui yarn test --coverage
       - store_artifacts:
           path: ~/project/api-emt/coverage
       - store_test_results:
