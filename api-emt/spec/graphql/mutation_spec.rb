@@ -90,13 +90,6 @@ RSpec.describe EnhanceUrlTaggingSchema do
         }
       |
     end
-
-    let(:return_error) do
-      message = ''
-      result['errors'].each { |e| message += e['message'] }
-      message
-    end
-
     let!(:project) { projects(:project_one) }
     let(:ids) { project.dimensions.ids }
     let(:new_first_rule) do
@@ -131,17 +124,6 @@ RSpec.describe EnhanceUrlTaggingSchema do
         expect(result['data']['activateRule']['activated']).to eq(true)
         expect(new_first_rule.reload.is_applied).to eq(true)
         expect(new_second_rule.reload.is_applied).to eq(false)
-      end
-    end
-
-    context 'invalid id' do
-      let(:variables) do
-        {
-          'rule_id' => (new_first_rule.id + 100).to_s
-        }
-      end
-      it 'raise error' do
-        expect { return_error }.to raise_error ActiveRecord::RecordNotFound
       end
     end
   end
