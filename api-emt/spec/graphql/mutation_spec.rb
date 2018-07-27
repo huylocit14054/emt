@@ -210,7 +210,9 @@ RSpec.describe EnhanceUrlTaggingSchema do
       end
 
       it 'raise error' do
-        expect(return_error).to eq("#{company_members(:c1_member_phuc).user.username} has been banned by the company admin.")
+        expect(return_error).to eq(
+          "#{company_members(:c1_member_phuc).user.username} has been banned by the company admin."
+        )
       end
     end
 
