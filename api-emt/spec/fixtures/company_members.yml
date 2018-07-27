@@ -26,5 +26,5 @@ c1_member_phuc:
 c1_member_khanh:
   user: khanh
   company: company_one
-  roles: [staff']
+  roles: ['staff']
   status: 'active'

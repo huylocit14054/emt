@@ -175,7 +175,7 @@ RSpec.describe EnhanceUrlTaggingSchema do
     context 'when adding a new member that does not has access to UTM service' do
       let(:variables) do
         {
-          'company_member_id' => company_members(:c1_member_thuy).id.to_s,
+          'company_member_id' => company_members(:c1_member_khanh).id.to_s,
           'project_id' => projects(:project_four).id.to_s,
           'role' => project_members(:member_project_four_2).role
         }
@@ -189,7 +189,7 @@ RSpec.describe EnhanceUrlTaggingSchema do
 
       it 'raise error' do
         expect(return_error).to eq(
-          "#{company_members(:c1_member_thuy).user.username} doesn't has access in UTM Builder service."
+          "#{company_members(:c1_member_khanh).user.username} doesn't has access in UTM Builder service."
         )
       end
     end
