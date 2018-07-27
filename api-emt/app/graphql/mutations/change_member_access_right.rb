@@ -3,7 +3,7 @@ class Mutations::ChangeMemberAccessRight < Mutations::BaseMutation
 
   field :updated_access_right, Types::ProjectMember, null: true
 
-  # attributes['active'] includes 'active' or 'restricted'
+  # attributes['status'] includes 'active' or 'restricted'
   def resolve(attributes:)
     project_member = ProjectMember.find(attributes['id'])
     is_updated = project_member.update(attributes)

@@ -65,7 +65,7 @@ member_project_four_2:
 #   company_member: c1_member_phat
 #   project: project_four
 #   role: member
-member_project_four_4:
-  company_member: c1_member_thuy
-  project: project_four
-  role: member
+# member_project_four_4:
+#   company_member: c1_member_thuy
+#   project: project_four
+#   role: member

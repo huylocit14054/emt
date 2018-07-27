@@ -14,4 +14,8 @@ class CompanyMember < ApplicationRecord
   ROLE_UTM_MANAGER = 'utm_manager'
   ROLE_OMS_MEMBER = 'oms_member'
   ROLE_UTM_MEMBER = 'utm_member'
+  STATUS_ACTIVE = 'active'
+  STATUS_RESTRICTED = 'restricted'
+
+  enum status: { active: STATUS_ACTIVE, restricted: STATUS_RESTRICTED }
 end

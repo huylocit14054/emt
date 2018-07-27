@@ -39,7 +39,7 @@ class Utm < ApplicationRecord
     utm
   end
 
-  # subtitute the value to the code dimension
+  # substitute the value to the code dimension
   def self.subtitute_values_to_rule(attributes:, rule:)
     attributes.each do |key, value|
       key = '{{' + key + '}}'
@@ -53,7 +53,7 @@ class Utm < ApplicationRecord
     rule.gsub(REGEX_GET_DIMENSION_CODE, '')
   end
 
-  # standardize url landing pageattributes
+  # standardize url landing page attributes
   def self.standardize_landing_page(url:, rule:)
     url.include?('?') ? url + '&' + rule : url + '?' + rule
   end
