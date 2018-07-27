@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Drawer, Icon } from 'antd';
+import { Drawer } from 'antd';
 import UserProfile from './userProfileDrawer/UserProfile';
 
 class UserProfileDrawer extends Component {
