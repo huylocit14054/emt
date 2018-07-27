@@ -7,7 +7,8 @@ class Types::User < Types::BaseObject
   field :created_at, Types::DateTime, null: false
   field :updated_at, Types::DateTime, null: false
 
-  #Relationship
+  # Relationship
   field :projects, [Types::Project], null: false
-  field :project_relationships, [Types::ProjectMember], null: false
+  field :companies, [Types::Company], null: false
+  field :company_members, [Types::CompanyMember], null: false
 end
