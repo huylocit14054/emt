@@ -14,8 +14,14 @@ RSpec.describe EnhanceUrlTaggingSchema do
       variables: variables
     )
     # Print any errors
-    # pp res if res['errors']
+    pp res if res['errors']
     res
+  end
+
+  let(:return_error) do
+    message = ''
+    result['errors'].each { |e| message += e['message'] }
+    message
   end
 
   describe 'login' do
@@ -32,11 +38,6 @@ RSpec.describe EnhanceUrlTaggingSchema do
       |
     end
 
-    let(:return_error) do
-      message = ''
-      result['errors'].each { |e| message += e['message'] }
-      message
-    end
     let(:error) { 'Invalid Username/Password' }
     let(:return_result) { result['data']['loginUser'] }
     context 'when input wrong user name' do
@@ -163,12 +164,6 @@ RSpec.describe EnhanceUrlTaggingSchema do
         }
       end
 
-      let(:return_error) do
-        message = ''
-        result['errors'].each { |e| message += e['message'] }
-        message
-      end
-
       it 'raise error' do
         expect(return_error).to eq(
           "#{company_members(:c1_member_khanh).user.username} doesn't has access in UTM Builder service."
@@ -185,12 +180,6 @@ RSpec.describe EnhanceUrlTaggingSchema do
         }
       end
 
-      let(:return_error) do
-        message = ''
-        result['errors'].each { |e| message += e['message'] }
-        message
-      end
-
       it 'raise error' do
         expect(return_error).to eq(
           "#{company_members(:c1_member_phuc).user.username} has been banned by the company admin."
@@ -205,12 +194,6 @@ RSpec.describe EnhanceUrlTaggingSchema do
           'project_id' => projects(:project_one).id.to_s,
           'role' => ProjectMember::ROLE_PROJECT_MEMBER
         }
-      end
-
-      let(:return_error) do
-        message = ''
-        result['errors'].each { |e| message += e['message'] }
-        message
       end
 
       let(:sample_error) { "#{company_members(:c1_member_phat).user.username} already has access." }
@@ -352,12 +335,6 @@ RSpec.describe EnhanceUrlTaggingSchema do
         }
       end
 
-      let(:return_error) do
-        message = ''
-        result['errors'].each { |e| message += e['message'] }
-        message
-      end
-
       it 'return error' do
         expect(return_error).to eq('Name has already been taken')
       end
@@ -429,12 +406,6 @@ RSpec.describe EnhanceUrlTaggingSchema do
         }
       end
 
-      let(:return_error) do
-        message = ''
-        result['errors'].each { |e| message += e['message'] }
-        message
-      end
-
       it 'will return error' do
         expect(return_error).to eq('Name has already been taken')
       end
@@ -491,26 +462,25 @@ RSpec.describe EnhanceUrlTaggingSchema do
         }
       end
 
-      let(:return_error) do
-        message = ''
-        result['errors'].each { |e| message += e['message'] }
-        message
-      end
-
       it 'will return error' do
         expect(return_error).to eq('Rule string has already been taken')
       end
     end
   end
 
-  xdescribe 'add member to company' do
+  describe 'add member to company' do
     let(:query_string) do
       %|
-        mutation($company_id: ID!, $email: string!, role: [String!], status: Enum){
-          addMemberToCompany(input:{companyId: $company_id, userId: $user_id, role: $role, status: $status})
+        mutation($company_id: ID!, $email: String!, $roles: [String], $status: CompanyStatusCategory){
+          addMemberToCompany(input:{companyId: $company_id, email: $email, roles: $roles, status: $status})
           {
-            createdRule {
-              ruleString
+            addedMember {
+              user {
+                email
+              }
+              company {
+                name
+              }
             }
           }
         }
@@ -520,15 +490,30 @@ RSpec.describe EnhanceUrlTaggingSchema do
     context 'add valid member' do
       let(:variables) do
         {
-          'companyId' => companies(:company_two).id,
-          'userId' => users(:loc).id,
-          'role' => [],
-          'status' => CompanyMember.active
+          'company_id' => companies(:company_two).id,
+          'email' => users(:loc).email,
+          'roles' => [],
+          'status' => CompanyMember::STATUS_ACTIVE
         }
       end
 
       it 'successfully added' do
-        expect(result).to eq('oh yeah')
+        expect(result['data']['addMemberToCompany']['addedMember']).not_to be_nil
+      end
+    end
+
+    context 'add a member that already has access' do
+      let(:variables) do
+        {
+          'company_id' => companies(:company_one).id,
+          'email' => users(:loc).email,
+          'roles' => [],
+          'status' => CompanyMember::STATUS_ACTIVE
+        }
+      end
+
+      it 'successfully added' do
+        expect(return_error).to eq("#{users(:loc).username} already has access.")
       end
     end
   end
