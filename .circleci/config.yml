@@ -75,8 +75,11 @@ jobs:
           name: "before_test: setup db"
           command: docker-compose run api rails db:create db:migrate
       - run:
-          name: test
+          name: test api
           command: docker-compose run api rspec
+      - run:
+          name: test ui
+          command: docker-compose run ui yarn test --coverage
       - store_artifacts:
           path: ~/project/api-emt/coverage
       - store_test_results:

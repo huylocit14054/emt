@@ -15,7 +15,7 @@ services:
     image: emt-client-{{ emt_apps.api.environment }}
     environment:
       - PORT=80
-      - NODE_ENV={{ emt_apps.ui.environment }}
+      - NODE_ENV=PROD
       - API_URL={{ emt_apps.ui.api_url }}
       - CLIENT_URL={{ emt_apps.ui.client_url }}
     ports:

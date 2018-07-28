@@ -1,8 +1,7 @@
-import { Layout, Menu, Icon } from 'antd';
-import { Query } from 'react-apollo';
+import { Layout } from 'antd';
 import React from 'react';
-import { withRouter, Link } from 'react-router-dom';
-import { getClientCurrentUser as GET_CURRENT_USER_QUERY } from '../graphql/queries.gql';
+import PropTypes from 'prop-types';
+
 import TopHeader from './TopHeader';
 
 const { Sider, Content } = Layout;
@@ -17,45 +16,17 @@ class NavigationLayout extends React.Component {
   };
 
   render() {
-    const { hidden, location, children } = this.props;
-    let currentPage = location.pathname;
-    currentPage =
-      currentPage.includes('project') || currentPage === '/'
-        ? 'projects'
-        : currentPage.replace('/', '');
-    if (hidden) {
-      return <div>{children}</div>;
-    }
+    const { menu, children } = this.props;
+
+    const { collapsed } = this.state;
+
     return (
       <Layout id="navigation-layout">
-        <Query query={GET_CURRENT_USER_QUERY}>
-          {({ loading, error, data }) => {
-            if (loading) return 'Loading...';
-            if (error) return `Error! ${error.message}`;
-            const currentUserSync = data.currentUser;
-            return (
-              <Sider collapsed style={{ paddingTop: 0, height: '100vh', position: 'fixed' }}>
-                <Menu mode="inline" theme="dark" selectedKeys={[currentPage]}>
-                  <Menu.Item key="projects" style={{ marginTop: 0 }}>
-                    <Link to="/">
-                      <Icon type="folder-open" />
-                      <span>Projects</span>
-                    </Link>
-                  </Menu.Item>
-                  {currentUserSync.role === 'root_admin' && (
-                    <Menu.Item key="users">
-                      <Link to="/users">
-                        <Icon type="team" />
-                        <span>Users</span>
-                      </Link>
-                    </Menu.Item>
-                  )}
-                </Menu>
-              </Sider>
-            );
-          }}
-        </Query>
-        <Layout style={{ marginLeft: this.state.collapsed ? 0 : 82 }}>
+        <Sider collapsed={false} style={{ paddingTop: 0, height: '100vh', position: 'fixed' }}>
+          {menu}
+        </Sider>
+
+        <Layout style={{ marginLeft: collapsed ? 82 : 202 }}>
           <TopHeader />
 
           <Content
@@ -73,5 +44,8 @@ class NavigationLayout extends React.Component {
     );
   }
 }
-
-export default withRouter(NavigationLayout);
+NavigationLayout.propTypes = {
+  menu: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired,
+};
+export default NavigationLayout;

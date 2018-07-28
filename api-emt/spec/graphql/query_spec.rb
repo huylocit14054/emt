@@ -288,4 +288,18 @@ RSpec.describe EnhanceUrlTaggingSchema do
       expect(return_result).to eq(expected_ids)
     end
   end
+
+  describe 'company' do
+    let(:query_string) do
+      %|query($companyId: ID!){
+        company(companyId: $companyId){
+          name
+        }
+      }|
+    end
+    let(:variables) { { 'companyId' => companies(:company_one).id.to_s } }
+    it 'return a company object' do
+      expect(result.dig('data', 'company', 'name')).to eq(companies(:company_one).name)
+    end
+  end
 end

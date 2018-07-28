@@ -3,11 +3,12 @@ class Types::Service < Types::BaseObject
 
   field :id, ID, null: false
   field :name, String, null: false
-  field :description, String, null: false
-  field :created_at, Types::DateTime, null: false
-  field :updated_at, Types::DateTime, null: false
+  # field :category, String, null: false
+  # field :created_at, Types::DateTime, null: false
+  # field :updated_at, Types::DateTime, null: false
 
-  # Relationship
-  field :plans, [Types::Plan, null: true], null: false
-  field :plan_services, [Types::PlanService, null: true], null: false
+  # # Relationship
+  # field :project, Types::Project, null: false
+  # field :authorizations, [Types::Authorization], null: false
+  # field :options, [Types::Option], null: false
 end

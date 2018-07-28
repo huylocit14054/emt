@@ -228,3 +228,13 @@ query utmAnalysis($projectId: ID!){
     }
   }
 }
+
+
+query getCompanyById($companyId: ID!) {
+  company(companyId: $companyId) {
+    id
+    logo
+    name
+    memberIdOfCurrentUser
+  }
+}
