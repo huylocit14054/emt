@@ -19,6 +19,10 @@ class User < ApplicationRecord
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }, allow_blank: true
 
+  STATUS_PENDING = 'pending'
+  STATUS_ACTIVE = 'active'
+  STATUS_RESTRICTED = 'restricted'
+  enum status: { active: STATUS_ACTIVE, restricted: STATUS_RESTRICTED, pending: STATUS_PENDING }
   def root_admin?
     role == ROLE_ROOT_ADMIN
   end

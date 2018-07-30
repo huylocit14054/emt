@@ -490,7 +490,7 @@ RSpec.describe EnhanceUrlTaggingSchema do
     context 'add valid member' do
       let(:variables) do
         {
-          'company_id' => companies(:company_two).id,
+          'company_id' => companies(:company_three).id,
           'email' => users(:loc).email,
           'roles' => [],
           'status' => CompanyMember::STATUS_ACTIVE
@@ -512,8 +512,8 @@ RSpec.describe EnhanceUrlTaggingSchema do
         }
       end
 
-      it 'successfully added' do
-        expect(return_error).to eq("#{users(:loc).username} already has access.")
+      it 'return errors' do
+        expect(return_error).to eq('User has already been taken')
       end
     end
   end
