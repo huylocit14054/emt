@@ -238,3 +238,10 @@ query getCompanyById($companyId: ID!) {
     memberIdOfCurrentUser
   }
 }
+
+query getAllPlansOfApplication{
+  allPlans{
+    id
+    name
+  }
+}

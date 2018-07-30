@@ -517,4 +517,50 @@ RSpec.describe EnhanceUrlTaggingSchema do
       end
     end
   end
+
+  describe 'create company' do
+    let(:query_string) do
+      %|
+        mutation createCompany($input: CreateCompanyInput!){
+          createCompany(input: $input)
+          {
+            createdCompany {
+              name
+              plan {
+                id
+              }
+            }
+          }
+        }
+      |
+    end
+
+    context 'with valid arguments' do
+      let(:variables) do
+        {
+          'input' => {
+            'name' => 'Enhance',
+            'companyAdminEmail' => 'enhance_admin@gmail.com',
+            'planId' => plans(:plan_three).id.to_s
+          }
+        }
+      end
+
+      it 'creates new company' do
+        expect(result.dig('data', 'createCompany', 'createdCompany', 'name')).to eq('Enhance')
+      end
+
+      it 'assigns correct plan for that company ' do
+        expect(result.dig('data', 'createCompany', 'createdCompany', 'plan', 'id')).to eq(plans(:plan_three).id.to_s)
+      end
+
+      xit 'creates new company admin with entered email' do
+        expect(result).to eq('oh yeah')
+      end
+
+      xit 'sends email to company admin' do
+   
+      end
+    end
+  end
 end

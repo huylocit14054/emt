@@ -302,4 +302,23 @@ RSpec.describe EnhanceUrlTaggingSchema do
       expect(result.dig('data', 'company', 'name')).to eq(companies(:company_one).name)
     end
   end
+
+  describe 'plans' do
+    let(:query_string) do
+      %(query getAllPlansOfApplication{
+        allPlans{
+          name
+        }
+      })
+    end
+
+    let(:return_result) do
+      result.dig('data', 'allPlans').map do |plan|
+        plan['name']
+      end
+    end
+    it 'return an array of all plans name in descendent order' do
+      expect(return_result).to eq(Plan.all.order(created_at: :desc).pluck(:name))
+    end
+  end
 end

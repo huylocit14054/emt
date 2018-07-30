@@ -229,4 +229,10 @@ class Types::QueryType < Types::BaseObject
   def service(service_id:)
     ::Service.find(service_id)
   end
+
+  field :all_plans, [Types::Plan], null: false
+
+  def all_plans
+    ::Plan.all.order(created_at: :desc)
+  end
 end
