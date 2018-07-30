@@ -340,4 +340,24 @@ RSpec.describe EnhanceUrlTaggingSchema do
       expect(return_result).to eq(Company.all.order(created_at: :desc).pluck(:name))
     end
   end
+  describe 'get_all_services' do
+    let(:query_string) do
+      %(query{
+        services{
+          name
+        }
+      }
+      )
+    end
+    let(:expected_result) do
+      expected_result = []
+      result['data']['services'].each { |s| expected_result << s['name'] }
+      expected_result
+    end
+    it 'return all the services of the application' do
+      expect(
+        expected_result
+      ).to match_array(Service.all.order(created_at: :desc).pluck(:name))
+    end
+  end
 end
