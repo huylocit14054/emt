@@ -84,8 +84,8 @@ RSpec.describe EnhanceUrlTaggingSchema do
   describe 'activate rule' do
     let(:query_string) do
       %|
-        mutation($rule_id: ID!){
-          activateRule(input:{ruleId: $rule_id}){
+        mutation($input: ActivateRuleInput!){
+          activateRule(input: $input){
             activated
           }
         }
@@ -116,13 +116,15 @@ RSpec.describe EnhanceUrlTaggingSchema do
     context 'valid id' do
       let(:variables) do
         {
-          'rule_id' => new_first_rule.id.to_s
+          'input' => {
+            'ruleId' => new_first_rule.id.to_s
+          }
         }
       end
 
       it 'is successfully activated' do
         # calling `result` executes the query
-        expect(result['data']['activateRule']['activated']).to eq(true)
+        expect(result.dig('data', 'activateRule', 'activated')).to eq(true)
         expect(new_first_rule.reload.is_applied).to eq(true)
         expect(new_second_rule.reload.is_applied).to eq(false)
       end
@@ -132,8 +134,8 @@ RSpec.describe EnhanceUrlTaggingSchema do
   describe 'add member to project' do
     let(:query_string) do
       %|
-        mutation($company_member_id: ID!, $project_id: ID!, $role: String!){
-          addMemberToProject(input:{companyMemberId: $company_member_id, projectId: $project_id, role: $role}){
+        mutation($input: AddMemberToProjectInput!){
+          addMemberToProject(input: $input){
             addedMember {
               id
             }
@@ -145,22 +147,26 @@ RSpec.describe EnhanceUrlTaggingSchema do
     context 'when adding a new member' do
       let(:variables) do
         {
-          'company_member_id' => company_members(:c1_member_phat).id.to_s,
-          'project_id' => projects(:project_four).id.to_s,
-          'role' => project_members(:member_project_four_2).role
+          'input' => {
+            'companyMemberId' => company_members(:c1_member_phat).id.to_s,
+            'projectId' => projects(:project_four).id.to_s,
+            'role' => project_members(:member_project_four_2).role
+          }
         }
       end
       it 'successfully added' do
-        expect(result['data']['addMemberToProject']['addedMember']['id']).not_to be_nil
+        expect(result.dig('data', 'addMemberToProject', 'addedMember', 'id')).not_to be_nil
       end
     end
 
     context 'when adding a new member that does not has access to UTM service' do
       let(:variables) do
         {
-          'company_member_id' => company_members(:c1_member_khanh).id.to_s,
-          'project_id' => projects(:project_four).id.to_s,
-          'role' => project_members(:member_project_four_2).role
+          'input' => {
+            'companyMemberId' => company_members(:c1_member_khanh).id.to_s,
+            'projectId' => projects(:project_four).id.to_s,
+            'role' => project_members(:member_project_four_2).role
+          }
         }
       end
 
@@ -174,9 +180,11 @@ RSpec.describe EnhanceUrlTaggingSchema do
     context 'when adding a new member that is banned by the company' do
       let(:variables) do
         {
-          'company_member_id' => company_members(:c1_member_phuc).id.to_s,
-          'project_id' => projects(:project_four).id.to_s,
-          'role' => ProjectMember::ROLE_PROJECT_MEMBER
+          'input' => {
+            'companyMemberId' => company_members(:c1_member_phuc).id.to_s,
+            'projectId' => projects(:project_four).id.to_s,
+            'role' => ProjectMember::ROLE_PROJECT_MEMBER
+          }
         }
       end
 
@@ -190,9 +198,11 @@ RSpec.describe EnhanceUrlTaggingSchema do
     context 'when adding a member that already has access' do
       let(:variables) do
         {
-          'company_member_id' => company_members(:c1_member_phat).id.to_s,
-          'project_id' => projects(:project_one).id.to_s,
-          'role' => ProjectMember::ROLE_PROJECT_MEMBER
+          'input' => {
+            'companyMemberId' => company_members(:c1_member_phat).id.to_s,
+            'projectId' => projects(:project_one).id.to_s,
+            'role' => ProjectMember::ROLE_PROJECT_MEMBER
+          }
         }
       end
 
@@ -207,8 +217,8 @@ RSpec.describe EnhanceUrlTaggingSchema do
   describe 'assign dimensions for members' do
     let(:query_string) do
       %|
-        mutation($companyMembers: [String!]!, $projectId: ID!, $choices: [String!]!){
-          assignDimensionsForMembers(input:{companyMembers: $companyMembers, projectId: $projectId, choices: $choices})
+        mutation($input: AssignDimensionsForMembersInput!){
+          assignDimensionsForMembers(input: $input)
           {
             assigned
           }
@@ -232,14 +242,16 @@ RSpec.describe EnhanceUrlTaggingSchema do
 
       let(:variables) do
         {
-          'companyMembers' => company_members_array,
-          'projectId' => projects(:project_one).id.to_s,
-          'choices' => [dimensions(:utm_source_one).id.to_s]
+          'input' => {
+            'companyMembers' => company_members_array,
+            'projectId' => projects(:project_one).id.to_s,
+            'choices' => choices
+          }
         }
       end
 
       it 'successfully assigned' do
-        expect(result['data']['assignDimensionsForMembers']['assigned']).to be(true)
+        expect(result.dig('data', 'assignDimensionsForMembers', 'assigned')).to be(true)
       end
     end
   end
@@ -247,8 +259,8 @@ RSpec.describe EnhanceUrlTaggingSchema do
   describe 'change member access right in UTM project' do
     let(:query_string) do
       %|
-        mutation($attributes: Json!){
-          changeMemberAccessRight(input:{attributes: $attributes})
+        mutation($input: ChangeMemberAccessRightInput!){
+          changeMemberAccessRight(input: $input)
           {
             updatedAccessRight {
               status
@@ -261,16 +273,18 @@ RSpec.describe EnhanceUrlTaggingSchema do
     context 'when changing members access right from active to restricted' do
       let(:variables) do
         {
-          'attributes' => JSON.dump(
-            id: project_members(:member_project_one_2).id,
-            status: 'restricted'
-          )
+          'input' => {
+            'attributes' => JSON.dump(
+              id: project_members(:member_project_one_2).id,
+              status: 'restricted'
+            )
+          }
         }
       end
 
       it 'no longer have access right' do
         expect(project_members(:member_project_one_2).status).to eq('active')
-        expect(result['data']['changeMemberAccessRight']['updatedAccessRight']['status']).to eq('restricted')
+        expect(result.dig('data', 'changeMemberAccessRight', 'updatedAccessRight', 'status')).to eq('restricted')
         expect(project_members(:member_project_one_2).reload.status).to eq('restricted')
       end
     end
@@ -278,16 +292,18 @@ RSpec.describe EnhanceUrlTaggingSchema do
     context 'when changing members access right from restricted to active' do
       let(:variables) do
         {
-          'attributes' => JSON.dump(
-            id: project_members(:member_project_one_4).id,
-            status: 'active'
-          )
+          'input' => {
+            'attributes' => JSON.dump(
+              id: project_members(:member_project_one_4).id,
+              status: 'active'
+            )
+          }
         }
       end
 
       it 'will have access right' do
         expect(project_members(:member_project_one_4).status).to eq('restricted')
-        expect(result['data']['changeMemberAccessRight']['updatedAccessRight']['status']).to eq('active')
+        expect(result.dig('data', 'changeMemberAccessRight', 'updatedAccessRight', 'status')).to eq('active')
         expect(project_members(:member_project_one_4).reload.status).to eq('active')
       end
     end
@@ -296,8 +312,8 @@ RSpec.describe EnhanceUrlTaggingSchema do
   describe 'create dimension' do
     let(:query_string) do
       %|
-        mutation($attributes: Json!){
-          createDimension(input:{attributes: $attributes})
+        mutation($input: CreateDimensionInput!){
+          createDimension(input: $input)
           {
             createdDimension {
               name
@@ -311,27 +327,31 @@ RSpec.describe EnhanceUrlTaggingSchema do
     context 'create a new valid dimension' do
       let(:variables) do
         {
-          'attributes' => JSON.dump(
-            project_id: projects(:project_one).id,
-            name: 'utm source new',
-            category: 'selection'
-          )
+          'input' => {
+            'attributes' => JSON.dump(
+              project_id: projects(:project_one).id,
+              name: 'utm source new',
+              category: 'selection'
+            )
+          }
         }
       end
 
       it 'return valid response' do
-        expect(result['data']['createDimension']['createdDimension']['name']).to eq('utm source new')
+        expect(result.dig('data', 'createDimension', 'createdDimension', 'name')).to eq('utm source new')
       end
     end
 
     context 'create a dimension that already exist in current project' do
       let(:variables) do
         {
-          'attributes' => JSON.dump(
-            project_id: projects(:project_one).id,
-            name: 'utm source one',
-            category: 'selection'
-          )
+          'input' => {
+            'attributes' => JSON.dump(
+              project_id: projects(:project_one).id,
+              name: 'utm source one',
+              category: 'selection'
+            )
+          }
         }
       end
 
@@ -344,8 +364,8 @@ RSpec.describe EnhanceUrlTaggingSchema do
   describe 'create options' do
     let(:query_string) do
       %|
-        mutation($names: [String!]!, $dimension_id: ID!){
-          createOptions(input:{names: $names, dimensionId: $dimension_id})
+        mutation($input: CreateOptionsInput!){
+          createOptions(input: $input)
           {
             createdOptions {
               name
@@ -358,13 +378,15 @@ RSpec.describe EnhanceUrlTaggingSchema do
     context 'when add valid options' do
       let(:variables) do
         {
-          dimension_id: dimensions(:utm_source_one).id,
-          names: [options(:option_1).name]
+          'input' => {
+            dimensionId: dimensions(:utm_source_one).id,
+            names: [options(:option_1).name]
+          }
         }
       end
 
       it 'successfully created' do
-        expect(result['data']['createOptions']['createdOptions'][0]['name']).to eq('option one')
+        expect(result.dig('data', 'createOptions', 'createdOptions')[0]['name']).to eq('option one')
       end
     end
   end
@@ -372,8 +394,8 @@ RSpec.describe EnhanceUrlTaggingSchema do
   describe 'create project' do
     let(:query_string) do
       %|
-        mutation($attributes: Json!){
-          createProject(input:{attributes: $attributes})
+        mutation($input: CreateProjectInput!){
+          createProject(input: $input)
           {
             createdProject {
               name
@@ -386,23 +408,27 @@ RSpec.describe EnhanceUrlTaggingSchema do
     context 'when create a new valid project' do
       let(:variables) do
         {
-          'attributes' => JSON.dump(company_id: companies(:company_one).id,
+          'input' => {
+            'attributes' => JSON.dump(company_id: companies(:company_one).id,
                                     name: 'enhance',
                                     description: 'hello anh Phuc')
+          }
         }
       end
 
       it 'successfully created' do
-        expect(result['data']['createProject']['createdProject']['name']).to eq('enhance')
+        expect(result.dig('data', 'createProject', 'createdProject', 'name')).to eq('enhance')
       end
     end
 
     context 'when create a UTM project that company already has' do
       let(:variables) do
         {
-          'attributes' => JSON.dump(company_id: companies(:company_one).id,
+          'input' => {
+            'attributes' => JSON.dump(company_id: companies(:company_one).id,
                                     name: projects(:project_one).name,
                                     description: 'hello anh Phuc')
+          }
         }
       end
 
@@ -415,8 +441,8 @@ RSpec.describe EnhanceUrlTaggingSchema do
   describe 'create rule' do
     let(:query_string) do
       %|
-        mutation($attributes: Json!){
-          createRule(input:{attributes: $attributes})
+        mutation($input: CreateRuleInput!){
+          createRule(input: $input)
           {
             createdRule {
               ruleString
@@ -436,19 +462,20 @@ RSpec.describe EnhanceUrlTaggingSchema do
     end
 
     before(:example) do
-      # rules(:rule_one).destroy
       new_first_rule.save
     end
 
     context 'when create a new valid rule' do
       let(:variables) do
         {
-          'attributes' => JSON.dump(project_id: projects(:project_one).id,
+          'input' => {
+            'attributes' => JSON.dump(project_id: projects(:project_one).id,
                                     rule_string: "source={{#{dimensions(:utm_source_one).id}}}")
+          }
         }
       end
       it 'successfully created' do
-        expect(result['data']['createRule']['createdRule']['ruleString']).to eq(
+        expect(result.dig('data', 'createRule', 'createdRule', 'ruleString')).to eq(
           "source={{#{dimensions(:utm_source_one).id}}}"
         )
       end
@@ -457,8 +484,10 @@ RSpec.describe EnhanceUrlTaggingSchema do
     context 'when create a rule that project already has' do
       let(:variables) do
         {
-          'attributes' => JSON.dump(project_id: projects(:project_one).id,
+          'input' => {
+            'attributes' => JSON.dump(project_id: projects(:project_one).id,
                                     rule_string: new_first_rule.rule_string)
+          }
         }
       end
 
@@ -471,8 +500,8 @@ RSpec.describe EnhanceUrlTaggingSchema do
   describe 'add member to company' do
     let(:query_string) do
       %|
-        mutation($company_id: ID!, $email: String!, $roles: [String], $status: CompanyStatusCategory){
-          addMemberToCompany(input:{companyId: $company_id, email: $email, roles: $roles, status: $status})
+        mutation($input: AddMemberToCompanyInput!){
+          addMemberToCompany(input: $input)
           {
             addedMember {
               user {
@@ -490,25 +519,29 @@ RSpec.describe EnhanceUrlTaggingSchema do
     context 'add valid member' do
       let(:variables) do
         {
-          'company_id' => companies(:company_three).id,
-          'email' => users(:loc).email,
-          'roles' => [],
-          'status' => CompanyMember::STATUS_ACTIVE
+          'input' => {
+            'companyId' => companies(:company_three).id.to_s,
+            'email' => users(:loc).email,
+            'roles' => [],
+            'status' => CompanyMember::STATUS_ACTIVE
+          }
         }
       end
 
       it 'successfully added' do
-        expect(result['data']['addMemberToCompany']['addedMember']).not_to be_nil
+        expect(result.dig('data', 'addMemberToCompany', 'addedMember')).not_to be_nil
       end
     end
 
     context 'add a member that already has access' do
       let(:variables) do
         {
-          'company_id' => companies(:company_one).id,
-          'email' => users(:loc).email,
-          'roles' => [],
-          'status' => CompanyMember::STATUS_ACTIVE
+          'input' => {
+            'companyId' => companies(:company_one).id,
+            'email' => users(:loc).email,
+            'roles' => [],
+            'status' => CompanyMember::STATUS_ACTIVE
+          }
         }
       end
 

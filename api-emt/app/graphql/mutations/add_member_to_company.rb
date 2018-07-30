@@ -12,6 +12,7 @@ class Mutations::AddMemberToCompany < Mutations::BaseMutation
     if !company_member.valid?
       GraphQL::ExecutionError.new(company_member.errors.full_messages.join(', '))
     else
+      CompanyMemberMailer.company_member_activation(user).deliver_now
       {
         added_member: company_member
       }
