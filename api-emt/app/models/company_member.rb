@@ -7,6 +7,8 @@ class CompanyMember < ApplicationRecord
            foreign_key: 'company_member_id',
            inverse_of: :company_member
   # rubocop:enable Rails/HasManyOrHasOneDependent
+  validate :check_valid
+  validates :user_id, uniqueness: { scope: :company_id }
 
   ROLE_COMPANY_ADMIN = 'admin'
   ROLE_COMPANY_MEMBER = 'staff'
@@ -18,4 +20,13 @@ class CompanyMember < ApplicationRecord
   STATUS_RESTRICTED = 'restricted'
 
   enum status: { active: STATUS_ACTIVE, restricted: STATUS_RESTRICTED }
+
+  private
+
+  def check_valid
+    company = Company.find(company_id)
+    company || errors.add(:company_id, 'is not found')
+    user = User.find(user_id)
+    user || errors.add(:user_id, 'is not found')
+  end
 end
