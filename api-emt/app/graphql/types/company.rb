@@ -17,7 +17,7 @@ class Types::Company < Types::BaseObject
   field :users, [Types::User], null: false
   field :projects, [Types::Project, null: true], null: false
   field :services, [Types::Service], null: false
-  field :plans, Types::Plan, null: false
+  field :plan, Types::Plan, null: false
 
   # Bonus
   field :member_id_of_current_user, ID, null: true
