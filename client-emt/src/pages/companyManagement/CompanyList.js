@@ -2,46 +2,54 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import { Table } from 'antd';
 import TimeAgo from 'react-timeago';
-
-import { Image } from 'cloudinary-react';
-import { CLOUD_NAME } from '../../constants';
-
 import { getAllCompaniesOfApplication as GET_ALL_COMPANIES_QUERY } from '../../graphql/queries.gql';
+import CloudImage from '../../components/CloudImage';
 
 const columns = [
   {
-    title: 'Username',
-    dataIndex: 'username',
-    render: (_, user) => (
+    title: 'Name',
+    dataIndex: 'name',
+    render: (_, company) => (
       <a>
         {' '}
-        <Image
-          cloudName={CLOUD_NAME}
-          publicId={user.avatar}
-          width="40"
-          height="40"
-          crop="scale"
-          style={{ borderRadius: '50%', border: '1px solid #00b5d0', marginRight: 20 }}
-        />
-        {user.username}
+        <CloudImage publicId={company.logo} width={40} height={40} style={{ marginRight: 20 }}>
+          {company.name}
+        </CloudImage>
       </a>
     ),
   },
   {
-    title: 'Email',
-    dataIndex: 'email',
+    title: 'Address',
+    dataIndex: 'address',
+    align: 'center',
   },
   {
-    title: 'Created at',
+    title: 'Email',
+    dataIndex: 'email',
+    align: 'center',
+  },
+  {
+    title: 'Phone number',
+    dataIndex: 'phoneNumber',
+    align: 'center',
+  },
+  {
+    title: 'Members',
+    dataIndex: 'companyMemberCount',
+    align: 'center',
+    render: count => <span>{count || 0}</span>,
+  },
+  {
+    title: 'Joined',
     dataIndex: 'createdAt',
+    align: 'center',
     render: date => <TimeAgo date={date} />,
   },
 ];
 
-const ListOfUsers = () => (
+const CompanyList = () => (
   <Query query={GET_ALL_COMPANIES_QUERY}>
     {({ loading, error, data }) => {
-      if (loading) return <div className="loading-text">Loading...</div>;
       if (error) return <div>Error! {error.message}</div>;
       return (
         <Table
@@ -49,7 +57,8 @@ const ListOfUsers = () => (
           columns={columns}
           pagination={{ pageSize: 8 }}
           loading={loading}
-          dataSource={data.users}
+          dataSource={data.allCompanies}
+          expandedRowRender={company => <p style={{ margin: 0 }}>{company.description}</p>}
           rowKey="id"
         />
       );
@@ -57,4 +66,4 @@ const ListOfUsers = () => (
   </Query>
 );
 
-export default ListOfUsers;
+export default CompanyList;
