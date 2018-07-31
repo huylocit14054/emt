@@ -1,8 +1,12 @@
 import { Drawer, Form, Button, Col, Row, Input, Radio } from 'antd';
 import React from 'react';
-import { getAllPlansOfApplication as GET_ALL_PLANS_OF_APPLICATION } from '../../graphql/queries.gql';
+import {
+  getAllPlansOfApplication as GET_ALL_PLANS_OF_APPLICATION,
+  getAllCompaniesOfApplication as GET_ALL_COMPANIES_QUERY,
+} from '../../graphql/queries.gql';
 import MyQuery from '../../components/MyQuery';
 import MyMutation from '../../components/MyMutation';
+
 import { createCompany as CREATE_COMPANY_MUTATION } from './mutations.gql';
 
 class DrawerForm extends React.Component {
@@ -45,7 +49,7 @@ class DrawerForm extends React.Component {
         </Button>
         <Drawer
           title="Create Company"
-          width="80%"
+          width="50%"
           placement="right"
           onClose={this.onClose}
           maskClosable={false}
@@ -62,7 +66,7 @@ class DrawerForm extends React.Component {
                 <Form.Item label="Name">
                   {getFieldDecorator('name', {
                     rules: [{ required: true, message: "Please enter company's name" }],
-                  })(<Input placeholder="e.g Enhance" />)}
+                  })(<Input placeholder="e.g Enhance" autoFocus />)}
                 </Form.Item>
               </Col>
               <Col span={24}>
@@ -116,8 +120,26 @@ class DrawerForm extends React.Component {
             </Button>
             <MyMutation
               mutation={CREATE_COMPANY_MUTATION}
-              onCompleted={({ createCompany: { createdCompany } }) => {
-                console.log(createdCompany);
+              update={(
+                store,
+                {
+                  data: {
+                    createCompany: { createdCompany },
+                  },
+                }
+              ) => {
+                // append new company to local store
+                const data = store.readQuery({ query: GET_ALL_COMPANIES_QUERY });
+
+                data.allCompanies.splice(0, 0, createdCompany);
+                store.writeQuery({
+                  query: GET_ALL_COMPANIES_QUERY,
+                  data,
+                });
+
+                // reset form and close drawer
+                this.props.form.resetFields();
+                this.onClose();
               }}
             >
               {(createCompany, { loading }) => (
