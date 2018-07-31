@@ -19,7 +19,6 @@ describe('(Component) UsersList', () => {
               id: '52',
               username: 'hahahahahah',
               email: 'hahha@gmail.com',
-              createdAt: '1100-07-18T08:01:30Z',
             },
           ],
         },

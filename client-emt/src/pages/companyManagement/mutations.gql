@@ -1,0 +1,9 @@
+#import "../../graphql/fragments/BasicCompanyInfo.gql"
+mutation createCompany($input: CreateCompanyInput!){
+  createCompany(input: $input)
+    {
+      createdCompany {
+       ...BasicCompanyInfo
+      }
+    }
+}
