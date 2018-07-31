@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { getCompanyById as GET_COMPANY_BY_ID } from '../graphql/queries.gql';
+import { getCompany as GET_COMPANY_BY_ID } from '../graphql/queries.gql';
 import MyQueryWithLoadingLayout from './MyQueryWithLoadingLayout';
 import PrivateRoute from './PrivateRoute';
 import NavigationLayout from './NavigationLayout';

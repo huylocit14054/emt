@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import CloudImage from '../CloudImage';
-import { getCompanyById as GET_COMPANY_BY_ID } from '../../graphql/queries.gql';
+import { getCompany as GET_COMPANY_BY_ID } from '../../graphql/queries.gql';
 
 const CompanyName = ({ companyId }) => (
   <Query query={GET_COMPANY_BY_ID} variables={{ companyId }}>
