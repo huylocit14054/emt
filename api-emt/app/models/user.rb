@@ -26,4 +26,8 @@ class User < ApplicationRecord
   def root_admin?
     role == ROLE_ROOT_ADMIN
   end
+
+  def self.new_token
+    SecureRandom.urlsafe_base64
+  end
 end

@@ -586,14 +586,6 @@ RSpec.describe EnhanceUrlTaggingSchema do
       it 'assigns correct plan for that company ' do
         expect(result.dig('data', 'createCompany', 'createdCompany', 'plan', 'id')).to eq(plans(:plan_three).id.to_s)
       end
-
-      xit 'creates new company admin with entered email' do
-        expect(result).to eq('oh yeah')
-      end
-
-      xit 'sends email to company admin' do
-   
-      end
     end
   end
 end
