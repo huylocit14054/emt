@@ -1,0 +1,8 @@
+query getAllServices {
+  services {
+    id
+    name
+    createdAt
+    description
+  }
+}
