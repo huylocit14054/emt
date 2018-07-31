@@ -1,5 +1,5 @@
 #import "./fragments/BasicRuleInfo.gql"
-
+#import "./fragments/BasicCompanyInfo.gql"
 query getCurrentUser {
   currentUser {
     id
@@ -235,7 +235,10 @@ query getCompanyById($companyId: ID!) {
     id
     logo
     name
-    memberIdOfCurrentUser
+    currentUserAsMember {
+      id
+      roles
+    }
   }
 }
 
@@ -243,5 +246,11 @@ query getAllPlansOfApplication{
   allPlans{
     id
     name
+  }
+}
+
+query getAllCompaniesOfApplication{
+  allCompanies{
+    ...BasicCompanyInfo
   }
 }

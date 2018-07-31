@@ -11,8 +11,22 @@ RSpec.describe CompanyMember, type: :model do
           company_id: companies(:company_one).id.to_s
         }
       end
-      it 'create a new user in database' do
+
+      before(:example) do |test|
+        CompanyMember.create_staff(attributes) if test.metadata[:need_to_create_staff]
+      end
+
+      it 'creates a new user in database' do
         expect { CompanyMember.create_staff(attributes) }.to change { User.count }.by(1)
+      end
+
+      it 'creates correct user in database', :need_to_create_staff do
+        expect(User.last.email).to eq(attributes[:user_email])
+      end
+
+      it 'creates a correct company member in database', :need_to_create_staff do
+        expect(CompanyMember.last.user_id).to eq(User.last.id)
+        expect(CompanyMember.last.company_id).to eq(companies(:company_one).id)
       end
     end
 
@@ -24,8 +38,17 @@ RSpec.describe CompanyMember, type: :model do
           company_id: companies(:company_one).id.to_s
         }
       end
+
+      before(:example) do |test|
+        CompanyMember.create_staff(attributes) if test.metadata[:need_to_create_staff]
+      end
+
       it 'will not create a new user in database' do
         expect { CompanyMember.create_staff(attributes) }.not_to change(User, :count)
+      end
+
+      it 'creates a correct company member in database', :need_to_create_staff do
+        expect(CompanyMember.last.company_id).to eq(companies(:company_one).id)
       end
     end
   end

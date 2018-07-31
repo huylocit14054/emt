@@ -9,7 +9,7 @@ import { routeByCompanyId } from '../utils/routes-utils';
 import CompanyName from './companyMenu/companyName';
 
 const { SubMenu } = Menu;
-const AdminMenu = ({ match, location: { pathname } }) => {
+const CompanyMenu = ({ match, location: { pathname } }) => {
   const { companyId } = match.params;
   const currentKey = pathname.includes('project') ? 'projects' : pathname.replace('/', '');
   const subMenuKey = pathname.includes(UTM_SERVICE) ? UTM_SERVICE : OMS_SERVICE;
@@ -75,4 +75,4 @@ const AdminMenu = ({ match, location: { pathname } }) => {
   );
 };
 
-export default withRouter(AdminMenu);
+export default withRouter(CompanyMenu);

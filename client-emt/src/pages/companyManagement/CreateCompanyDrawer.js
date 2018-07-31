@@ -2,6 +2,8 @@ import { Drawer, Form, Button, Col, Row, Input, Radio } from 'antd';
 import React from 'react';
 import { getAllPlansOfApplication as GET_ALL_PLANS_OF_APPLICATION } from '../../graphql/queries.gql';
 import MyQuery from '../../components/MyQuery';
+import MyMutation from '../../components/MyMutation';
+import { createCompany as CREATE_COMPANY_MUTATION } from './mutations.gql';
 
 class DrawerForm extends React.Component {
   state = { visible: false };
@@ -18,14 +20,19 @@ class DrawerForm extends React.Component {
     });
   };
 
-  handleCreate = () => {
+  handleCreate = createCompany => {
     const { form } = this.props;
     form.validateFields((err, values) => {
       if (err) {
         return;
       }
-
-      console.log('Received values of form: ', values);
+      createCompany({
+        variables: {
+          input: {
+            ...values,
+          },
+        },
+      });
     });
   };
 
@@ -69,7 +76,7 @@ class DrawerForm extends React.Component {
                 <MyQuery query={GET_ALL_PLANS_OF_APPLICATION}>
                   {({ allPlans }) => (
                     <Form.Item label="Choose Plan">
-                      {getFieldDecorator('plan', {
+                      {getFieldDecorator('planId', {
                         initialValue: allPlans[0].id,
                       })(
                         <Radio.Group buttonStyle="solid">
@@ -107,9 +114,22 @@ class DrawerForm extends React.Component {
             >
               Cancel
             </Button>
-            <Button onClick={this.handleCreate} type="primary">
-              Submit
-            </Button>
+            <MyMutation
+              mutation={CREATE_COMPANY_MUTATION}
+              onCompleted={({ createCompany: { createdCompany } }) => {
+                console.log(createdCompany);
+              }}
+            >
+              {(createCompany, { loading }) => (
+                <Button
+                  onClick={() => this.handleCreate(createCompany)}
+                  type="primary"
+                  loading={loading}
+                >
+                  Submit
+                </Button>
+              )}
+            </MyMutation>
           </div>
         </Drawer>
       </div>

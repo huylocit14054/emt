@@ -235,4 +235,10 @@ class Types::QueryType < Types::BaseObject
   def all_plans
     ::Plan.all.order(created_at: :desc)
   end
+
+  field :all_companies, [Types::Company], null: false
+
+  def all_companies
+    ::Company.all.order(created_at: :desc)
+  end
 end

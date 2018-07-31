@@ -20,8 +20,8 @@ class Types::Company < Types::BaseObject
   field :plan, Types::Plan, null: false
 
   # Bonus
-  field :member_id_of_current_user, ID, null: true
-  def member_id_of_current_user
-    object.company_members.find_by(user: context[:current_user]).id
+  field :current_user_as_member, Types::CompanyMember, null: true
+  def current_user_as_member
+    object.company_members.find_by(user: context[:current_user])
   end
 end
