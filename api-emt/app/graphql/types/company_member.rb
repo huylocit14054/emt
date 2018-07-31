@@ -3,7 +3,7 @@ class Types::CompanyMember < Types::BaseObject
 
   field :id, ID, null: false
   field :roles, [String], null: false
-  # field :status, String, null: false
+  field :status, String, null: false
   field :created_at, Types::DateTime, null: false
   field :updated_at, Types::DateTime, null: false
 

@@ -22,7 +22,9 @@ const CompanyName = ({ companyId }) => (
             width={40}
             height={40}
             style={{ marginRight: 7, border: '2px solid white' }}
-          />
+          >
+            This is avatar
+          </CloudImage>
         </div>
 
         {company.name}

@@ -252,3 +252,17 @@ query getCompany($companyId: ID!) {
     }
   }
 }
+
+query getCompanyMember($companyId: ID!) {
+  companyMembers(companyId: $companyId) {
+    id
+    roles
+    user {
+      id
+			email
+      username
+      status
+    }
+    status
+  }
+}

@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { Table } from 'antd';
-
+import { getCompanyMember as GET_COMPANY_MEMBERS } from '../../graphql/queries.gql';
+import MyQuery from '../../components/MyQuery';
 // In the fifth row, other columns are merged into first column
 // by setting it's colSpan to be 0
 const renderContent = (value, row, index) => {
@@ -12,35 +13,25 @@ const renderContent = (value, row, index) => {
   return obj;
 };
 
+const renderArray = (_, record) => {
+  return record.roles.join(', ').replace(/_/g, ' ');
+};
+
 const columns = [
   {
-    title: 'Name',
-    dataIndex: 'name',
-    render: (text, row, index) => {
-      return {
-        children: <a href="javascript:;">{text}</a>,
-      };
-    },
-  },
-  {
-    title: 'Age',
-    dataIndex: 'age',
+    title: 'Userame',
+    dataIndex: 'user.username',
     render: renderContent,
   },
   {
-    title: 'Home phone',
-    dataIndex: 'tel',
+    title: 'Status',
+    dataIndex: 'status',
     render: renderContent,
   },
   {
-    title: 'Phone',
-    dataIndex: 'phone',
-    render: renderContent,
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    render: renderContent,
+    title: 'Roles',
+    dataIndex: 'roles',
+    render: renderArray,
   },
 ];
 
@@ -87,9 +78,13 @@ const data = [
   },
 ];
 
-const MembersList = () => (
+const MembersList = ({ companyId }) => (
   <React.Fragment>
-    <Table columns={columns} dataSource={data} bordered rowKey="id" />
+    <MyQuery query={GET_COMPANY_MEMBERS} variables={{ companyId: parseInt(companyId) }}>
+      {({ companyMembers }) => (
+        <Table columns={columns} dataSource={companyMembers} bordered rowKey="id" />
+      )}
+    </MyQuery>
   </React.Fragment>
 );
 
