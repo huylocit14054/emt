@@ -11,8 +11,14 @@ import CompanyName from './companyMenu/companyName';
 const { SubMenu } = Menu;
 const CompanyMenu = ({ match, location: { pathname } }) => {
   const { companyId } = match.params;
-  const currentKey = pathname.includes('project') ? 'projects' : pathname.replace('/', '');
-  const subMenuKey = pathname.includes(UTM_SERVICE) ? UTM_SERVICE : OMS_SERVICE;
+  if (pathname.charAt(pathname.length - 1) === '/') {
+    pathname = pathname.replace(/.$/, '');
+  }
+  // const currentKey = pathname.includes('project') ? 'projects' : pathname.replace('/', '');
+  let subMenuKey = null;
+  if (pathname.includes(UTM_SERVICE) || pathname.includes(OMS_SERVICE)) {
+    subMenuKey = pathname.includes(UTM_SERVICE) ? UTM_SERVICE : OMS_SERVICE;
+  }
 
   return (
     <Query query={GET_CURRENT_USER_QUERY}>
@@ -20,15 +26,12 @@ const CompanyMenu = ({ match, location: { pathname } }) => {
         <React.Fragment>
           <CompanyName companyId={parseInt(companyId)} />
 
-          <Menu
-            mode="inline"
-            theme="dark"
-            selectedKeys={[currentKey]}
-            defaultOpenKeys={[subMenuKey]}
-          >
-            <Menu.Item key="members">
-              <Icon type="usergroup-add" />
-              <span>Members</span>
+          <Menu mode="inline" theme="dark" selectedKeys={[pathname]} defaultOpenKeys={[subMenuKey]}>
+            <Menu.Item key={routeByCompanyId(Routes.company.members, companyId)}>
+              <Link to={routeByCompanyId(Routes.company.members, companyId)}>
+                <Icon type="usergroup-add" />
+                <span>Members</span>
+              </Link>
             </Menu.Item>
             <SubMenu
               key="utm"
@@ -39,7 +42,10 @@ const CompanyMenu = ({ match, location: { pathname } }) => {
                 </span>
               }
             >
-              <Menu.Item key="projects" style={{ marginTop: 0 }}>
+              <Menu.Item
+                key={routeByCompanyId(Routes.company.utm.projects, companyId)}
+                style={{ marginTop: 0 }}
+              >
                 <Link to={routeByCompanyId(Routes.company.utm.projects, companyId)}>
                   <Icon type="folder-open" />
                   <span>Projects</span>
