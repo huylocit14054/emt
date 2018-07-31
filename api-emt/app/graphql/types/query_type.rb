@@ -241,4 +241,12 @@ class Types::QueryType < Types::BaseObject
   def all_companies
     ::Company.all.order(created_at: :desc)
   end
+
+  field :company_members, [Types::CompanyMember], null: false do
+    argument :company_id, ID, required: true
+  end
+
+  def company_members(company_id:)
+    ::CompanyMember.where(company_id: company_id)
+  end
 end
