@@ -19,10 +19,17 @@ const columns = [
     ),
   },
   {
+    title: 'Plan',
+    dataIndex: 'plan',
+    align: 'center',
+    render: plan => <span key={plan.id}>{plan.name}</span>,
+  },
+  {
     title: 'Address',
     dataIndex: 'address',
     align: 'center',
   },
+
   {
     title: 'Email',
     dataIndex: 'email',

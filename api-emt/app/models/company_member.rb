@@ -22,7 +22,7 @@ class CompanyMember < ApplicationRecord
 
   def self.create_staff(company_id:, user_email:, roles:)
     user = User.find_by(email: user_email)
-    user ||= User.create(email: user_email, username: user_email, password: User.new_token)
-    CompanyMember.create(user: user, company_id: company_id, roles: roles)
+    user ||= User.create!(email: user_email, username: user_email + User.new_token, password: User.new_token)
+    CompanyMember.create!(user: user, company_id: company_id, roles: roles)
   end
 end

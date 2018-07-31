@@ -6,9 +6,9 @@ class Types::Company < Types::BaseObject
   field :address, String, null: true
   field :logo, String, null: true
   field :description, String, null: true
-  field :email, String, null: false
+  field :email, String, null: true
   field :phone_number, String, null: true
-  field :company_member_count, Int, null: false
+  field :company_member_count, Int, null: true
   field :created_at, Types::DateTime, null: false
   field :updated_at, Types::DateTime, null: false
 

@@ -5,7 +5,12 @@ class Company < ApplicationRecord
   has_many :projects, inverse_of: :company
   belongs_to :plan, inverse_of: :companies
   has_many :services, through: :plan
-  # rubocop:enable Rails/HasManyOrHasOneDependent
+  # Validate
+  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+
+  validates :email, length: { maximum: 255 },
+                    format: { with: VALID_EMAIL_REGEX },
+                    uniqueness: { case_sensitive: false }, allow_blank: true
 
   # return the array of Users belong to the company
   def self.company_member_sugestion(company_id:, query:)
