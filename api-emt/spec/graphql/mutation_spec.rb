@@ -555,4 +555,53 @@ RSpec.describe EnhanceUrlTaggingSchema do
       end
     end
   end
+
+  describe 'create_service' do
+    let(:query_string) do
+      %|
+        mutation($input: CreateServiceInput!){
+          createService(input: $input){
+            createdService{
+              id
+              name
+              description
+            }
+          }
+        }
+      |
+    end
+
+    context 'valid input' do
+      let(:variables) do
+        {
+          'input' => {
+            'attributes' =>  JSON.dump(
+              'name' => 'new service',
+              'description' => 'this is my new service'
+            )
+          }
+        }
+      end
+
+      it 'create new service' do
+        expect(result['data']['createService']['createdService']['name']).to eq('new service')
+      end
+    end
+
+    context 'invalid input' do
+      let(:variables) do
+        {
+          'input' => {
+            'attributes' =>  JSON.dump(
+              'name' => services(:utm).name,
+              'description' => 'this is my new service'
+            )
+          }
+        }
+      end
+      it 'raise error when create a service with the same name' do
+        expect(result['errors'][0]['message']).to eq('Name has already been taken')
+      end
+    end
+  end
 end

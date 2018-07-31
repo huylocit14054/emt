@@ -5,4 +5,6 @@ class Service < ApplicationRecord
   # rubocop:enable Rails/HasManyOrHasOneDependent
   UTM_SERVICE = 'utm'
   OMS_SERVICE = 'oms'
+
+  validates :name, uniqueness: { case_sensitive: false }
 end
