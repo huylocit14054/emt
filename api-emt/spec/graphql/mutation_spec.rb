@@ -522,8 +522,7 @@ RSpec.describe EnhanceUrlTaggingSchema do
           'input' => {
             'companyId' => companies(:company_three).id.to_s,
             'email' => users(:loc).email,
-            'roles' => [],
-            'status' => CompanyMember::STATUS_ACTIVE
+            'roles' => []
           }
         }
       end
@@ -539,14 +538,29 @@ RSpec.describe EnhanceUrlTaggingSchema do
           'input' => {
             'companyId' => companies(:company_one).id,
             'email' => users(:loc).email,
-            'roles' => [],
-            'status' => CompanyMember::STATUS_ACTIVE
+            'roles' => []
           }
         }
       end
 
       it 'return errors' do
         expect(return_error).to eq('User has already been taken')
+      end
+    end
+
+    context 'add a member in company that does not exist' do
+      let(:variables) do
+        {
+          'input' => {
+            'companyId' => companies(:company_one).id + 100,
+            'email' => users(:loc).email,
+            'roles' => []
+          }
+        }
+      end
+
+      it 'return errors' do
+        expect(return_error).to eq('Company must exist')
       end
     end
   end
