@@ -4,6 +4,7 @@ class Types::User < Types::BaseObject
   field :email, String, null: false
   field :role, String, null: false
   field :avatar, String, null: false
+  field :status, String, null: false
   field :created_at, Types::DateTime, null: false
   field :updated_at, Types::DateTime, null: false
 
