@@ -6,7 +6,7 @@ import { getAllServices as GET_ALL_SERVICES } from '../../queries.gql';
 
 const FormItem = Form.Item;
 
-class ServiceForm extends React.Component {
+class CreateServiceForm extends React.Component {
   handleSubmit = (e, createService) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -47,9 +47,10 @@ class ServiceForm extends React.Component {
         onCompleted={() => {
           message.success('Service save');
           this.props.onCancel();
+          this.props.form.resetFields();
         }}
         onError={error => {
-          error.graphQLErrors.map(e => message.error(error.message, 3));
+          error.graphQLErrors.map(e => message.error(e.message, 3));
         }}
       >
         {(createService, { loading }) => (
@@ -94,7 +95,10 @@ class ServiceForm extends React.Component {
                 style={{
                   marginRight: 8,
                 }}
-                onClick={this.props.onCancel}
+                onClick={() => {
+                  this.props.onCancel();
+                  this.props.form.resetFields();
+                }}
               >
                 Cancel
               </Button>
@@ -109,4 +113,4 @@ class ServiceForm extends React.Component {
   }
 }
 
-export default withApollo(Form.create()(ServiceForm));
+export default withApollo(Form.create()(CreateServiceForm));

@@ -8,3 +8,14 @@ mutation createService($input: CreateServiceInput!) {
     }
   }
 }
+
+mutation updateService($input: UpdateServiceInput!) {
+  updateService(input: $input) {
+    updatedService {
+      id
+      name
+      description
+      createdAt
+    }
+  }
+}

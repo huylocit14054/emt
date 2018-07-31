@@ -23,4 +23,5 @@ class Types::MutationType < Types::BaseObject
   field :change_member_access_right, mutation: Mutations::ChangeMemberAccessRight
   field :add_member_to_company, mutation: Mutations::AddMemberToCompany
   field :create_service, mutation: Mutations::CreateService
+  field :update_service, mutation: Mutations::UpdateService
 end

@@ -604,4 +604,54 @@ RSpec.describe EnhanceUrlTaggingSchema do
       end
     end
   end
+
+  describe 'update_service' do
+    let(:query_string) do
+      %|
+        mutation($input: UpdateServiceInput!){
+          updateService(input: $input){
+            updatedService{
+              id
+              name
+              description
+            }
+          }
+        }
+      |
+    end
+    context 'valid input' do
+      let(:variables) do
+        {
+          'input' => {
+            'attributes' =>  JSON.dump(
+              'id' => services(:utm).id.to_s,
+              'name' => 'new service',
+              'description' => 'this is my new service'
+            )
+          }
+        }
+      end
+
+      it 'create new service' do
+        expect(result['data']['updateService']['updatedService']['name']).to eq('new service')
+      end
+    end
+
+    context 'invalid input' do
+      let(:variables) do
+        {
+          'input' => {
+            'attributes' =>  JSON.dump(
+              'id' => services(:utm).id.to_s,
+              'name' => services(:oms).name,
+              'description' => 'this is my new service'
+            )
+          }
+        }
+      end
+      it 'raise error when create a service with the same name' do
+        expect(result['errors'][0]['message']).to eq('Name has already been taken')
+      end
+    end
+  end
 end

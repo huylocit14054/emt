@@ -1,6 +1,6 @@
 import React from 'react';
 import { Drawer, Button } from 'antd';
-import ServiceForm from './serviceDrawer/ServiceForm';
+import CreateServiceForm from './serviceDrawer/CreateServiceForm';
 
 class CreateServiceDrawer extends React.Component {
   state = { visible: false };
@@ -35,7 +35,7 @@ class CreateServiceDrawer extends React.Component {
             paddingBottom: 53,
           }}
         >
-          <ServiceForm onCancel={this.onClose} />
+          <CreateServiceForm onCancel={this.onClose} />
         </Drawer>
       </div>
     );
