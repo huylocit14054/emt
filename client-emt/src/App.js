@@ -27,7 +27,7 @@ const App = () => (
       <React.Fragment>
         <Switch>
           <AdminRoute exact path={Routes.admin.companyMangement} component={CompanyManagement} />
-          <CompanyRoute exact path={Routes.company.members} component={CompanyMembers} /> 
+          <CompanyRoute exact path={Routes.company.members} component={CompanyMembers} />
           <CompanyRoute exact path={Routes.company.utm.projects} component={Projects} />
           <CompanyRoute exact path="/users" component={Users} />
           <CompanyRoute exact path={Routes.company.utm.utmBuilder} component={ProjectUTMBuilder} />
