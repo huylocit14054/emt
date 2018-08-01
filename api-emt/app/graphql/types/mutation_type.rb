@@ -25,4 +25,5 @@ class Types::MutationType < Types::BaseObject
   field :create_service, mutation: Mutations::CreateService
   field :update_service, mutation: Mutations::UpdateService
   field :detele_service, mutation: Mutations::DeleteService
+  field :create_plan, mutation: Mutations::CreatePlan
 end

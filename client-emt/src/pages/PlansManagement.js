@@ -1,9 +1,9 @@
 import React from 'react';
-import ServicesList from './servicesManagement/ServicesList';
+import PlansList from './plansManagement/PlansList';
 
 const ServicesManagement = () => (
   <React.Fragment>
-    <ServicesList />
+    <PlansList />
   </React.Fragment>
 );
 

@@ -1,38 +1,23 @@
 import React from 'react';
 import { Form, Button, Col, Row, Input, message } from 'antd';
 import { Mutation, withApollo } from 'react-apollo';
-import { createService as CREATE_SERVICE } from '../../graphql/mutations.gql';
-import { getAllServices as GET_ALL_SERVICES } from '../../graphql/queries.gql';
+import { updatePlan as UPDATE_PLAN } from '../../graphql/mutations.gql';
 
 const FormItem = Form.Item;
 
-class CreateServiceForm extends React.Component {
-  handleSubmit = (e, createService) => {
+class EditPlanForm extends React.Component {
+  handleSubmit = (e, updatePlan) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        createService({
+        updatePlan({
           variables: {
             input: {
-              attributes: JSON.stringify(values),
+              attributes: JSON.stringify({
+                id: this.props.id,
+                ...values,
+              }),
             },
-          },
-          update: (
-            store,
-            {
-              data: {
-                createService: { createdService },
-              },
-            }
-          ) => {
-            const data = store.readQuery({
-              query: GET_ALL_SERVICES,
-            });
-            data.services.splice(0, 0, createdService);
-            store.writeQuery({
-              query: GET_ALL_SERVICES,
-              data,
-            });
           },
         });
       }
@@ -43,9 +28,9 @@ class CreateServiceForm extends React.Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <Mutation
-        mutation={CREATE_SERVICE}
+        mutation={UPDATE_PLAN}
         onCompleted={() => {
-          message.success('Service save');
+          message.success('Plan save');
           this.props.onCancel();
           this.props.form.resetFields();
         }}
@@ -53,14 +38,15 @@ class CreateServiceForm extends React.Component {
           error.graphQLErrors.map(e => message.error(e.message, 3));
         }}
       >
-        {createService => (
-          <Form layout="vertical" onSubmit={e => this.handleSubmit(e, createService)}>
+        {updatePlan => (
+          <Form layout="vertical" onSubmit={e => this.handleSubmit(e, updatePlan)}>
             <Row gutter={16}>
               <Col span={24}>
                 <FormItem label="Name">
                   {getFieldDecorator('name', {
-                    rules: [{ required: true, message: 'please enter service name' }],
-                  })(<Input placeholder="please enter service name" />)}
+                    rules: [{ required: true, message: 'please enter plan name' }],
+                    initialValue: this.props.name,
+                  })(<Input placeholder="please enter plan name" />)}
                 </FormItem>
               </Col>
             </Row>
@@ -71,10 +57,11 @@ class CreateServiceForm extends React.Component {
                     rules: [
                       {
                         required: true,
-                        message: 'please enter service description',
+                        message: 'please enter plan description',
                       },
                     ],
-                  })(<Input.TextArea rows={4} placeholder="please enter service description" />)}
+                    initialValue: this.props.description,
+                  })(<Input.TextArea rows={4} placeholder="please enter plan description" />)}
                 </FormItem>
               </Col>
             </Row>
@@ -113,4 +100,4 @@ class CreateServiceForm extends React.Component {
   }
 }
 
-export default withApollo(Form.create()(CreateServiceForm));
+export default withApollo(Form.create()(EditPlanForm));

@@ -681,4 +681,40 @@ RSpec.describe EnhanceUrlTaggingSchema do
       expect { PlanService.find(plan_services(:plan_three_utm).id) }.to raise_error
     end
   end
+
+  describe 'create_plan' do
+    let(:query_string) do
+      %|mutation($input: CreatePlanInput!) {
+        createPlan(input: $input) {
+          createdPlan{
+            id
+            name
+            description
+          }
+        }
+      }|
+    end
+    let(:variables) do
+      {
+        'input' => {
+          'name' => 'my new plan',
+          'description' => 'this is my new plan',
+          'serviceIds' => [services(:utm).id.to_s, services(:oms).id.to_s]
+        }
+      }
+    end
+
+    it 'return new created plan' do
+      expect(result['data']['createPlan']['createdPlan']['name']).to eq('my new plan')
+      expect(result['data']['createPlan']['createdPlan']['description']).to eq('this is my new plan')
+    end
+
+    it 'create new plan' do
+      expect { result }.to change { Plan.count }.by(1)
+    end
+
+    it 'create new plan_service' do
+      expect { result }.to change { PlanService.count }.by(2)
+    end
+  end
 end

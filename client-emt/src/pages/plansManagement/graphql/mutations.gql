@@ -1,0 +1,9 @@
+#import "./fragments/BasicPlanInfo.gql"
+
+mutation createPlan($input: CreatePlanInput!) {
+  createPlan(input: $input) {
+    createdPlan{
+      ...BasicPlanInfo
+    }
+  }
+}

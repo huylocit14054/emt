@@ -2,13 +2,13 @@ import React from 'react';
 import { Drawer, Divider, Modal } from 'antd';
 import { withApollo } from 'react-apollo';
 import _ from 'lodash';
-import EditServiceForm from './serviceAction/EditServiceForm';
-import { deteleService as DELETE_SERVICE } from '../graphql/mutations.gql';
-import { getAllServices as GET_ALL_SERVICES } from '../graphql/queries.gql';
+import EditPlanForm from './planAction/EditPlanForm';
+import { detelePlan as DELETE_PLAN } from '../graphql/mutations.gql';
+import { allPlans as ALL_PLANS } from '../graphql/queries.gql';
 
 const { confirm } = Modal;
 
-class ServiceAction extends React.Component {
+class PlanAction extends React.Component {
   state = { visible: false };
 
   onClose = () => {
@@ -19,19 +19,19 @@ class ServiceAction extends React.Component {
     const { client } = this.props;
     client
       .mutate({
-        mutation: DELETE_SERVICE,
-        variables: { input: { serviceId: this.props.id } },
+        mutation: DELETE_PLAN,
+        variables: { input: { planId: this.props.id } },
       })
       .then(() => {
         const data = client.readQuery({
-          query: GET_ALL_SERVICES,
+          query: ALL_PLANS,
         });
         console.log(data);
         console.log(this.props.id);
-        _.remove(data.services, service => service.id === this.props.id.toString());
+        _.remove(data.plans, plan => plan.id === this.props.id.toString());
         console.log(data);
         client.writeQuery({
-          query: GET_ALL_SERVICES,
+          query: ALL_PLANS,
           data,
         });
       });
@@ -44,7 +44,7 @@ class ServiceAction extends React.Component {
   showConfirm = () => {
     confirm({
       title: `Delete ${this.props.name}`,
-      content: `Are you sure you want to delete service ${this.props.name}`,
+      content: `Are you sure you want to delete plan ${this.props.name}`,
       onOk: () => {
         this.onConfirmDelete();
       },
@@ -69,11 +69,11 @@ class ServiceAction extends React.Component {
           visible={this.state.visible}
           destroyOnClose
         >
-          <EditServiceForm id={id} name={name} description={description} onCancel={this.onClose} />
+          <EditPlanForm id={id} name={name} description={description} onCancel={this.onClose} />
         </Drawer>
       </React.Fragment>
     );
   }
 }
 
-export default withApollo(ServiceAction);
+export default withApollo(PlanAction);
