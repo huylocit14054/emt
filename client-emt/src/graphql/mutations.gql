@@ -202,13 +202,26 @@ mutation generateUtms($input: GenerateUtmsInput!){
   }
 }
 
-mutation changeMemberAccessRight($input: ChangeMemberAccessRightInput!){
-  changeMemberAccessRight(input: $input){
-    updatedAccessRight {
-      id
-      status
+mutation updateCompany($input: UpdateCompanyInput!){
+  updateCompany(input: $input)
+  {
+    updatedCompany {
+      name
+      plan {
+        name
+      }
     }
   }
 }
 
-
+mutation changePlan($input: UpdateCompanyInput!){
+  changePlan: updateCompany(input: $input){
+    updatedCompany {
+      id
+      plan {
+        id
+        name
+      }
+    }
+  }
+}

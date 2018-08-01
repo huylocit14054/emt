@@ -619,8 +619,8 @@ RSpec.describe EnhanceUrlTaggingSchema do
           }
         }
       |
+      
     end
-
     context 'with valid arguments' do
       let(:variables) do
         {
@@ -634,6 +634,47 @@ RSpec.describe EnhanceUrlTaggingSchema do
       it 'creates new company' do
         expect(result.dig('data', 'changeCompanyMemberStatus', 'affectedCompanyMember', 'status')).to eq('pending')
       end
+    end
+  end
+
+  describe 'updateCompany' do
+    let(:query_string) do
+      %|
+        mutation updateCompany($input: UpdateCompanyInput!){
+          updateCompany(input: $input)
+          {
+            updatedCompany {
+              name
+              plan {
+                name
+              }
+            }
+          }
+        }
+        |
+      end
+    let(:variables) do
+      {
+        'input' => {
+          'attributes' => JSON.dump(
+            'id' => companies(:company_one).id.to_s,
+            'name' => 'company_one_edited',
+            'plan_id' => plans(:plan_two).id.to_s
+          )
+        }
+      }
+    end
+
+    it 'return correct edited company name' do
+      expect(result.dig('data', 'updateCompany', 'updatedCompany', 'name')).to eq('company_one_edited')
+    end
+
+    it 'return correct edited plan name' do
+      expect(result.dig('data', 'updateCompany', 'updatedCompany', 'plan', 'name')).to eq('Standard OMS')
+    end
+
+    it 'update attirbutes in database' do
+      expect { result }.to change { companies(:company_one).reload.name }.from('company_one').to('company_one_edited')
     end
   end
 end

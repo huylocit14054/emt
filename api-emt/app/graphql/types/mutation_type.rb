@@ -20,6 +20,7 @@ class Types::MutationType < Types::BaseObject
   field :delete_rule, mutation: Mutations::DeleteRule
   field :generate_utms, mutation: Mutations::GenerateUtms
   field :create_company, mutation: Mutations::CreateCompany
+  field :update_company, mutation: Mutations::UpdateCompany
   field :change_member_access_right, mutation: Mutations::ChangeMemberAccessRight
   field :add_member_to_company, mutation: Mutations::AddMemberToCompany
   field :change_company_member_status, mutation: Mutations::ChangeCompanyMemberStatus
