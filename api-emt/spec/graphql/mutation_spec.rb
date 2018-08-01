@@ -602,4 +602,7 @@ RSpec.describe EnhanceUrlTaggingSchema do
       end
     end
   end
+
+  xdescribe 'activate company member' do
+  end
 end
