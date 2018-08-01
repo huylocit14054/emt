@@ -17,14 +17,15 @@ class CompanyMember < ApplicationRecord
   ROLE_UTM_MEMBER = 'utm_member'
   STATUS_ACTIVE = 'active'
   STATUS_RESTRICTED = 'restricted'
+  STATUS_PENDING = 'pending'
 
-  enum status: { active: STATUS_ACTIVE, restricted: STATUS_RESTRICTED }
+  enum status: { active: STATUS_ACTIVE, restricted: STATUS_RESTRICTED, pending: STATUS_PENDING }
 
   def self.create_staff(company_id:, user_email:, roles:)
     user = User.find_by(email: user_email)
     user ||= User.create(email: user_email, username: user_email, password: User.new_token)
     company_member = CompanyMember.create(user: user, company_id: company_id, roles: roles)
-    CompanyMemberMailer.company_member_activation(user).deliver_now unless company_member.errors
+    CompanyMemberMailer.company_member_activation(user).deliver_now if company_member.valid?
     company_member
   end
 end

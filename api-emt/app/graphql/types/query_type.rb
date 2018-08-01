@@ -247,6 +247,6 @@ class Types::QueryType < Types::BaseObject
   end
 
   def company_members(company_id:)
-    ::CompanyMember.where(company_id: company_id)
+    ::CompanyMember.where(company_id: company_id).order(created_at: :desc)
   end
 end
