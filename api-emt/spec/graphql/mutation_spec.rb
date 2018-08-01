@@ -603,6 +603,37 @@ RSpec.describe EnhanceUrlTaggingSchema do
     end
   end
 
-  xdescribe 'activate company member' do
+  describe 'activate company member' do
+    let(:query_string) do
+      %|
+        mutation changeCompanyMemberStatus($input: ChangeCompanyMemberStatusInput!){
+          changeCompanyMemberStatus(input: $input)
+          {
+            affectedCompanyMember {
+              id
+              status
+              user {
+                username
+              }
+            }
+          }
+        }
+      |
+    end
+
+    context 'with valid arguments' do
+      let(:variables) do
+        {
+          'input' => {
+            'companyMemberId' => company_members(:c1_member_khanh).id,
+            'status' => 'pending'
+          }
+        }
+      end
+
+      it 'creates new company' do
+        expect(result.dig('data', 'changeCompanyMemberStatus', 'affectedCompanyMember', 'status')).to eq('pending')
+      end
+    end
   end
 end
