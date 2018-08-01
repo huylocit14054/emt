@@ -24,4 +24,5 @@ class Types::MutationType < Types::BaseObject
   field :add_member_to_company, mutation: Mutations::AddMemberToCompany
   field :create_service, mutation: Mutations::CreateService
   field :update_service, mutation: Mutations::UpdateService
+  field :detele_service, mutation: Mutations::DeleteService
 end

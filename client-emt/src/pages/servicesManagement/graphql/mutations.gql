@@ -1,10 +1,8 @@
+#import "./fragments/BasicServiceInfo.gql"
 mutation createService($input: CreateServiceInput!) {
   createService(input: $input) {
     createdService {
-      id
-      name
-      description
-      createdAt
+     ...BasicServiceInfo
     }
   }
 }
@@ -12,10 +10,13 @@ mutation createService($input: CreateServiceInput!) {
 mutation updateService($input: UpdateServiceInput!) {
   updateService(input: $input) {
     updatedService {
-      id
-      name
-      description
-      createdAt
+      ...BasicServiceInfo
     }
+  }
+}
+
+mutation deteleService($input: DeleteServiceInput!) {
+  deteleService(input: $input) {
+    deleted
   }
 }

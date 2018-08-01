@@ -654,4 +654,31 @@ RSpec.describe EnhanceUrlTaggingSchema do
       end
     end
   end
+
+  describe 'delete_service' do
+    let(:query_string) do
+      %|mutation($input: DeleteServiceInput!) {
+        deteleService(input: $input) {
+          deleted
+        }
+      }|
+    end
+    let(:variables) do
+      {
+        'input' => {
+          'serviceId' => services(:utm).id
+        }
+      }
+    end
+
+    it 'delete utm service and all the dependency' do
+      expect(Service.find(services(:utm).id)).not_to be_nil
+      expect(PlanService.find(plan_services(:plan_one_utm).id)).not_to be_nil
+      expect(PlanService.find(plan_services(:plan_three_utm).id)).not_to be_nil
+      expect(result['data']['deteleService']['deleted']).to be(true)
+      expect { Service.find(services(:utm).id) }.to raise_error
+      expect { PlanService.find(plan_services(:plan_one_utm).id) }.to raise_error
+      expect { PlanService.find(plan_services(:plan_three_utm).id) }.to raise_error
+    end
+  end
 end

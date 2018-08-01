@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Button, Col, Row, Input, message } from 'antd';
 import { Mutation, withApollo } from 'react-apollo';
-import { updateService as UPDATE_SERVICE } from '../../mutations.gql';
+import { updateService as UPDATE_SERVICE } from '../../graphql/mutations.gql';
 
 const FormItem = Form.Item;
 

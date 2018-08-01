@@ -1,0 +1,6 @@
+fragment BasicServiceInfo on Service {
+  id
+  name
+  description
+  createdAt
+}

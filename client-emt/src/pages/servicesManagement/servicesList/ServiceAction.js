@@ -1,6 +1,13 @@
 import React from 'react';
-import { Drawer, Divider } from 'antd';
+import { Drawer, Divider, Modal } from 'antd';
+import { withApollo } from 'react-apollo';
+import _ from 'lodash';
 import EditServiceForm from './serviceAction/EditServiceForm';
+import { deteleService as DELETE_SERVICE } from '../graphql/mutations.gql';
+import { BasicServiceInfo } from '../graphql/fragments/BasicServiceInfo.gql';
+import { getAllServices as GET_ALL_SERVICES } from '../graphql/queries.gql';
+
+const { confirm } = Modal;
 
 class ServiceAction extends React.Component {
   state = { visible: false };
@@ -9,8 +16,41 @@ class ServiceAction extends React.Component {
     this.setState({ visible: false });
   };
 
+  onConfirmDelete = () => {
+    const { client } = this.props;
+    client
+      .mutate({
+        mutation: DELETE_SERVICE,
+        variables: { input: { serviceId: this.props.id } },
+      })
+      .then(() => {
+        const data = client.readQuery({
+          query: GET_ALL_SERVICES,
+        });
+        console.log(data);
+        console.log(this.props.id);
+        _.remove(data.services, service => service.id === this.props.id.toString());
+        console.log(data);
+        client.writeQuery({
+          query: GET_ALL_SERVICES,
+          data,
+        });
+      });
+  };
+
   showDrawer = () => {
     this.setState({ visible: true });
+  };
+
+  showConfirm = () => {
+    confirm({
+      title: `Delete ${this.props.name}`,
+      content: `Are you sure you want to delete service ${this.props.name}`,
+      onOk: () => {
+        this.onConfirmDelete();
+      },
+      onCancel() {},
+    });
   };
 
   render() {
@@ -20,7 +60,7 @@ class ServiceAction extends React.Component {
         <span>
           <a onClick={this.showDrawer}>Edit</a>
           <Divider type="vertical" />
-          <a href="javascript:;">Delete</a>
+          <a onClick={this.showConfirm}>Delete</a>
         </span>
         <Drawer
           title={name}
@@ -37,4 +77,4 @@ class ServiceAction extends React.Component {
   }
 }
 
-export default ServiceAction;
+export default withApollo(ServiceAction);

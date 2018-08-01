@@ -1,8 +1,8 @@
 import React from 'react';
 import { Form, Button, Col, Row, Input, message } from 'antd';
 import { Mutation, withApollo } from 'react-apollo';
-import { createService as CREATE_SERVICE } from '../../mutations.gql';
-import { getAllServices as GET_ALL_SERVICES } from '../../queries.gql';
+import { createService as CREATE_SERVICE } from '../../graphql/mutations.gql';
+import { getAllServices as GET_ALL_SERVICES } from '../../graphql/queries.gql';
 
 const FormItem = Form.Item;
 

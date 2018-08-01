@@ -2,7 +2,7 @@ import React from 'react';
 import { Table } from 'antd';
 import TimeAgo from 'react-timeago';
 import MyQuery from '../../components/MyQuery';
-import { getAllServices as GET_ALL_SERVICES } from './queries.gql';
+import { getAllServices as GET_ALL_SERVICES } from './graphql/queries.gql';
 import CreateServiceDrawer from './servicesList/ServiceDrawer';
 import ServiceAction from './servicesList/ServiceAction';
 
