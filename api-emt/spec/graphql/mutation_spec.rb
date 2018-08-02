@@ -619,7 +619,6 @@ RSpec.describe EnhanceUrlTaggingSchema do
           }
         }
       |
-      
     end
     context 'with valid arguments' do
       let(:variables) do
