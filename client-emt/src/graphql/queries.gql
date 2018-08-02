@@ -1,7 +1,5 @@
 #import "./fragments/BasicRuleInfo.gql"
 #import "./fragments/BasicCompanyInfo.gql"
-<<<<<<< HEAD
-=======
 #import "./fragments/BasicCompanyMemberInfo.gql"
 
 
@@ -11,7 +9,6 @@ query getCompanyMembers($companyId: ID!) {
   }
 }
 
->>>>>>> origin/feat/create-company
 query getCurrentUser {
   currentUser {
     id
