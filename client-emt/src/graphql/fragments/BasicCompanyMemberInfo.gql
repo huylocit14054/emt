@@ -1,0 +1,12 @@
+fragment BasicCompanyMemberInfo on CompanyMember {
+  id
+  roles
+  user {
+    id
+    email
+    username
+    status
+    avatar
+  }
+  status
+}

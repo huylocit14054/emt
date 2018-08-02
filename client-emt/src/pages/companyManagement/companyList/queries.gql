@@ -1,0 +1,23 @@
+query getCompanyDetails($companyId: ID!){
+    company(companyId: $companyId){
+        id
+        name
+        description
+        email
+        address
+        phoneNumber
+        plan {
+            id
+            name
+        }
+        companyMemberCount
+        companyMembers(first: 3) {
+            id
+            roles
+            user {
+                username
+                avatar
+            }
+        }
+    }
+}

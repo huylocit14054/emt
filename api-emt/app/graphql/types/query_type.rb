@@ -256,4 +256,12 @@ class Types::QueryType < Types::BaseObject
   def plan(id:)
     ::Plan.find(id)
   end
+
+  field :company_members, [Types::CompanyMember], null: false do
+    argument :company_id, ID, required: true
+  end
+
+  def company_members(company_id:)
+    ::CompanyMember.where(company_id: company_id).order(created_at: :desc)
+  end
 end

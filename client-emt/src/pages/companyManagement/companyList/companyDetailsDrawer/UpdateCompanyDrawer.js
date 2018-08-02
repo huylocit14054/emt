@@ -3,11 +3,12 @@ import React from 'react';
 import {
   getAllPlansOfApplication as GET_ALL_PLANS_OF_APPLICATION,
   getAllCompaniesOfApplication as GET_ALL_COMPANIES_QUERY,
-} from '../../graphql/queries.gql';
-import MyQuery from '../../components/MyQuery';
-import MyMutation from '../../components/MyMutation';
+  getCompany as GET_COMPANY_QUERY,
+} from '../../../../graphql/queries.gql';
+import MyQuery from '../../../../components/MyQuery';
+import MyMutation from '../../../../components/MyMutation';
 
-import { createCompany as CREATE_COMPANY_MUTATION } from './mutations.gql';
+import { updateCompany as UPDATE_COMPANY_MUTATION } from '../../../../graphql/mutations.gql';
 
 class DrawerForm extends React.Component {
   state = { visible: false };
@@ -24,13 +25,13 @@ class DrawerForm extends React.Component {
     });
   };
 
-  handleCreate = createCompany => {
+  handleUpdate = updateCompany => {
     const { form } = this.props;
     form.validateFields((err, values) => {
       if (err) {
         return;
       }
-      createCompany({
+      updateCompany({
         variables: {
           input: {
             ...values,
@@ -45,10 +46,10 @@ class DrawerForm extends React.Component {
     return (
       <div>
         <Button type="primary" onClick={this.showDrawer}>
-          Create Company
+          Edit
         </Button>
         <Drawer
-          title="Create Company"
+          title="Update Company"
           width="50%"
           placement="right"
           onClose={this.onClose}
@@ -67,13 +68,6 @@ class DrawerForm extends React.Component {
                   {getFieldDecorator('name', {
                     rules: [{ required: true, message: "Please enter company's name" }],
                   })(<Input placeholder="e.g Enhance" autoFocus />)}
-                </Form.Item>
-              </Col>
-              <Col span={24}>
-                <Form.Item label="Company admin email">
-                  {getFieldDecorator('companyAdminEmail', {
-                    rules: [{ required: true, message: 'Please enter company admin email' }],
-                  })(<Input placeholder="e.g abc@gmail.com" />)}
                 </Form.Item>
               </Col>
               <Col span={24}>
@@ -119,36 +113,27 @@ class DrawerForm extends React.Component {
               Cancel
             </Button>
             <MyMutation
-              mutation={CREATE_COMPANY_MUTATION}
+              mutation={UPDATE_COMPANY_MUTATION}
               update={(
                 store,
                 {
                   data: {
-                    createCompany: { createdCompany },
+                    updateCompany: { updatedCompany },
                   },
                 }
               ) => {
-                // append new company to local store
-                const data = store.readQuery({ query: GET_ALL_COMPANIES_QUERY });
-
-                data.allCompanies.splice(0, 0, createdCompany);
-                store.writeQuery({
-                  query: GET_ALL_COMPANIES_QUERY,
-                  data,
-                });
-
                 // reset form and close drawer
                 this.props.form.resetFields();
                 this.onClose();
               }}
             >
-              {(createCompany, { loading }) => (
+              {(updateCompany, { loading }) => (
                 <Button
-                  onClick={() => this.handleCreate(createCompany)}
+                  onClick={() => this.handleUpdate(updateCompany)}
                   type="primary"
                   loading={loading}
                 >
-                  Create
+                  Save
                 </Button>
               )}
             </MyMutation>
@@ -158,6 +143,6 @@ class DrawerForm extends React.Component {
     );
   }
 }
-const CreateCompanyDrawer = Form.create()(DrawerForm);
+const UpdateCompanyDrawer = Form.update()(DrawerForm);
 
-export default CreateCompanyDrawer;
+export default UpdateCompanyDrawer;

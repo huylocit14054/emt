@@ -25,7 +25,7 @@ CloudImage.propTypes = {
   publicId: PropTypes.string.isRequired,
   width: PropTypes.number,
   height: PropTypes.number,
-  children: PropTypes.string.isRequired,
+  children: PropTypes.string,
   style: PropTypes.shape({}),
 };
 
@@ -33,5 +33,6 @@ CloudImage.defaultProps = {
   width: 40,
   height: 40,
   style: null,
+  children: null,
 };
 export default CloudImage;

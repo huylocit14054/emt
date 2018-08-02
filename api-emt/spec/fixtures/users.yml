@@ -1,8 +1,7 @@
 loc:
   username: loc
   email: loc@gmail.com
-  role: <%=User::ROLE_ROOT_ADMIN%>
-
+  role: <%= User::ROLE_ROOT_ADMIN %>
 nhat:
   username: nhat
   email: nhat@gmail.com
