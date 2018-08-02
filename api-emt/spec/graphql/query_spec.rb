@@ -360,4 +360,24 @@ RSpec.describe EnhanceUrlTaggingSchema do
       ).to match_array(Service.all.order(created_at: :desc).pluck(:name))
     end
   end
+
+  describe 'plan' do
+    let(:query_string) do
+      %|query($id: ID!){
+        plan(id: $id){
+          name
+        }
+      }
+      |
+    end
+    let(:variables) do
+      {
+        'id' => plans(:plan_one).id
+      }
+    end
+
+    it 'return the plan with the id' do
+      expect(result['data']['plan']['name']).to eq(plans(:plan_one).name)
+    end
+  end
 end

@@ -7,3 +7,11 @@ mutation createPlan($input: CreatePlanInput!) {
     }
   }
 }
+
+mutation updatePlan($input: UpdatePlanInput!) {
+  updatePlan(input: $input) {
+    updatedPlan{
+      ...BasicPlanInfo
+    }
+  }
+}

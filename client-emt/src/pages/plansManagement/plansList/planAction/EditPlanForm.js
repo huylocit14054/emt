@@ -1,9 +1,13 @@
 import React from 'react';
-import { Form, Button, Col, Row, Input, message } from 'antd';
-import { Mutation, withApollo } from 'react-apollo';
+import { Form, Button, Col, Row, Input, message, Select } from 'antd';
+import { withApollo } from 'react-apollo';
 import { updatePlan as UPDATE_PLAN } from '../../graphql/mutations.gql';
+import { getAllServices as GET_ALL_SERVICES } from '../../graphql/queries.gql';
+import MyQuery from '../../../../components/MyQuery';
+import MyMutation from '../../../../components/MyMutation';
 
 const FormItem = Form.Item;
+const { Option } = Select;
 
 class EditPlanForm extends React.Component {
   handleSubmit = (e, updatePlan) => {
@@ -13,10 +17,8 @@ class EditPlanForm extends React.Component {
         updatePlan({
           variables: {
             input: {
-              attributes: JSON.stringify({
-                id: this.props.id,
-                ...values,
-              }),
+              planId: this.props.id,
+              ...values,
             },
           },
         });
@@ -27,7 +29,7 @@ class EditPlanForm extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <Mutation
+      <MyMutation
         mutation={UPDATE_PLAN}
         onCompleted={() => {
           message.success('Plan save');
@@ -65,6 +67,37 @@ class EditPlanForm extends React.Component {
                 </FormItem>
               </Col>
             </Row>
+            <Row gutter={16}>
+              <Col span={24}>
+                <MyQuery query={GET_ALL_SERVICES}>
+                  {({ services }) => {
+                    const service_default = [];
+                    this.props.services.map(service => service_default.push(service.id.toString()));
+                    return (
+                      <FormItem label="Plans">
+                        {getFieldDecorator('serviceIds', {
+                          rules: [
+                            {
+                              required: true,
+                              message: 'please select your services',
+                            },
+                          ],
+                          initialValue: service_default,
+                        })(
+                          <Select mode="multiple" placeholder="Please select favourite colors">
+                            {services.map(service => (
+                              <Option key={service.id} value={service.id}>
+                                {service.name}
+                              </Option>
+                            ))}
+                          </Select>
+                        )}
+                      </FormItem>
+                    );
+                  }}
+                </MyQuery>
+              </Col>
+            </Row>
             <FormItem
               style={{
                 position: 'absolute',
@@ -95,7 +128,7 @@ class EditPlanForm extends React.Component {
             </FormItem>
           </Form>
         )}
-      </Mutation>
+      </MyMutation>
     );
   }
 }

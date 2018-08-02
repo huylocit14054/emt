@@ -241,11 +241,19 @@ class Types::QueryType < Types::BaseObject
   def all_companies
     ::Company.all.order(created_at: :desc)
   end
-  
+
   # return all services
   field :services, [Types::Service], null: false, description: 'Get all services'
 
   def services
     ::Service.all.order(created_at: :desc)
+  end
+
+  field :plan, Types::Plan, null: false do
+    argument :id, ID, required: true
+  end
+
+  def plan(id:)
+    ::Plan.find(id)
   end
 end

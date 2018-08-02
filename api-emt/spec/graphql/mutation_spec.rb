@@ -717,4 +717,38 @@ RSpec.describe EnhanceUrlTaggingSchema do
       expect { result }.to change { PlanService.count }.by(2)
     end
   end
+
+  describe 'update_plan' do
+    let(:query_string) do
+      %|mutation($input: UpdatePlanInput!) {
+        updatePlan(input: $input) {
+          updatedPlan{
+            id
+            name
+            services{
+              id
+              name
+            }
+          }
+        }
+      }|
+    end
+    let(:variables) do
+      {
+        'input' => {
+          'planId' => plans(:plan_one).id.to_s,
+          'name' => 'myplan',
+          'description' => 'this is my new plan',
+          'serviceIds' => [services(:utm).id.to_s, services(:oms).id.to_s]
+        }
+      }
+    end
+    it 'return updated plan' do
+      expect(result['data']['updatePlan']['updatedPlan']['name']).to eq('myplan')
+    end
+
+    it 'return 2 created plan_services' do
+      expect(result['data']['updatePlan']['updatedPlan']['services'].count).to eq(2)
+    end
+  end
 end

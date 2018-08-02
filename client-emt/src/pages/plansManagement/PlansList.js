@@ -26,7 +26,7 @@ class PlansList extends React.Component {
             >
               <Column title="Name" dataIndex="name" />
               <Column
-                title="Service"
+                title="Services"
                 render={({ services }) =>
                   services.map(service => <p key={service.id}>{service.name}</p>)
                 }
@@ -40,7 +40,12 @@ class PlansList extends React.Component {
                 title="Action"
                 key="action"
                 render={(text, record) => (
-                  <PlanAction id={record.id} name={record.name} description={record.description} />
+                  <PlanAction
+                    id={record.id}
+                    name={record.name}
+                    description={record.description}
+                    services={record.services}
+                  />
                 )}
               />
             </Table>
