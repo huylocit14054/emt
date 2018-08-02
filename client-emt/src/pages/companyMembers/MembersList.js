@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Table } from 'antd';
-import { getCompanyMember as GET_COMPANY_MEMBERS } from '../../graphql/queries.gql';
+import { companyMember as GET_COMPANY_MEMBERS } from '../../graphql/queries.gql';
 import MyQuery from '../../components/MyQuery';
 
 import CloudImage from '../../components/CloudImage';

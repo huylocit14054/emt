@@ -19,6 +19,9 @@ const ROLE_UTM_MANAGER = 'utm_manager';
 const ROLE_UTM_MEMBER = 'utm_member';
 const UTM_SERVICE = 'utm';
 const OMS_SERVICE = 'oms';
+const OMS_SERVICE_ROLES = [ROLE_OMS_MANAGER, ROLE_OMS_MEMBER];
+const UTM_SERVICE_ROLES = [ROLE_UTM_MANAGER, ROLE_UTM_MEMBER];
+
 const Routes = {
   login: '/login',
   user: {
@@ -61,4 +64,6 @@ module.exports = {
   Routes,
   UTM_SERVICE,
   OMS_SERVICE,
+  UTM_SERVICE_ROLES,
+  OMS_SERVICE_ROLES,
 };

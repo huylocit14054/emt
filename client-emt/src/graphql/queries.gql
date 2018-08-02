@@ -3,7 +3,7 @@
 #import "./fragments/BasicCompanyMemberInfo.gql"
 
 
-query getCompanyMembers($companyId: ID!) {
+query companyMembers($companyId: ID!) {
   companyMembers(companyId: $companyId) {
     ...BasicCompanyMemberInfo
   }
@@ -258,6 +258,9 @@ query getCompany($companyId: ID!) {
     currentUserAsMember {
       id
       roles
+    }
+    services {
+      name
     }
   }
 }
