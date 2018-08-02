@@ -410,8 +410,8 @@ RSpec.describe EnhanceUrlTaggingSchema do
         {
           'input' => {
             'attributes' => JSON.dump(company_id: companies(:company_one).id,
-                                    name: 'enhance',
-                                    description: 'hello anh Phuc')
+                                      name: 'enhance',
+                                      description: 'hello anh Phuc')
           }
         }
       end
@@ -426,8 +426,8 @@ RSpec.describe EnhanceUrlTaggingSchema do
         {
           'input' => {
             'attributes' => JSON.dump(company_id: companies(:company_one).id,
-                                    name: projects(:project_one).name,
-                                    description: 'hello anh Phuc')
+                                      name: projects(:project_one).name,
+                                      description: 'hello anh Phuc')
           }
         }
       end
@@ -470,7 +470,7 @@ RSpec.describe EnhanceUrlTaggingSchema do
         {
           'input' => {
             'attributes' => JSON.dump(project_id: projects(:project_one).id,
-                                    rule_string: "source={{#{dimensions(:utm_source_one).id}}}")
+                                      rule_string: "source={{#{dimensions(:utm_source_one).id}}}")
           }
         }
       end
@@ -486,7 +486,7 @@ RSpec.describe EnhanceUrlTaggingSchema do
         {
           'input' => {
             'attributes' => JSON.dump(project_id: projects(:project_one).id,
-                                    rule_string: new_first_rule.rule_string)
+                                      rule_string: new_first_rule.rule_string)
           }
         }
       end
@@ -651,7 +651,7 @@ RSpec.describe EnhanceUrlTaggingSchema do
           }
         }
         |
-      end
+    end
     let(:variables) do
       {
         'input' => {
