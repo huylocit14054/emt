@@ -1,5 +1,14 @@
 #import "./fragments/BasicRuleInfo.gql"
 #import "./fragments/BasicCompanyInfo.gql"
+#import "./fragments/BasicCompanyMemberInfo.gql"
+
+
+query getCompanyMembers($companyId: ID!) {
+  companyMembers(companyId: $companyId) {
+    ...BasicCompanyMemberInfo
+  }
+}
+
 query getCurrentUser {
   currentUser {
     id
@@ -250,19 +259,5 @@ query getCompany($companyId: ID!) {
       id
       roles
     }
-  }
-}
-
-query getCompanyMember($companyId: ID!) {
-  companyMembers(companyId: $companyId) {
-    id
-    roles
-    user {
-      id
-			email
-      username
-      status
-    }
-    status
   }
 }

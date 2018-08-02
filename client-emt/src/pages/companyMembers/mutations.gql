@@ -1,0 +1,18 @@
+#import '../../graphql/fragments/BasicCompanyMemberInfo.gql'
+mutation addMemberToCompany($input: AddMemberToCompanyInput!){
+  addMemberToCompany(input: $input)
+    {
+      addedMember {
+        ...BasicCompanyMemberInfo
+      }
+    }
+}
+
+mutation changeCompanyMemberStatus($input: AddMemberToCompanyInput!){
+  changeCompanyMemberStatus(input: $input)
+    {
+      affectedCompanyMember {
+        ...BasicCompanyMemberInfo
+      }
+    }
+}
