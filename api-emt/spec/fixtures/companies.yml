@@ -1,6 +1,7 @@
 company_one:
   name: company_one
   plan: plan_one
+  status: <%= Company::STATUS_ACTIVE %>
 company_two:
   name: company_two
   plan: plan_two

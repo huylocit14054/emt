@@ -6,31 +6,13 @@ import { withRouter } from 'react-router';
 import { Image } from 'cloudinary-react';
 import ChangeAvatarModal from './topHeader/ChangeAvatarModal';
 import '../styles/topHeader.less';
-import { CLOUD_NAME, AUTH_TOKEN } from '../constants';
+import { CLOUD_NAME, AUTH_TOKEN, ROLE_ADMIN, Routes } from '../constants';
 import { getClientCurrentUser as GET_CURRENT_USER_QUERY } from '../graphql/queries.gql';
 import CloudImage from './CloudImage';
 import UserProfileDrawer from './topHeader/UserProfileDrawer';
+import { routeByCompanyId } from '../utils/routes-utils';
 
 const { Header } = Layout;
-
-const companies = [
-  {
-    name: 'Company A',
-    logo: 'default-avatar_wbcfln',
-  },
-  {
-    name: 'Company B',
-    logo: 'default-avatar_wbcfln',
-  },
-  {
-    name: 'Company C',
-    logo: 'default-avatar_wbcfln',
-  },
-  {
-    name: 'Company D',
-    logo: 'default-avatar_wbcfln',
-  },
-];
 class TopHeader extends React.Component {
   signout = () => {
     localStorage.removeItem(AUTH_TOKEN);
@@ -72,32 +54,38 @@ class TopHeader extends React.Component {
                 />
               </Menu.Item>
               <Menu.Divider />
-
-              <Menu.Item key="company-dashboard">
-                <Link to="/me/profile">
-                  <Icon type="dashboard" /> Root Admin Dashboard
-                </Link>
-              </Menu.Item>
-              <Menu.Divider />
-              <div style={{ marginLeft: 10, marginTop: 10, fontSize: 12, color: 'gray' }}>
-                Your Companies
-              </div>
-              {companies.map(company => (
-                <Menu.Item key={`company-${company.id}`}>
-                  <Link to="/me/profile">
-                    <CloudImage
-                      publicId={company.logo}
-                      width={18}
-                      height={18}
-                      style={{ marginRight: 7 }}
-                    >
-                      {company.name}
-                    </CloudImage>
+              {/* 
+                If current user is root admin --> display admin dashboard to navigate
+                */}
+              {currentUserSync.role === ROLE_ADMIN && (
+                <Menu.Item key="company-dashboard">
+                  <Link to={Routes.admin.companyMangement}>
+                    <Icon type="dashboard" /> Root Admin Dashboard
                   </Link>
                 </Menu.Item>
-              ))}
+              )}
+              {currentUserSync.role === ROLE_ADMIN && <Menu.Divider />}
 
-              <Menu.Divider />
+              {/* 
+                If current user has no companies --> display none, ortherwise, list all companies
+                */}
+              {currentUserSync.companies.length > 0 &&
+                currentUserSync.companies.map(company => (
+                  <Menu.Item key={`company-${company.id}`}>
+                    <Link to={routeByCompanyId(Routes.company.members, company.id)}>
+                      <CloudImage
+                        publicId={company.logo}
+                        width={18}
+                        height={18}
+                        style={{ marginRight: 7 }}
+                      >
+                        {company.name}
+                      </CloudImage>
+                    </Link>
+                  </Menu.Item>
+                ))}
+
+              {currentUserSync.companies.length > 0 && <Menu.Divider />}
               <UserProfileDrawer ref={ref => (this.profileDrawer = ref)} />
               <Menu.Item key="profile" onClick={this.showProfileDrawer}>
                 <Icon type="profile" /> Profile

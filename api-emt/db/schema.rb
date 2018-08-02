@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180803040019) do
+ActiveRecord::Schema.define(version: 20180802032415) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 20180803040019) do
     t.string "email"
     t.integer "company_member_count"
     t.bigint "plan_id"
+    t.string "status", default: "active"
     t.index ["plan_id"], name: "index_companies_on_plan_id"
   end
 

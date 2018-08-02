@@ -1,4 +1,4 @@
-import { Modal, Radio } from 'antd';
+import { Modal, Radio, message } from 'antd';
 import React from 'react';
 import MyQuery from '../../../../components/MyQuery';
 import { getAllPlansOfApplication as GET_ALL_PLANS_OF_APPLICATION } from '../../../../graphql/queries.gql';
@@ -48,11 +48,14 @@ export default class ChangePlanModal extends React.Component {
               }),
             },
           }}
-          onCompleted={data => {
-            console.log(data);
+          onCompleted={({ changePlan: { updatedCompany } }) => {
             this.setState({
               visible: false,
             });
+            message.success(
+              `${updatedCompany.name}'s plan changed to ${updatedCompany.plan.name}`,
+              5
+            );
           }}
         >
           {(changePlan, { loading }) => (

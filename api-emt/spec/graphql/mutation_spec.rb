@@ -648,6 +648,7 @@ RSpec.describe EnhanceUrlTaggingSchema do
               plan {
                 name
               }
+              status
             }
           }
         }
@@ -659,7 +660,8 @@ RSpec.describe EnhanceUrlTaggingSchema do
           'attributes' => JSON.dump(
             'id' => companies(:company_one).id.to_s,
             'name' => 'company_one_edited',
-            'plan_id' => plans(:plan_two).id.to_s
+            'plan_id' => plans(:plan_two).id.to_s,
+            'status' => Company::STATUS_RESTRICTED
           )
         }
       }
@@ -670,6 +672,10 @@ RSpec.describe EnhanceUrlTaggingSchema do
 
     it 'return correct edited plan name' do
       expect(result.dig('data', 'updateCompany', 'updatedCompany', 'plan', 'name')).to eq('Standard OMS')
+    end
+
+    it 'return correct edited status' do
+      expect(result.dig('data', 'updateCompany', 'updatedCompany', 'status')).to eq(Company::STATUS_RESTRICTED)
     end
 
     it 'update attirbutes in database' do
