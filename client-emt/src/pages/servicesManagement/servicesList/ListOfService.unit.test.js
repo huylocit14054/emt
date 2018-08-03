@@ -1,7 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { MockedProvider } from 'react-apollo/test-utils';
-import { Table } from 'antd';
 import ListOfService from './ListOfService';
 import { getAllServices as GET_ALL_SERVICES } from '../graphql/queries.gql';
 import wait from '../../../utils/wait';
