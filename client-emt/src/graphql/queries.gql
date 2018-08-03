@@ -2,7 +2,6 @@
 #import "./fragments/BasicCompanyInfo.gql"
 #import "./fragments/BasicCompanyMemberInfo.gql"
 
-
 query getCompanyMembers($companyId: ID!) {
   companyMembers(companyId: $companyId) {
     ...BasicCompanyMemberInfo
