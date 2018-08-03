@@ -1,0 +1,10 @@
+fragment BasicPlanInfo on Plan {
+  id
+  name
+  description
+  createdAt
+  services{
+    id
+    name
+  }
+}

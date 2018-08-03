@@ -1,23 +1,28 @@
 loc:
   username: loc
   email: loc@gmail.com
-
+  role: <%= User::ROLE_ROOT_ADMIN %>
 nhat:
   username: nhat
   email: nhat@gmail.com
+  role: <%=User::ROLE_USER%>
 
 phat:
   username: phat
   email: phat@gmail.com
+  role: <%=User::ROLE_USER%>
 
 thuy:
   username: thuy
   email: thuy@gmail.com
+  role: <%=User::ROLE_USER%>
 
 phuc:
   username: phuc
   email: phuc@gmail.com
+  role: <%=User::ROLE_USER%>
 
 khanh:
   username: khanh
   email: khanh@gmail.com
+  role: <%=User::ROLE_USER%>

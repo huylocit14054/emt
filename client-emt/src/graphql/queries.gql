@@ -1,4 +1,12 @@
 #import "./fragments/BasicRuleInfo.gql"
+#import "./fragments/BasicCompanyInfo.gql"
+#import "./fragments/BasicCompanyMemberInfo.gql"
+
+query getCompanyMembers($companyId: ID!) {
+  companyMembers(companyId: $companyId) {
+    ...BasicCompanyMemberInfo
+  }
+}
 
 query getCurrentUser {
   currentUser {
@@ -10,7 +18,7 @@ query getCurrentUser {
 }
 
 query getClientCurrentUser {
-  currentUser @client{
+  currentUser @client {
     id
     username
     role
@@ -104,7 +112,7 @@ query getMembersByProjectId($projectId: ID!) {
 }
 
 query getAssignmentsByProjectId($projectId: ID!) {
-  assignments: projectMembers(projectId: $projectId){
+  assignments: projectMembers(projectId: $projectId) {
     id
     user {
       id
@@ -154,10 +162,9 @@ query getDimensionSuggestionsByProjectId($projectId: ID!) {
   }
 }
 
-query getProjectDimensionsTreeByProjectId($projectId: ID!){
+query getProjectDimensionsTreeByProjectId($projectId: ID!) {
   projectDimensionsTree(projectId: $projectId)
 }
-
 
 query getOptionsByDimensionId($dimensionId: ID!) {
   dimensionOptions(dimensionId: $dimensionId) {
@@ -175,18 +182,18 @@ query getProjectById($id: ID!) {
   }
 }
 
-query getAssignmentsByMemberId($memberId: ID!){
+query getAssignmentsByMemberId($memberId: ID!) {
   memberAssignments(memberId: $memberId)
 }
 
-query getRulesByProjectId($projectId: ID!){
-  projectRules(projectId: $projectId){
+query getRulesByProjectId($projectId: ID!) {
+  projectRules(projectId: $projectId) {
     ...BasicRuleInfo
   }
 }
 
-query getAssignmentsOfCurrentMember($projectId: ID!){
-  currentAppliedRule: currentAppliedRuleOfProject(projectId: $projectId){
+query getAssignmentsOfCurrentMember($projectId: ID!) {
+  currentAppliedRule: currentAppliedRuleOfProject(projectId: $projectId) {
     id
     ruleStringToDisplay
   }
@@ -205,18 +212,18 @@ query getAssignmentsOfCurrentMember($projectId: ID!){
   }
 }
 
-query currentMemberUtmHistory($projectId: ID!){
-  currentMemberUtmHistory: memberUtmHistory(projectId: $projectId){
+query currentMemberUtmHistory($projectId: ID!) {
+  currentMemberUtmHistory: memberUtmHistory(projectId: $projectId) {
     id
     url
     createdAt
   }
 }
 
-query utmAnalysis($projectId: ID!){
+query utmAnalysis($projectId: ID!) {
   utmAnalysis(projectId: $projectId) {
     id
-    url 
+    url
     createdAt
     projectMember {
       id
@@ -229,12 +236,33 @@ query utmAnalysis($projectId: ID!){
   }
 }
 
+query getAllPlansOfApplication {
+  allPlans {
+    id
+    name
+  }
+}
 
-query getCompanyById($companyId: ID!) {
+query getAllCompaniesOfApplication {
+  allCompanies {
+    ...BasicCompanyInfo
+  }
+}
+
+query getCompany($companyId: ID!) {
   company(companyId: $companyId) {
     id
     logo
     name
-    memberIdOfCurrentUser
+    currentUserAsMember {
+      id
+      roles
+    }
+  }
+}
+
+query getAllCompaniesOfApplication{
+  allCompanies{
+    ...BasicCompanyInfo
   }
 }

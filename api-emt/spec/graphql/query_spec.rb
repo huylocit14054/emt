@@ -302,4 +302,82 @@ RSpec.describe EnhanceUrlTaggingSchema do
       expect(result.dig('data', 'company', 'name')).to eq(companies(:company_one).name)
     end
   end
+
+  describe 'plans' do
+    let(:query_string) do
+      %(query getAllPlansOfApplication{
+        allPlans{
+          name
+        }
+      })
+    end
+
+    let(:return_result) do
+      result.dig('data', 'allPlans').map do |plan|
+        plan['name']
+      end
+    end
+    it 'return an array of all plans name in descendent order' do
+      expect(return_result).to eq(Plan.all.order(created_at: :desc).pluck(:name))
+    end
+  end
+
+  describe 'companies' do
+    let(:query_string) do
+      %(query getAllCompaniesOfApplication{
+        allCompanies{
+          name
+        }
+      })
+    end
+
+    let(:return_result) do
+      result.dig('data', 'allCompanies').map do |company|
+        company['name']
+      end
+    end
+    it 'return an array of all companies name in descendent order' do
+      expect(return_result).to eq(Company.all.order(created_at: :desc).pluck(:name))
+    end
+  end
+  describe 'get_all_services' do
+    let(:query_string) do
+      %(query{
+        services{
+          name
+        }
+      }
+      )
+    end
+    let(:expected_result) do
+      expected_result = []
+      result['data']['services'].each { |s| expected_result << s['name'] }
+      expected_result
+    end
+    it 'return all the services of the application' do
+      expect(
+        expected_result
+      ).to match_array(Service.all.order(created_at: :desc).pluck(:name))
+    end
+  end
+
+  describe 'plan' do
+    let(:query_string) do
+      %|query($id: ID!){
+        plan(id: $id){
+          name
+        }
+      }
+      |
+    end
+    let(:variables) do
+      {
+        'id' => plans(:plan_one).id
+      }
+    end
+
+    it 'return the plan with the id' do
+      expect(result['data']['plan']['name']).to eq(plans(:plan_one).name)
+    end
+  end
 end

@@ -16,6 +16,9 @@ import ProjectMembers from './pages/ProjectMembers';
 import ProjectAssignments from './pages/ProjectAssignments';
 import ProjectDimensions from './pages/ProjectDimensions';
 import CompanyManagement from './pages/CompanyManagement';
+import ServiceManagement from './pages/ServicesManagement';
+import PlanManagement from './pages/PlansManagement';
+import CompanyMembers from './pages/CompanyMembers';
 import { getCurrentUser as GET_CURRENT_USER } from './graphql/queries.gql';
 import CenterMessage from './components/CenterMessage';
 import { Routes } from './constants';
@@ -26,6 +29,9 @@ const App = () => (
       <React.Fragment>
         <Switch>
           <AdminRoute exact path={Routes.admin.companyMangement} component={CompanyManagement} />
+          <AdminRoute exact path={Routes.admin.serviceManagement} component={ServiceManagement} />
+          <AdminRoute exact path={Routes.admin.planManagement} component={PlanManagement} />
+          <CompanyRoute exact path={Routes.company.members} component={CompanyMembers} />
           <CompanyRoute exact path={Routes.company.utm.projects} component={Projects} />
           <CompanyRoute exact path="/users" component={Users} />
           <CompanyRoute exact path={Routes.company.utm.utmBuilder} component={ProjectUTMBuilder} />
