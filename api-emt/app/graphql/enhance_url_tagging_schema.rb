@@ -16,7 +16,7 @@ GraphQL::Errors.configure(EnhanceUrlTaggingSchema) do
   end
 
   rescue_from ActiveRecord::RecordInvalid do |exception|
-    GraphQL::ExecutionError.new(exception.record.errors.full_messages.join(", "))
+    GraphQL::ExecutionError.new(exception.record.errors.full_messages.join(', '))
   end
 
   # rescue_from StandardError do |_exception|

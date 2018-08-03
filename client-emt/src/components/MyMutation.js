@@ -9,9 +9,8 @@ function showErrorModal(errors) {
   });
 }
 export default ({ children, ...props }) => (
-  <Mutation {...props}>
-    {(mutate, { loading, data, error }) => {
-      if (error) console.log(error);
+  <Mutation {...props} onError={error => showErrorModal(error)}>
+    {(mutate, { loading, data }) => {
       return children(mutate, { loading, data });
     }}
   </Mutation>
