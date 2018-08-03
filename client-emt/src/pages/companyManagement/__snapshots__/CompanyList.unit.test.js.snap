@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`(Component) CompanyList should render data 1`] = `"NamePlanEmailJoinedStatusAction  hahahahahahplan 1company@gmail.com0 seconds agoactiveView1"`;
