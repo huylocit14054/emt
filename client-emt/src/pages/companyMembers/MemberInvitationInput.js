@@ -53,7 +53,7 @@ class MemberInvitationInput extends React.Component {
       <MyMutation
         mutation={ADD_MEMBER_TO_COMPANY}
         onCompleted={() => {
-          message.success('Email Sent !', 100);
+          message.success('Email Sent !');
         }}
         update={(
           cache,
