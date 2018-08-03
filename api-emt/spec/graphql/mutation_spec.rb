@@ -631,7 +631,7 @@ RSpec.describe EnhanceUrlTaggingSchema do
         }
       end
 
-      it 'creates new company' do
+      it 'successful update status' do
         expect(result.dig('data', 'changeCompanyMemberStatus', 'affectedCompanyMember', 'status')).to eq('pending')
       end
     end

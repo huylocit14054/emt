@@ -5,7 +5,16 @@
 
 query companyMembers($companyId: ID!) {
   companyMembers(companyId: $companyId) {
-    ...BasicCompanyMemberInfo
+    id
+    roles
+    user {
+      id
+      email
+      username
+      status
+      avatar
+    }
+    status
   }
 }
 

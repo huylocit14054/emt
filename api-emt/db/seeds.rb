@@ -38,17 +38,17 @@ Plan.all.each do |p|
   # create company admin
   company.company_members.create!(
     user_id: 1,
-    roles: [CompanyMember::ROLE_COMPANY_ADMIN, CompanyMember::ROLE_COMPANY_MEMBER]
+    roles: [CompanyMember::ROLE_COMPANY_ADMIN]
   )
   # create UTM manager
   company.company_members.create!(
     user_id: 2,
-    roles: [CompanyMember::ROLE_UTM_MANAGER, CompanyMember::ROLE_COMPANY_MEMBER]
+    roles: [CompanyMember::ROLE_UTM_MANAGER]
   )
   # create OMS manager
   company.company_members.create!(
     user_id: 3,
-    roles: [CompanyMember::ROLE_OMS_MANAGER, CompanyMember::ROLE_COMPANY_MEMBER]
+    roles: [CompanyMember::ROLE_OMS_MANAGER]
   )
   # create 10 company members
   10.times do |i|
@@ -61,7 +61,6 @@ Plan.all.each do |p|
       company_id: company.id,
       user_id: user.id
     ).update(roles: [
-               CompanyMember::ROLE_COMPANY_MEMBER,
                CompanyMember::ROLE_OMS_MEMBER,
                CompanyMember::ROLE_UTM_MEMBER
              ])

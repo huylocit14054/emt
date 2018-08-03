@@ -7,7 +7,7 @@ RSpec.describe CompanyMember, type: :model do
       let(:attributes) do
         {
           user_email: 'not_exists_in_database@gmail.com',
-          roles: [CompanyMember::ROLE_COMPANY_MEMBER, CompanyMember::ROLE_COMPANY_ADMIN],
+          roles: [CompanyMember::ROLE_COMPANY_ADMIN],
           company_id: companies(:company_one).id.to_s
         }
       end
@@ -34,7 +34,7 @@ RSpec.describe CompanyMember, type: :model do
       let(:attributes) do
         {
           user_email: users(:loc).email,
-          roles: [CompanyMember::ROLE_COMPANY_MEMBER, CompanyMember::ROLE_COMPANY_ADMIN],
+          roles: [CompanyMember::ROLE_COMPANY_ADMIN],
           company_id: companies(:company_one).id.to_s
         }
       end

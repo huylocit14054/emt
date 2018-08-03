@@ -1,14 +1,15 @@
 import React from 'react';
 
 import { Table } from 'antd';
-import { companyMember as GET_COMPANY_MEMBERS } from '../../graphql/queries.gql';
+import humanizeString from 'humanize-string';
+import { companyMembers as GET_COMPANY_MEMBERS } from '../../graphql/queries.gql';
 import MyQuery from '../../components/MyQuery';
 
 import CloudImage from '../../components/CloudImage';
 
 // In the fifth row, other columns are merged into first column
 // by setting it's colSpan to be 0
-const renderContent = (value, row, index) => {
+const renderContent = value => {
   const obj = {
     children: value,
     props: {},
@@ -17,7 +18,8 @@ const renderContent = (value, row, index) => {
 };
 
 const renderArray = (_, record) => {
-  return record.roles.join(', ').replace(/_/g, ' ');
+  if (record.roles.length === 0) return 'Staff';
+  return record.roles.map(r => humanizeString(r)).join(', ');
 };
 
 const columns = [
@@ -53,19 +55,17 @@ const columns = [
 ];
 
 const MembersList = ({ companyId }) => (
-  <React.Fragment>
-    <MyQuery query={GET_COMPANY_MEMBERS} variables={{ companyId: parseInt(companyId) }}>
-      {({ companyMembers }) => (
-        <Table
-          columns={columns}
-          dataSource={companyMembers}
-          bordered
-          rowKey="id"
-          style={{ marginTop: '15px' }}
-        />
-      )}
-    </MyQuery>
-  </React.Fragment>
+  <MyQuery query={GET_COMPANY_MEMBERS} variables={{ companyId: parseInt(companyId) }}>
+    {({ companyMembers }) => (
+      <Table
+        columns={columns}
+        dataSource={companyMembers}
+        bordered
+        rowKey="id"
+        style={{ marginTop: '15px' }}
+      />
+    )}
+  </MyQuery>
 );
 
 export default MembersList;

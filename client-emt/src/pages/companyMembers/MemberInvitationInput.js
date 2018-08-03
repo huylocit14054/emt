@@ -53,7 +53,7 @@ class MemberInvitationInput extends React.Component {
       <MyMutation
         mutation={ADD_MEMBER_TO_COMPANY}
         onCompleted={() => {
-          message.success('Email Sent !');
+          message.success('Email Sent !', 100);
         }}
         update={(
           cache,
@@ -81,7 +81,10 @@ class MemberInvitationInput extends React.Component {
           <Form layout="inline" onSubmit={e => this.handleSubmit(e, addMutation)}>
             <FormItem validateStatus={emailError ? 'error' : ''} help={emailError || ''}>
               {getFieldDecorator('email', {
-                rules: [{ required: true, message: 'Please input valid email!' }],
+                rules: [
+                  { required: true, message: "Email can't be blank!" },
+                  { type: 'email', message: 'Must be a valid email' },
+                ],
               })(
                 <Input
                   prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -104,20 +107,24 @@ class MemberInvitationInput extends React.Component {
                       placeholder="Please select roles"
                       style={{ width: '370px' }}
                     >
-                      {company.services.map(service => {
+                      {company.services.map((service, index) => {
                         if (service.name.toLowerCase().includes(UTM_SERVICE))
                           return (
-                            <OptGroup label={service.name.toUpperCase()}>
-                              {UTM_SERVICE_ROLES.map(role => (
-                                <Option value={role}>{humanizeString(role)}</Option>
+                            <OptGroup label={service.name.toUpperCase()} key={index}>
+                              {UTM_SERVICE_ROLES.map((role, i) => (
+                                <Option value={role} key={i}>
+                                  {humanizeString(role)}
+                                </Option>
                               ))}
                             </OptGroup>
                           );
                         if (service.name.toLowerCase().includes(OMS_SERVICE))
                           return (
-                            <OptGroup label={service.name.toUpperCase()}>
-                              {OMS_SERVICE_ROLES.map(role => (
-                                <Option value={role}>{humanizeString(role)}</Option>
+                            <OptGroup label={service.name.toUpperCase()} key={index}>
+                              {OMS_SERVICE_ROLES.map((role, i) => (
+                                <Option value={role} key={i}>
+                                  {humanizeString(role)}
+                                </Option>
                               ))}
                             </OptGroup>
                           );

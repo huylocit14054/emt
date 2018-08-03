@@ -12,7 +12,7 @@ class Mutations::CreateCompany < Mutations::BaseMutation
       company = Company.create!(name: name, plan_id: plan_id)
 
       # Create new company staff
-      roles = [CompanyMember::ROLE_COMPANY_MEMBER, CompanyMember::ROLE_COMPANY_ADMIN]
+      roles = [CompanyMember::ROLE_COMPANY_ADMIN]
       CompanyMember.create_staff(company_id: company.id, user_email: company_admin_email, roles: roles)
     end
     {
