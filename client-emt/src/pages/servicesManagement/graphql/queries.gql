@@ -1,0 +1,6 @@
+#import "./fragments/BasicServiceInfo.gql"
+query getAllServices {
+  services {
+    ...BasicServiceInfo
+  }
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Form, Icon, Input, Button, Select, message } from 'antd';
+<<<<<<< HEAD
 import humanizeString from 'humanize-string';
 import MyQuery from '../../components/MyQuery';
 import { addMemberToCompany as ADD_MEMBER_TO_COMPANY } from './mutations.gql';
@@ -10,6 +11,11 @@ import {
 } from '../../graphql/queries.gql';
 import MyMutation from '../../components/MyMutation';
 import { UTM_SERVICE, OMS_SERVICE, OMS_SERVICE_ROLES, UTM_SERVICE_ROLES } from '../../constants';
+=======
+import { addMemberToCompany as ADD_MEMBER_TO_COMPANY } from './mutations.gql';
+import { getCompanyMembers as GET_COMPANY_MEMBERS } from '../../graphql/queries.gql';
+import MyMutation from '../../components/MyMutation';
+>>>>>>> origin
 
 const FormItem = Form.Item;
 const { Option, OptGroup } = Select;
@@ -81,10 +87,14 @@ class MemberInvitationInput extends React.Component {
           <Form layout="inline" onSubmit={e => this.handleSubmit(e, addMutation)}>
             <FormItem validateStatus={emailError ? 'error' : ''} help={emailError || ''}>
               {getFieldDecorator('email', {
+<<<<<<< HEAD
                 rules: [
                   { required: true, message: "Email can't be blank!" },
                   { type: 'email', message: 'Must be a valid email' },
                 ],
+=======
+                rules: [{ required: true, message: 'Please input valid email!' }],
+>>>>>>> origin
               })(
                 <Input
                   prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -92,6 +102,7 @@ class MemberInvitationInput extends React.Component {
                 />
               )}
             </FormItem>
+<<<<<<< HEAD
             <MyQuery
               query={GET_COMPANY_BY_ID}
               variables={{ companyId: parseInt(this.props.companyId) }}
@@ -134,6 +145,30 @@ class MemberInvitationInput extends React.Component {
                 </FormItem>
               )}
             </MyQuery>
+=======
+            <FormItem validateStatus={rolesError ? 'error' : ''} help={rolesError || ''}>
+              {getFieldDecorator('roles', {
+                rules: [{ required: false, type: 'array' }],
+                initialValue: [],
+              })(
+                <Select
+                  mode="multiple"
+                  placeholder="Please select roles"
+                  style={{ width: '370px' }}
+                >
+                  <Option value="staff">Staff</Option>
+                  <OptGroup label="UTM">
+                    <Option value="utm_manager">UTM Manager</Option>
+                    <Option value="utm_member">UTM Member</Option>
+                  </OptGroup>
+                  <OptGroup label="OMS">
+                    <Option value="oms_manager">UTM Manager</Option>
+                    <Option value="oms_member">UTM Member</Option>
+                  </OptGroup>
+                </Select>
+              )}
+            </FormItem>
+>>>>>>> origin
             <FormItem>
               <Button
                 type="primary"

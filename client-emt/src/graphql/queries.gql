@@ -273,3 +273,9 @@ query getCompany($companyId: ID!) {
     }
   }
 }
+
+query getAllCompaniesOfApplication{
+  allCompanies{
+    ...BasicCompanyInfo
+  }
+}

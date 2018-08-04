@@ -34,8 +34,8 @@ RSpec.describe CompanyMember, type: :model do
       let(:attributes) do
         {
           user_email: users(:loc).email,
-          roles: [CompanyMember::ROLE_COMPANY_ADMIN],
-          company_id: companies(:company_one).id.to_s
+          roles: [CompanyMember::ROLE_COMPANY_MEMBER, CompanyMember::ROLE_COMPANY_ADMIN],
+          company_id: companies(:company_two).id.to_s
         }
       end
 
@@ -47,8 +47,11 @@ RSpec.describe CompanyMember, type: :model do
         expect { CompanyMember.create_staff(attributes) }.not_to change(User, :count)
       end
 
+      it 'creates new company member' do
+        expect { CompanyMember.create_staff(attributes) }.to change { CompanyMember.count }.by(1)
+      end
       it 'creates a correct company member in database', :need_to_create_staff do
-        expect(CompanyMember.last.company_id).to eq(companies(:company_one).id)
+        expect(CompanyMember.last.company_id).to eq(companies(:company_two).id)
       end
     end
   end

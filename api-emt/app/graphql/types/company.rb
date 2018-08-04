@@ -13,7 +13,18 @@ class Types::Company < Types::BaseObject
   field :updated_at, Types::DateTime, null: false
 
   # Relationships
-  field :company_members, [Types::CompanyMember], null: false
+  field :company_members, [Types::CompanyMember], null: false do
+    argument :first, Int, required: false
+  end
+
+  # get company members according to the optional first argument
+  def company_members(first: nil)
+    if first
+      object.company_members.first(first)
+    else
+      object.company_members
+    end
+  end
   field :users, [Types::User], null: false
   field :projects, [Types::Project, null: true], null: false
   field :services, [Types::Service], null: false

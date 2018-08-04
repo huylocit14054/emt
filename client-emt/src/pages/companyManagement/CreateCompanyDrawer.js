@@ -60,7 +60,7 @@ class DrawerForm extends React.Component {
             paddingBottom: 53,
           }}
         >
-          <Form layout="vertical" hideRequiredMark>
+          <Form layout="vertical">
             <Row gutter={16}>
               <Col span={24}>
                 <Form.Item label="Name">
@@ -148,7 +148,7 @@ class DrawerForm extends React.Component {
                   type="primary"
                   loading={loading}
                 >
-                  Submit
+                  Create
                 </Button>
               )}
             </MyMutation>

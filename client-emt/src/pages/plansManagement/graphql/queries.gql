@@ -1,0 +1,14 @@
+#import "./fragments/BasicPlanInfo.gql"
+
+query allPlans{
+  allPlans{
+    ...BasicPlanInfo
+  }
+}
+
+query getAllServices {
+  services {
+    id
+    name
+  }
+}

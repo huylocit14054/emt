@@ -410,8 +410,8 @@ RSpec.describe EnhanceUrlTaggingSchema do
         {
           'input' => {
             'attributes' => JSON.dump(company_id: companies(:company_one).id,
-                                    name: 'enhance',
-                                    description: 'hello anh Phuc')
+                                      name: 'enhance',
+                                      description: 'hello anh Phuc')
           }
         }
       end
@@ -426,8 +426,8 @@ RSpec.describe EnhanceUrlTaggingSchema do
         {
           'input' => {
             'attributes' => JSON.dump(company_id: companies(:company_one).id,
-                                    name: projects(:project_one).name,
-                                    description: 'hello anh Phuc')
+                                      name: projects(:project_one).name,
+                                      description: 'hello anh Phuc')
           }
         }
       end
@@ -470,7 +470,7 @@ RSpec.describe EnhanceUrlTaggingSchema do
         {
           'input' => {
             'attributes' => JSON.dump(project_id: projects(:project_one).id,
-                                    rule_string: "source={{#{dimensions(:utm_source_one).id}}}")
+                                      rule_string: "source={{#{dimensions(:utm_source_one).id}}}")
           }
         }
       end
@@ -486,7 +486,7 @@ RSpec.describe EnhanceUrlTaggingSchema do
         {
           'input' => {
             'attributes' => JSON.dump(project_id: projects(:project_one).id,
-                                    rule_string: new_first_rule.rule_string)
+                                      rule_string: new_first_rule.rule_string)
           }
         }
       end
@@ -634,6 +634,244 @@ RSpec.describe EnhanceUrlTaggingSchema do
       it 'successful update status' do
         expect(result.dig('data', 'changeCompanyMemberStatus', 'affectedCompanyMember', 'status')).to eq('pending')
       end
+    end
+  end
+
+  describe 'updateCompany' do
+    let(:query_string) do
+      %|
+        mutation updateCompany($input: UpdateCompanyInput!){
+          updateCompany(input: $input)
+          {
+            updatedCompany {
+              name
+              plan {
+                name
+              }
+            }
+          }
+        }
+        |
+    end
+    let(:variables) do
+      {
+        'input' => {
+          'attributes' => JSON.dump(
+            'id' => companies(:company_one).id.to_s,
+            'name' => 'company_one_edited',
+            'plan_id' => plans(:plan_two).id.to_s
+          )
+        }
+      }
+    end
+    it 'return correct edited company name' do
+      expect(result.dig('data', 'updateCompany', 'updatedCompany', 'name')).to eq('company_one_edited')
+    end
+
+    it 'return correct edited plan name' do
+      expect(result.dig('data', 'updateCompany', 'updatedCompany', 'plan', 'name')).to eq('Standard OMS')
+    end
+
+    it 'update attirbutes in database' do
+      expect { result }.to change { companies(:company_one).reload.name }.from('company_one').to('company_one_edited')
+    end
+  end
+
+  describe 'create_service' do
+    let(:query_string) do
+      %|
+        mutation($input: CreateServiceInput!){
+          createService(input: $input){
+            createdService{
+              id
+              name
+              description
+            }
+          }
+        }
+      |
+    end
+
+    context 'valid input' do
+      let(:variables) do
+        {
+          'input' => {
+            'attributes' =>  JSON.dump(
+              'name' => 'new service',
+              'description' => 'this is my new service'
+            )
+          }
+        }
+      end
+
+      it 'create new service' do
+        expect(result['data']['createService']['createdService']['name']).to eq('new service')
+      end
+    end
+
+    context 'invalid input' do
+      let(:variables) do
+        {
+          'input' => {
+            'attributes' =>  JSON.dump(
+              'name' => services(:utm).name,
+              'description' => 'this is my new service'
+            )
+          }
+        }
+      end
+      it 'raise error when create a service with the same name' do
+        expect(result['errors'][0]['message']).to eq('Name has already been taken')
+      end
+    end
+  end
+
+  describe 'update_service' do
+    let(:query_string) do
+      %|
+        mutation($input: UpdateServiceInput!){
+          updateService(input: $input){
+            updatedService{
+              id
+              name
+              description
+            }
+          }
+        }
+      |
+    end
+
+    context 'valid input' do
+      let(:variables) do
+        {
+          'input' => {
+            'attributes' =>  JSON.dump(
+              'id' => services(:utm).id.to_s,
+              'name' => 'new service',
+              'description' => 'this is my new service'
+            )
+          }
+        }
+      end
+
+      it 'create new service' do
+        expect(result['data']['updateService']['updatedService']['name']).to eq('new service')
+      end
+    end
+
+    context 'invalid input' do
+      let(:variables) do
+        {
+          'input' => {
+            'attributes' =>  JSON.dump(
+              'id' => services(:utm).id.to_s,
+              'name' => services(:oms).name,
+              'description' => 'this is my new service'
+            )
+          }
+        }
+      end
+      it 'raise error when create a service with the same name' do
+        expect(result['errors'][0]['message']).to eq('Name has already been taken')
+      end
+    end
+  end
+
+  describe 'delete_service' do
+    let(:query_string) do
+      %|mutation($input: DeleteServiceInput!) {
+        deteleService(input: $input) {
+          deleted
+        }
+      }|
+    end
+    let(:variables) do
+      {
+        'input' => {
+          'serviceId' => services(:utm).id
+        }
+      }
+    end
+
+    it 'delete utm service and all the dependency' do
+      expect(Service.find(services(:utm).id)).not_to be_nil
+      expect(PlanService.find(plan_services(:plan_one_utm).id)).not_to be_nil
+      expect(PlanService.find(plan_services(:plan_three_utm).id)).not_to be_nil
+      expect(result['data']['deteleService']['deleted']).to be(true)
+      expect { Service.find(services(:utm).id) }.to raise_error
+      expect { PlanService.find(plan_services(:plan_one_utm).id) }.to raise_error
+      expect { PlanService.find(plan_services(:plan_three_utm).id) }.to raise_error
+    end
+  end
+
+  describe 'create_plan' do
+    let(:query_string) do
+      %|mutation($input: CreatePlanInput!) {
+        createPlan(input: $input) {
+          createdPlan{
+            id
+            name
+            description
+          }
+        }
+      }|
+    end
+
+    let(:variables) do
+      {
+        'input' => {
+          'name' => 'my new plan',
+          'description' => 'this is my new plan',
+          'serviceIds' => [services(:utm).id.to_s, services(:oms).id.to_s]
+        }
+      }
+    end
+
+    it 'return new created plan' do
+      expect(result['data']['createPlan']['createdPlan']['name']).to eq('my new plan')
+      expect(result['data']['createPlan']['createdPlan']['description']).to eq('this is my new plan')
+    end
+
+    it 'create new plan' do
+      expect { result }.to change { Plan.count }.by(1)
+    end
+
+    it 'create new plan_service' do
+      expect { result }.to change { PlanService.count }.by(2)
+    end
+  end
+
+  describe 'update_plan' do
+    let(:query_string) do
+      %|mutation($input: UpdatePlanInput!) {
+        updatePlan(input: $input) {
+          updatedPlan{
+            id
+            name
+            services{
+              id
+              name
+            }
+          }
+        }
+      }|
+    end
+    let(:variables) do
+      {
+        'input' => {
+          'planId' => plans(:plan_one).id.to_s,
+          'name' => 'myplan',
+          'description' => 'this is my new plan',
+          'serviceIds' => [services(:utm).id.to_s, services(:oms).id.to_s]
+        }
+      }
+    end
+    it 'return updated plan' do
+      expect(result['data']['updatePlan']['updatedPlan']['name']).to eq('myplan')
+    end
+
+    it 'return 2 created plan_services' do
+      expect(result['data']['updatePlan']['updatedPlan']['services'].count).to eq(2)
     end
   end
 end

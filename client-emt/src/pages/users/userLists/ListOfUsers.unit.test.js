@@ -5,7 +5,7 @@ import ListOfUsers from './ListOfUsers';
 import { getAllUsers as GET_ALL_USERS_QUERY } from '../../../graphql/queries.gql';
 import wait from '../../../utils/wait';
 
-describe('(Component) UsersList', () => {
+xdescribe('(Component) UsersList', () => {
   const mocks = [
     {
       request: {

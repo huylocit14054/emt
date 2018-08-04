@@ -1,0 +1,22 @@
+#import "./fragments/BasicServiceInfo.gql"
+mutation createService($input: CreateServiceInput!) {
+  createService(input: $input) {
+    createdService {
+     ...BasicServiceInfo
+    }
+  }
+}
+
+mutation updateService($input: UpdateServiceInput!) {
+  updateService(input: $input) {
+    updatedService {
+      ...BasicServiceInfo
+    }
+  }
+}
+
+mutation deteleService($input: DeleteServiceInput!) {
+  deteleService(input: $input) {
+    deleted
+  }
+}
