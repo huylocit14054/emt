@@ -1,9 +1,14 @@
 import React from 'react';
-
 import { Form, Icon, Input, Button, Select, message } from 'antd';
+import humanizeString from 'humanize-string';
+import MyQuery from '../../components/MyQuery';
 import { addMemberToCompany as ADD_MEMBER_TO_COMPANY } from './mutations.gql';
-import { getCompanyMembers as GET_COMPANY_MEMBERS } from '../../graphql/queries.gql';
+import {
+  companyMembers as GET_COMPANY_MEMBERS,
+  getCompany as GET_COMPANY_BY_ID,
+} from '../../graphql/queries.gql';
 import MyMutation from '../../components/MyMutation';
+import { UTM_SERVICE, OMS_SERVICE, OMS_SERVICE_ROLES, UTM_SERVICE_ROLES } from '../../constants';
 
 const FormItem = Form.Item;
 const { Option, OptGroup } = Select;
@@ -75,7 +80,10 @@ class MemberInvitationInput extends React.Component {
           <Form layout="inline" onSubmit={e => this.handleSubmit(e, addMutation)}>
             <FormItem validateStatus={emailError ? 'error' : ''} help={emailError || ''}>
               {getFieldDecorator('email', {
-                rules: [{ required: true, message: 'Please input valid email!' }],
+                rules: [
+                  { required: true, message: "Email can't be blank!" },
+                  { type: 'email', message: 'Must be a valid email' },
+                ],
               })(
                 <Input
                   prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -83,28 +91,48 @@ class MemberInvitationInput extends React.Component {
                 />
               )}
             </FormItem>
-            <FormItem validateStatus={rolesError ? 'error' : ''} help={rolesError || ''}>
-              {getFieldDecorator('roles', {
-                rules: [{ required: false, type: 'array' }],
-                initialValue: [],
-              })(
-                <Select
-                  mode="multiple"
-                  placeholder="Please select roles"
-                  style={{ width: '370px' }}
-                >
-                  <Option value="staff">Staff</Option>
-                  <OptGroup label="UTM">
-                    <Option value="utm_manager">UTM Manager</Option>
-                    <Option value="utm_member">UTM Member</Option>
-                  </OptGroup>
-                  <OptGroup label="OMS">
-                    <Option value="oms_manager">UTM Manager</Option>
-                    <Option value="oms_member">UTM Member</Option>
-                  </OptGroup>
-                </Select>
+            <MyQuery
+              query={GET_COMPANY_BY_ID}
+              variables={{ companyId: parseInt(this.props.companyId) }}
+            >
+              {({ company }) => (
+                <FormItem validateStatus={rolesError ? 'error' : ''} help={rolesError || ''}>
+                  {getFieldDecorator('roles', {
+                    rules: [{ required: false, type: 'array' }],
+                    initialValue: [],
+                  })(
+                    <Select
+                      mode="multiple"
+                      placeholder="Please select roles"
+                      style={{ width: '370px' }}
+                    >
+                      {company.services.map((service, index) => {
+                        if (service.name.toLowerCase().includes(UTM_SERVICE))
+                          return (
+                            <OptGroup label={service.name.toUpperCase()} key={index}>
+                              {UTM_SERVICE_ROLES.map((role, i) => (
+                                <Option value={role} key={i}>
+                                  {humanizeString(role)}
+                                </Option>
+                              ))}
+                            </OptGroup>
+                          );
+                        if (service.name.toLowerCase().includes(OMS_SERVICE))
+                          return (
+                            <OptGroup label={service.name.toUpperCase()} key={index}>
+                              {OMS_SERVICE_ROLES.map((role, i) => (
+                                <Option value={role} key={i}>
+                                  {humanizeString(role)}
+                                </Option>
+                              ))}
+                            </OptGroup>
+                          );
+                      })}
+                    </Select>
+                  )}
+                </FormItem>
               )}
-            </FormItem>
+            </MyQuery>
             <FormItem>
               <Button
                 type="primary"

@@ -242,6 +242,21 @@ class Types::QueryType < Types::BaseObject
     ::Company.all.order(created_at: :desc)
   end
 
+  field :company_members, [Types::CompanyMember], null: false do
+    argument :company_id, ID, required: true
+  end
+
+  def company_members(company_id:)
+    ::CompanyMember.where(company_id: company_id).order(created_at: :desc)
+  end
+
+  field :company_member, Types::CompanyMember, null: false do
+    argument :company_member_id, ID, required: true
+  end
+
+  def company_member(company_member_id:)
+    ::CompanyMember.find(company_member_id)
+  end
   # return all services
   field :services, [Types::Service], null: false, description: 'Get all services'
 
@@ -255,13 +270,5 @@ class Types::QueryType < Types::BaseObject
 
   def plan(id:)
     ::Plan.find(id)
-  end
-
-  field :company_members, [Types::CompanyMember], null: false do
-    argument :company_id, ID, required: true
-  end
-
-  def company_members(company_id:)
-    ::CompanyMember.where(company_id: company_id).order(created_at: :desc)
   end
 end

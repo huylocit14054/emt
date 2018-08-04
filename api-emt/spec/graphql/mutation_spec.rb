@@ -602,6 +602,7 @@ RSpec.describe EnhanceUrlTaggingSchema do
       end
     end
   end
+
   describe 'activate company member' do
     let(:query_string) do
       %|
@@ -619,6 +620,7 @@ RSpec.describe EnhanceUrlTaggingSchema do
         }
       |
     end
+
     context 'with valid arguments' do
       let(:variables) do
         {
@@ -628,7 +630,8 @@ RSpec.describe EnhanceUrlTaggingSchema do
           }
         }
       end
-      it 'creates new company' do
+
+      it 'successful update status' do
         expect(result.dig('data', 'changeCompanyMemberStatus', 'affectedCompanyMember', 'status')).to eq('pending')
       end
     end
