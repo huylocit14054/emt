@@ -37,7 +37,7 @@ describe('(Component) MembersList', () => {
   it('renders...', async () => {
     const wrapper = mount(
       <MockedProvider mocks={[]} addTypename={false}>
-        <MembersList />
+        <MembersList companyId={1} />
       </MockedProvider>
     );
 
@@ -47,7 +47,7 @@ describe('(Component) MembersList', () => {
   it('should render loading state initially', () => {
     const wrapper = mount(
       <MockedProvider mocks={[]} addTypename={false}>
-        <MembersList />
+        <MembersList companyId={1} />
       </MockedProvider>
     );
     expect(wrapper.text()).toContain('Loading...');
