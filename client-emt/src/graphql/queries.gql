@@ -24,6 +24,11 @@ query getCurrentUser {
     username
     role
     avatar
+    companies {
+      id
+      name
+      logo
+    }
   }
 }
 
@@ -33,6 +38,11 @@ query getClientCurrentUser {
     username
     role
     avatar
+    companies {
+      id
+      name
+      logo
+    }
   }
 }
 

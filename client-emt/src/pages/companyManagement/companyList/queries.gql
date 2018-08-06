@@ -1,6 +1,7 @@
-query getCompanyDetails($companyId: ID!){
+query getCompanyDetails($companyId: ID!, $memberAmount: Int!){
     company(companyId: $companyId){
         id
+        status
         name
         description
         email
@@ -11,10 +12,11 @@ query getCompanyDetails($companyId: ID!){
             name
         }
         companyMemberCount
-        companyMembers(first: 3) {
+        companyMembers(first: $memberAmount) {
             id
             roles
             user {
+                id
                 username
                 avatar
             }

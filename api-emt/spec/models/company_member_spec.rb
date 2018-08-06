@@ -21,12 +21,12 @@ RSpec.describe CompanyMember, type: :model do
       end
 
       it 'creates correct user in database', :need_to_create_staff do
-        expect(User.last.email).to eq(attributes[:user_email])
+        expect(User.first.email).to eq(attributes[:user_email])
       end
 
       it 'creates a correct company member in database', :need_to_create_staff do
-        expect(CompanyMember.last.user_id).to eq(User.last.id)
-        expect(CompanyMember.last.company_id).to eq(companies(:company_one).id)
+        expect(CompanyMember.first.user_id).to eq(User.first.id)
+        expect(CompanyMember.first.company_id).to eq(companies(:company_one).id)
       end
     end
 
@@ -51,7 +51,7 @@ RSpec.describe CompanyMember, type: :model do
         expect { CompanyMember.create_staff(attributes) }.to change { CompanyMember.count }.by(1)
       end
       it 'creates a correct company member in database', :need_to_create_staff do
-        expect(CompanyMember.last.company_id).to eq(companies(:company_two).id)
+        expect(CompanyMember.first.company_id).to eq(companies(:company_two).id)
       end
     end
   end

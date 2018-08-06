@@ -1,10 +1,12 @@
 import React from 'react';
 import { Query } from 'react-apollo';
-import { Table, Divider } from 'antd';
+import { Table } from 'antd';
 import TimeAgo from 'react-timeago';
 import { getAllCompaniesOfApplication as GET_ALL_COMPANIES_QUERY } from '../../graphql/queries.gql';
 import CloudImage from '../../components/CloudImage';
 import { CompanyDetailsDrawer } from './companyList/CompanyDetailsDrawer';
+import renderStatus from '../../utils/renderStatus';
+import renderPlan from '../../utils/renderPlan';
 
 const { Column } = Table;
 
@@ -42,15 +44,20 @@ const CompanyList = () => (
             align="center"
             title="Plan"
             dataIndex="plan"
-            render={plan => <span key={plan.id}>{plan.name}</span>}
+            render={plan => renderPlan(plan.name)}
           />
           <Column align="center" title="Email" dataIndex="email" />
-          <Column align="center" title="Address" dataIndex="address" />
           <Column
             align="center"
             title="Joined"
             dataIndex="createdAt"
             render={date => <TimeAgo date={date} />}
+          />
+          <Column
+            align="center"
+            title="Status"
+            dataIndex="status"
+            render={status => renderStatus(status)}
           />
           <Column
             align="center"
@@ -63,8 +70,6 @@ const CompanyList = () => (
                   companyName={company.name}
                   companyLogo={company.logo}
                 />
-                <Divider type="vertical" />
-                <a>Members</a>
               </span>
             )}
           />

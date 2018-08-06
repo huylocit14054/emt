@@ -22,6 +22,16 @@ const OMS_SERVICE = 'oms';
 const OMS_SERVICE_ROLES = [ROLE_OMS_MANAGER, ROLE_OMS_MEMBER];
 const UTM_SERVICE_ROLES = [ROLE_UTM_MANAGER, ROLE_UTM_MEMBER];
 
+// plans
+const PREMIUM = 'Premium';
+const STANDARD_UTM = 'Standard UTM';
+const STANDARD_OMS = 'Standard OMS';
+
+// status
+const STATUS_ACTIVE = 'active';
+const STATUS_RESTRICTED = 'restricted';
+
+// routes
 const Routes = {
   login: '/login',
   user: {
@@ -47,6 +57,13 @@ const Routes = {
   },
 };
 
+const COMPANY = {
+  status: {
+    active: STATUS_ACTIVE,
+    restricted: STATUS_RESTRICTED,
+  },
+};
+
 module.exports = {
   API_URL,
   CLIENT_URL,
@@ -66,4 +83,10 @@ module.exports = {
   OMS_SERVICE,
   UTM_SERVICE_ROLES,
   OMS_SERVICE_ROLES,
+  COMPANY,
+  STATUS_ACTIVE,
+  STATUS_RESTRICTED,
+  PREMIUM,
+  STANDARD_UTM,
+  STANDARD_OMS,
 };

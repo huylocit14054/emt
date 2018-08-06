@@ -1,4 +1,5 @@
 class CompanyMember < ApplicationRecord
+  default_scope { order(created_at: :desc) }
   # rubocop:disable Rails/HasManyOrHasOneDependent
   belongs_to :company, counter_cache: :company_member_count, inverse_of: :company_members
   belongs_to :user, inverse_of: :company_members

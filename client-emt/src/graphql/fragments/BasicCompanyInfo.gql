@@ -1,14 +1,12 @@
 fragment BasicCompanyInfo on Company {
   id
   createdAt
-  updatedAt
   name
   email
-  address
   logo
   plan {
     id
     name
   }
-  companyMemberCount
+  status
 }

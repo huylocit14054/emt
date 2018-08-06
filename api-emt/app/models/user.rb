@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  default_scope { order(created_at: :desc) }
   ROLE_ROOT_ADMIN = 'root_admin'
   ROLE_USER = 'user'
 
