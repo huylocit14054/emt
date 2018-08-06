@@ -218,6 +218,7 @@ mutation changePlan($input: UpdateCompanyInput!){
   changePlan: updateCompany(input: $input){
     updatedCompany {
       id
+      name
       plan {
         id
         name
@@ -227,3 +228,11 @@ mutation changePlan($input: UpdateCompanyInput!){
 }
 
 
+mutation changeCompanyStatus($input: UpdateCompanyInput!){
+  changeCompanyStatus: updateCompany(input: $input){
+    updatedCompany {
+      id
+      status
+    }
+  }
+}

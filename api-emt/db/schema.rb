@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 20180803040019) do
     t.string "email"
     t.integer "company_member_count"
     t.bigint "plan_id"
+    t.string "status", default: "active"
     t.index ["plan_id"], name: "index_companies_on_plan_id"
   end
 

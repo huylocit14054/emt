@@ -1,4 +1,4 @@
-import { Drawer, Form, Button, Col, Row, Input, Radio } from 'antd';
+import { Drawer, Form, Button, Col, Row, Input, Radio, message } from 'antd';
 import React from 'react';
 import {
   getAllPlansOfApplication as GET_ALL_PLANS_OF_APPLICATION,
@@ -52,7 +52,7 @@ class DrawerForm extends React.Component {
           width="50%"
           placement="right"
           onClose={this.onClose}
-          maskClosable={false}
+          maskClosable
           visible={this.state.visible}
           style={{
             height: 'calc(100% - 55px)',
@@ -120,6 +120,9 @@ class DrawerForm extends React.Component {
             </Button>
             <MyMutation
               mutation={CREATE_COMPANY_MUTATION}
+              onCompleted={({ createCompany: { createdCompany } }) => {
+                message.success(`${createdCompany.name} created!`, 3);
+              }}
               update={(
                 store,
                 {

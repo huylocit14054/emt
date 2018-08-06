@@ -1,13 +1,29 @@
-import { Drawer, Divider, Col, Row, Tag, List } from 'antd';
+import { Drawer, Divider, Col, Row, Tag, List, message, Modal } from 'antd';
 import React from 'react';
 import DescriptionItem from '../../../components/DescriptionItem';
 import MyQuery from '../../../components/MyQuery';
 import { getCompanyDetails as GET_COMPANY_DETAILS } from './queries.gql';
+import { changeCompanyStatus as CHANGE_COMPANY_STATUS } from '../../../graphql/mutations.gql';
 import CloudImage from '../../../components/CloudImage';
 import renderRoles from '../../../utils/renderRole';
 import CompanyMembersDrawer from './companyDetailsDrawer/CompanyMembersDrawer';
 import ChangePlanModal from './companyDetailsDrawer/ChangePlanModal';
+import MyMutation from '../../../components/MyMutation';
+import { COMPANY } from '../../../constants';
+import renderStatus from '../../../utils/renderStatus';
+import renderPlan from '../../../utils/renderPlan';
 
+const { confirm } = Modal;
+
+function showConfirm(actionName, changeCompanyStatus) {
+  confirm({
+    title: `Do you want to ${actionName} this company?`,
+    onOk() {
+      changeCompanyStatus();
+    },
+    onCancel() {},
+  });
+}
 const pStyle = {
   fontSize: 16,
   fontWeight: 'bold',
@@ -49,7 +65,10 @@ export class CompanyDetailsDrawer extends React.Component {
           onClose={this.onClose}
           visible={this.state.visible}
         >
-          <MyQuery query={GET_COMPANY_DETAILS} variables={{ companyId }}>
+          <MyQuery
+            query={GET_COMPANY_DETAILS}
+            variables={{ companyId: parseInt(companyId), memberAmount: 3 }}
+          >
             {({ company }) => (
               <React.Fragment>
                 <p style={pStyle}>Information</p>
@@ -65,7 +84,54 @@ export class CompanyDetailsDrawer extends React.Component {
                 </Row>
                 <Row>
                   <Col span={12}>
-                    <DescriptionItem title="Current plan" content={company.plan.name} />
+                    <DescriptionItem title="Status" content={renderStatus(company.status)} />
+                  </Col>
+                  <Col span={12}>
+                    <MyMutation
+                      mutation={CHANGE_COMPANY_STATUS}
+                      variables={{
+                        input: {
+                          attributes: JSON.stringify({
+                            id: companyId,
+                            status:
+                              company.status === COMPANY.status.restricted
+                                ? COMPANY.status.active
+                                : COMPANY.status.restricted,
+                          }),
+                        },
+                      }}
+                      onCompleted={({
+                        changeCompanyStatus: {
+                          updatedCompany: { status },
+                        },
+                      }) => {
+                        message.success(`${companyName} is ${status}`);
+                      }}
+                    >
+                      {changeCompanyStatus => (
+                        <a
+                          style={{
+                            color: company.status === COMPANY.status.restricted ? null : '#fa541c',
+                          }}
+                          onClick={() =>
+                            showConfirm(
+                              company.status === COMPANY.status.restricted ? 'active' : 'deactive',
+                              changeCompanyStatus
+                            )
+                          }
+                        >
+                          {company.status === COMPANY.status.restricted
+                            ? 'Activate Company'
+                            : 'Deactivate Company'}
+                        </a>
+                      )}
+                    </MyMutation>
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col span={12}>
+                    <DescriptionItem title="Current plan" content={renderPlan(company.plan.name)} />
                   </Col>
                   <Col span={12}>
                     <ChangePlanModal currentPlan={company.plan.id} companyId={companyId} />
@@ -106,7 +172,7 @@ export class CompanyDetailsDrawer extends React.Component {
                 />
                 <br />
 
-                <CompanyMembersDrawer />
+                <CompanyMembersDrawer companyId={company.id} companyName={company.name} />
               </React.Fragment>
             )}
           </MyQuery>

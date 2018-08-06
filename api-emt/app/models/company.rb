@@ -12,6 +12,9 @@ class Company < ApplicationRecord
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }, allow_blank: true
 
+  STATUS_ACTIVE = 'active'
+  STATUS_RESTRICTED = 'restricted'
+  enum status: { active: STATUS_ACTIVE, restricted: STATUS_RESTRICTED }
   # return the array of Users belong to the company
   def self.company_member_sugestion(company_id:, query:)
     User.joins(%|

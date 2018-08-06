@@ -3,6 +3,7 @@ class Types::Company < Types::BaseObject
 
   field :id, ID, null: false
   field :name, String, null: false
+  field :status, Types::CompanyStatusCategory, null: false
   field :address, String, null: true
   field :logo, String, null: true
   field :description, String, null: true

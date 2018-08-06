@@ -1,5 +1,7 @@
 import { Drawer } from 'antd';
 import React from 'react';
+import MemberInvitationInput from '../../../companyMembers/MemberInvitationInput';
+import MembersList from '../../../companyMembers/MembersList';
 
 export default class CompanyMembersDrawer extends React.Component {
   state = { visible: false };
@@ -17,6 +19,7 @@ export default class CompanyMembersDrawer extends React.Component {
   };
 
   render() {
+    const { companyId, companyName } = this.props;
     return (
       <div>
         <a type="primary" onClick={this.showDrawer}>
@@ -24,15 +27,15 @@ export default class CompanyMembersDrawer extends React.Component {
         </a>
 
         <Drawer
-          title="Basic Drawer"
+          title={`${companyName}'s Members`}
+          width="100%"
           placement="right"
-          closable={false}
+          closable
           onClose={this.onClose}
           visible={this.state.visible}
         >
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
+          <MemberInvitationInput companyId={companyId} />
+          <MembersList companyId={companyId} />
         </Drawer>
       </div>
     );
