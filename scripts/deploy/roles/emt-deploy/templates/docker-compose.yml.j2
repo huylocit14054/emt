@@ -8,6 +8,8 @@ services:
       - RAILS_LOG_TO_STDOUT=true
       - DATABASE_URL=$EMT_{{ emt_apps.api.environment | upper }}_DATABASE_URL
       - SECRET_KEY_BASE=$EMT_{{ emt_apps.api.environment | upper }}_SECRET_KEY_BASE
+      - SENDGRID_USERNAME=$EMT_{{ emt_apps.api.environment | upper }}_SENDGRID_USERNAME
+      - SENDGRID_PASSWORD=$EMT_{{ emt_apps.api.environment | upper }}_SENDGRID_PASSWORD
     ports:
       - '{{ emt_apps.api.server_port }}:{{ emt_apps.api.container_port }}'
 
